@@ -31,8 +31,8 @@ public class ExecutorService {
     @Log
     private Logger logger;
 
-    @RabbitListener(queues = "gen_server_test_queue", containerFactory = "taskContainerFactory")
-    @RabbitHandler
+//    @RabbitListener(queues = "gen_server_test_queue", containerFactory = "taskContainerFactory")
+//    @RabbitHandler
     public void process(String data) {
         String[] chars = data.split(",");
         StringBuffer stringBuffer = new StringBuffer();

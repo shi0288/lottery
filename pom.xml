@@ -37,7 +37,6 @@
         <java.version>1.8</java.version>
     </properties>
 
-
     <dependencies>
 
         <!-- support web-->
@@ -131,11 +130,11 @@
             <artifactId>spring-boot-starter-amqp</artifactId>
         </dependency>
 
-        <!-- support redis-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
-        </dependency>
+        <!--&lt;!&ndash; support redis&ndash;&gt;-->
+        <!--<dependency>-->
+            <!--<groupId>org.springframework.boot</groupId>-->
+            <!--<artifactId>spring-boot-starter-data-redis</artifactId>-->
+        <!--</dependency>-->
 
     </dependencies>
 
