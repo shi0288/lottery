@@ -44,17 +44,17 @@
                     </div>
                     <ul class="nav nav-pills nav-stacked main-menu">
                         <li>
-                            <a class="ajax-link" href="${base}/admin/user/list">
+                            <a class="ajax-link" href="${base}/lqmJHTqixle2eWaB/user/list">
                                 <i class="glyphicon glyphicon-user"></i>&nbsp;<span>用户管理</span>
                             </a>
                         </li>
                         <li>
-                            <a class="ajax-link" href="${base}/admin/prediction/list">
+                            <a class="ajax-link" href="${base}/lqmJHTqixle2eWaB/prediction/list">
                                 <i class="glyphicon glyphicon-time"></i>&nbsp;<span>预测管理</span>
                             </a>
                         </li>
                         <li>
-                            <a class="ajax-link" href="${base}/admin/plat/list">
+                            <a class="ajax-link" href="${base}/lqmJHTqixle2eWaB/plat/list">
                                 <i class="glyphicon glyphicon-tasks"></i>&nbsp;<span>平台管理</span>
                             </a>
                         </li>

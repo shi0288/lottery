@@ -8,9 +8,11 @@ import com.mcp.lottery.util.LotteryResult;
 import com.mcp.lottery.util.Plugin;
 import com.mcp.lottery.util.HttpClientWrapper;
 import com.mcp.lottery.util.HttpResult;
+import com.mcp.lottery.util.annotation.Log;
 import com.mcp.lottery.util.annotation.Type;
 import com.mcp.lottery.util.cons.JinzhizunCons;
 import com.mcp.lottery.util.exception.ApiException;
+import org.slf4j.Logger;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -21,6 +23,9 @@ import static com.mcp.lottery.util.cons.Cons.SUCCESS;
 
 @Type(name = "金至尊", value = "jinzhizun")
 public class JinzhizunPlugin extends Plugin {
+
+    @Log
+    private Logger logger;
 
     @Override
     public void getAuthor(Plat plat) {
@@ -88,6 +93,7 @@ public class JinzhizunPlugin extends Plugin {
         resetOdds(plat);
         LotteryResult lotteryResult = new LotteryResult();
         String touzhu = this.transform(plat, list, lotteryResult);
+        logger.info("金至尊投注:"+touzhu);
         Date date = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("YYYY-M-dd HH:mm:ss.SSS");
         String getUrl = "uid=" + plat.getAssist() + "&InsetOrderTime=";

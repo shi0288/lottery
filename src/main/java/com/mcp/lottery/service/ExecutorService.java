@@ -31,14 +31,15 @@ public class ExecutorService {
     @Log
     private Logger logger;
 
-//    @RabbitListener(queues = "gen_server_test_queue", containerFactory = "taskContainerFactory")
-//    @RabbitHandler
+    @RabbitListener(queues = "gen_server_test_queue", containerFactory = "taskContainerFactory")
+    @RabbitHandler
     public void process(String data) {
         String[] chars = data.split(",");
         StringBuffer stringBuffer = new StringBuffer();
         for (int i = 0; i < chars.length; i++) {
             stringBuffer.append(String.valueOf((char) Integer.parseInt(chars[i])));
         }
+        logger.info("接收："+stringBuffer.toString());
         JSONObject params = JSONObject.parseObject(stringBuffer.toString());
         Long pid = Long.valueOf(params.get("pid").toString());
         Plat plat = platService.get(pid);
@@ -47,14 +48,16 @@ public class ExecutorService {
         LotteryResult lotteryResult;
         try {
             lotteryResult = plugin.send(plat, list);
-            updateLottery(lotteryResult);
+            logger.info("返回："+lotteryResult.getResponse());
+//            updateLottery(lotteryResult);
         } catch (ApiException e) {
             //更新账户信息重新试下
             plugin.getAuthor(plat);
             if (platService.update(plat)) {
                 try {
                     lotteryResult = plugin.send(plat, list);
-                    updateLottery(lotteryResult);
+                    logger.info("返回："+lotteryResult.getResponse());
+//                    updateLottery(lotteryResult);
                 } catch (Exception ex) {
                     //真的失败了。。
                     ex.printStackTrace();
