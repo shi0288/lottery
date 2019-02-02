@@ -65,7 +65,7 @@ public class QiaoqiaoyingTask {
         JSONObject result = jsonObject.getJSONObject("result");
         JSONObject lastLottery = result.getJSONObject("lastLottery");
         Integer lastIssue = 0;
-        if (lastLottery.containsKey("issue")) {
+        if (lastLottery!=null) {
             lastIssue = lastLottery.getInteger("issue");
         }
         Integer issue = lastIssue + 1;
