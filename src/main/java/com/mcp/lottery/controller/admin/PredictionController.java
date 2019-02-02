@@ -19,7 +19,7 @@ import static com.mcp.lottery.util.ResultCode.ERROR;
 
 
 @Controller
-@RequestMapping("admin/prediction")
+@RequestMapping("lqmJHTqixle2eWaB/prediction")
 public class PredictionController extends BaseController {
 
     @Autowired

@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import static com.mcp.lottery.util.ResultCode.ERROR;
 
 @Controller
-@RequestMapping("admin/user")
+@RequestMapping("lqmJHTqixle2eWaB/user")
 public class UserController extends BaseController {
 
     @Autowired

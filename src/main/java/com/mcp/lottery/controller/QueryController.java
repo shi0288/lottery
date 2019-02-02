@@ -19,8 +19,8 @@ import static com.mcp.lottery.util.ResultCode.ERROR;
  * 查询相关
  */
 
-@RestController
-@RequestMapping("query")
+//@RestController
+//@RequestMapping("query")
 public class QueryController extends BaseController {
 
     @Autowired
