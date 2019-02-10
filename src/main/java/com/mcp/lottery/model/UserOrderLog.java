@@ -1,9 +1,7 @@
 package com.mcp.lottery.model;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.Date;
 
 @Table(name = "user_order_log")
 public class UserOrderLog {
@@ -12,9 +10,27 @@ public class UserOrderLog {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private Long uid;
+
     private Double rate;
 
     private String result;
+
+    private String game;
+
+    private Double money;
+
+    private String code;
+
+    private String pid;
+
+    private Date createAt;
+
+    @Transient
+    private Plat plat;
+
+    @Transient
+    private User user;
 
     public Long getId() {
         return id;
@@ -38,5 +54,69 @@ public class UserOrderLog {
 
     public void setResult(String result) {
         this.result = result;
+    }
+
+    public Long getUid() {
+        return uid;
+    }
+
+    public void setUid(Long uid) {
+        this.uid = uid;
+    }
+
+    public String getGame() {
+        return game;
+    }
+
+    public void setGame(String game) {
+        this.game = game;
+    }
+
+    public Double getMoney() {
+        return money;
+    }
+
+    public void setMoney(Double money) {
+        this.money = money;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getPid() {
+        return pid;
+    }
+
+    public void setPid(String pid) {
+        this.pid = pid;
+    }
+
+    public Plat getPlat() {
+        return plat;
+    }
+
+    public void setPlat(Plat plat) {
+        this.plat = plat;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Date getCreateAt() {
+        return createAt;
+    }
+
+    public void setCreateAt(Date createAt) {
+        this.createAt = createAt;
     }
 }

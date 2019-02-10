@@ -19,6 +19,8 @@ public class User {
 
     private Date createAt;
 
+    private Integer status;
+
     public Long getId() {
         return id;
     }
@@ -57,5 +59,13 @@ public class User {
 
     public void setCreateAt(Date createAt) {
         this.createAt = createAt;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 }

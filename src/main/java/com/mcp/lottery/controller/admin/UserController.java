@@ -1,6 +1,7 @@
 package com.mcp.lottery.controller.admin;
 
 
+import com.mcp.lottery.mapper.UserOrderLogMapper;
 import com.mcp.lottery.model.User;
 import com.mcp.lottery.service.UserService;
 import com.mcp.lottery.util.ArithUtil;
@@ -23,6 +24,9 @@ public class UserController extends BaseController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UserOrderLogMapper userOrderLogMapper;
 
 
     @RequestMapping("list")
@@ -85,12 +89,63 @@ public class UserController extends BaseController {
     @ResponseBody
     Result recharge(
             @Check Long id,
-            @Check(number = true) Double balance
+            @Check(number = true,min = "0") Double balance
     ) {
         if(userService.addBalance(id,balance)){
             return result.format();
         }
         return result.format(ERROR, "保存出错");
     }
+
+
+    @RequestMapping(value = "frozen", method = RequestMethod.POST)
+    @ResponseBody
+    Result frozen(
+            @Check Long id
+    ) {
+        User user = new User();
+        user.setId(id);
+        user.setStatus(0);
+        if (userService.saveOrUpdate(user)) {
+            return result.format();
+        }
+        return result.format(ERROR, "保存出错");
+    }
+
+
+    @RequestMapping(value = "thaw", method = RequestMethod.POST)
+    @ResponseBody
+    Result thaw(
+            @Check Long id
+    ) {
+        User user = new User();
+        user.setId(id);
+        user.setStatus(1);
+        if (userService.saveOrUpdate(user)) {
+            return result.format();
+        }
+        return result.format(ERROR, "保存出错");
+    }
+
+
+    @RequestMapping(value = "mul", method = RequestMethod.POST)
+    @ResponseBody
+    Result mul(
+            @Check Long id,
+            @Check(number = true,min = "0") Double balance
+    ) {
+        if(userService.addBalance(id,-balance)){
+            return result.format();
+        }
+        return result.format(ERROR, "保存出错");
+    }
+
+
+    @RequestMapping("logList")
+    void logList(ModelMap map,@Check Long uid) {
+        map.put("list", userOrderLogMapper.getAll(uid));
+    }
+
+
 
 }

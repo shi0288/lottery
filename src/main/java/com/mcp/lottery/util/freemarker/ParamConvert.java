@@ -57,6 +57,9 @@ public class ParamConvert implements TemplateMethodModelEx {
             switch (key) {
                 case "ssc":
                     String data = String.valueOf(list.get(1));
+                    if("null".equals(data)){
+                        return "";
+                    }
                     JSONObject obj = JSON.parseObject(data);
                     JSONArray arr = obj.getJSONArray("items");
                     String[] res = new String[arr.size()];
@@ -65,6 +68,12 @@ public class ParamConvert implements TemplateMethodModelEx {
                         res[i]=this.transIndex(temp.getIntValue("index"))+this.transGame(temp.getIntValue("way"),temp.getIntValue("betResult"));
                     }
                     return StringUtils.join(res," | ");
+                case "sscCode":
+                    if(list.get(1)==null){
+                        return "";
+                    }
+                    String[] code = String.valueOf(list.get(1)).split("");
+                    return this.transIndex(Integer.parseInt(code[0]))+this.transGame(Integer.parseInt(code[1]),Integer.parseInt(code[2]));
             }
         }
         return null;
