@@ -36,7 +36,7 @@ public class QiaoqiaoyingTask {
     private Logger logger;
 
 
-    @Scheduled(fixedDelay = 30000)// 30秒执行一次
+    @Scheduled(fixedDelay = 60000)// 60秒执行一次
     public void updateChongqi() {
         //获取当前期次
         Term term = termService.getOpenTerm();
@@ -51,6 +51,9 @@ public class QiaoqiaoyingTask {
         query = predictionService.get(query);
         if (query != null) {
             JSONObject dataObj = JSONObject.parseObject(query.getData());
+            if (dataObj == null || !dataObj.containsKey("subtotal")) {
+                return;
+            }
             if (dataObj.getIntValue("subtotal") > 0) {
                 //如果当前有预测结果则不再执行
                 return;
@@ -61,20 +64,18 @@ public class QiaoqiaoyingTask {
             //获取预测为空则返回
             return;
         }
+//        logger.error("获取预测结果：" + res);
         JSONObject jsonObject = JSONObject.parseObject(res);
         JSONObject result = jsonObject.getJSONObject("result");
+        if (!result.containsKey("lastLottery")) {
+            return;
+        }
         JSONObject lastLottery = result.getJSONObject("lastLottery");
         Integer lastIssue = 0;
-        if (lastLottery!=null) {
+        if (lastLottery != null) {
             lastIssue = lastLottery.getInteger("issue");
         }
         Integer issue = lastIssue + 1;
-        if (lastIssue.intValue() == 0) {
-            //当前一期是120时，从0开始
-            logger.error("=================================");
-            logger.error(res);
-            logger.error("=================================");
-        }
         Prediction prediction = new Prediction();
         prediction.setGame(Cons.Game.CQSSC);
         prediction.setTerm(DateUtil.DateToString(new Date(), "yyyyMMdd") + new DecimalFormat("000").format(issue));
@@ -97,7 +98,7 @@ public class QiaoqiaoyingTask {
     }
 
 
-    @Scheduled(fixedDelay = 30000)// 30秒执行一次
+    @Scheduled(fixedDelay = 120000)// 120秒执行一次
     public void updatePrize() {
         //获取当前期次
         Term term = termService.getOpenTerm();
@@ -119,8 +120,8 @@ public class QiaoqiaoyingTask {
         JSONObject resultObj = JSONObject.parseObject(result).getJSONObject("result");
         JSONArray jsonArray = resultObj.getJSONArray("hisLotteryInfo");
         for (int i = 0; i < jsonArray.size(); i++) {
-            JSONObject temp=jsonArray.getJSONObject(i);
-            if(temp.getString("preDrawIssue").equals(preTerm.getTermCode())){
+            JSONObject temp = jsonArray.getJSONObject(i);
+            if (temp.getString("preDrawIssue").equals(preTerm.getTermCode())) {
                 Term update = new Term();
                 update.setId(preTerm.getId());
                 update.setWinNumber(temp.getString("preDrawCode"));
