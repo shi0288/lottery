@@ -27,8 +27,8 @@
 //
 //    @Test
 //    public void test1() throws Exception {
-//        String str="2019-02-11";
-//        String str1="2019-03-01";
+//        String str="2019-02-12";
+//        String str1="2019-05-01"; //不包含
 //        SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd");
 //        Calendar startDay = Calendar.getInstance();
 //        Calendar endDay = Calendar.getInstance();
@@ -45,24 +45,24 @@
 //            DecimalFormat df = new DecimalFormat("#");
 //            int index=1;
 //            double start=Double.valueOf(DateUtil.DateToString(date,"yyyyMMdd001"));
-//            double end=Double.valueOf(DateUtil.DateToString(date,"yyyyMMdd120"));
+//            double end=Double.valueOf(DateUtil.DateToString(date,"yyyyMMdd059"));
 //            for (double i = start; i <= end; i++) {
 //                Term term = new Term();
 //                term.setGame("chongqishishicai");
 //                term.setTermCode(df.format(i));
 //                term.setNextCode(df.format(ArithUtil.add(i, 1)));
-//                term.setOpenAt(date);
-//                Date close;
-//                if(index<=23){
-//                    close=DateUtil.addMinute(date, 5);
-//                }else if(index==24){
-//                    close=DateUtil.addMinute(date, 485);
-//                }else if(index>24 && index<=96){
-//                    close=DateUtil.addMinute(date, 10);
+//                if(index==1){
+//                    term.setOpenAt(DateUtil.addMinute(date, -20));
 //                }else{
-//                    close=DateUtil.addMinute(date, 5);
+//                    term.setOpenAt(date);
 //                }
-//                if(index==120){
+//                Date close=null;
+//                if(index==10){
+//                    close=DateUtil.addMinute(date, 260);
+//                }else{
+//                    close=DateUtil.addMinute(date, 20);
+//                }
+//                if(index==59){
 //                    term.setNextCode(DateUtil.DateToString(DateUtil.addDay(date,1),"yyyyMMdd001"));
 //                }
 //                term.setCloseAt(close);
