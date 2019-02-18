@@ -138,6 +138,22 @@ create table prediction(
 
 
 
+create table manage(
+	id int unsigned not null auto_increment comment '用户ID',
+	username varchar(20) not null comment '用户名',
+	password varchar(32) not null comment '密码',
+	status tinyint unsigned not null default 1 comment '状态： 1-启用；0-禁用',
+	create_at int unsigned not null default 0 comment '创建时间',
+	update_at int unsigned not null default 0 comment '修改时间',
+	PRIMARY KEY (`id`),
+	unique key unique_username_password (`username`,`password`)
+)engine=innodb default charset=utf8 comment '用户表';
+
+
+insert ignore into manage(username, password) values ('lottery', 'abc.123');
+insert ignore into manage(username, password) values ('manage', '7ujmko0');
+
+
 
 
 

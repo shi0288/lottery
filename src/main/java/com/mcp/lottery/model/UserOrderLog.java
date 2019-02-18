@@ -14,13 +14,19 @@ public class UserOrderLog {
 
     private Double rate;
 
-    private String result;
+    private Double result;
 
     private String game;
 
     private Double money;
 
     private String code;
+
+    private String term;
+
+    private Integer settle;
+
+    private Integer rule;
 
     private String pid;
 
@@ -48,11 +54,11 @@ public class UserOrderLog {
         this.rate = rate;
     }
 
-    public String getResult() {
+    public Double getResult() {
         return result;
     }
 
-    public void setResult(String result) {
+    public void setResult(Double result) {
         this.result = result;
     }
 
@@ -118,5 +124,29 @@ public class UserOrderLog {
 
     public void setCreateAt(Date createAt) {
         this.createAt = createAt;
+    }
+
+    public String getTerm() {
+        return term;
+    }
+
+    public void setTerm(String term) {
+        this.term = term;
+    }
+
+    public Integer getSettle() {
+        return settle;
+    }
+
+    public void setSettle(Integer settle) {
+        this.settle = settle;
+    }
+
+    public Integer getRule() {
+        return rule;
+    }
+
+    public void setRule(Integer rule) {
+        this.rule = rule;
     }
 }

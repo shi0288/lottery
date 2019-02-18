@@ -21,16 +21,16 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <#--<div class="btn-group pull-right">-->
-            <#--<button class="btn btn-default dropdown-toggle" data-toggle="dropdown">-->
-                <#--<i class="glyphicon glyphicon-user"></i><span class="hidden-sm hidden-xs">${user.username}</span>-->
-                <#--<span class="caret"></span>-->
-            <#--</button>-->
-            <#--<ul class="dropdown-menu">-->
-                <#--<li class="divider"></li>-->
-                <#--<li><a href="/logout">退出</a></li>-->
-            <#--</ul>-->
-        <#--</div>-->
+        <div class="btn-group pull-right">
+            <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                <i class="glyphicon glyphicon-user"></i><span class="hidden-sm hidden-xs">${(manage.username)!''}</span>
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li class="divider"></li>
+                <li><a href="/JiswyAaKgoJmqutA/logout">退出</a></li>
+            </ul>
+        </div>
     </div>
 </div>
 <!-- topbar ends -->

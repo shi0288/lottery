@@ -9,6 +9,9 @@
         <result column="game" property="game"/>
         <result column="money"  property="money"/>
         <result column="code"  property="code"/>
+        <result column="term"  property="term"/>
+        <result column="settle"  property="settle"/>
+        <result column="rule"  property="rule"/>
         <result column="create_at" jdbcType="TIMESTAMP" property="createAt"/>
         <association property="plat" javaType="com.mcp.lottery.model.Plat">
             <result column="plat_id"  property="id"/>

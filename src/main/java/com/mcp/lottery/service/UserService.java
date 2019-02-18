@@ -37,7 +37,7 @@ public class UserService {
     }
 
     public List<User> getAll() {
-        return userMapper.selectAll();
+        return userMapper.getAll();
     }
 
     public User get(Long id){
@@ -50,6 +50,27 @@ public class UserService {
         }
         return false;
     }
+
+    public boolean openTouzhu(Long uid){
+        if(userMapper.openTouzhu(uid)==1){
+            return true;
+        }
+        return false;
+    }
+    public boolean closeTouzhu(Long uid){
+        if(userMapper.closeTouzhu(uid)==1){
+            return true;
+        }
+        return false;
+    }
+
+    public boolean updateInitMoney(Long uid,Double initMoney){
+        if(userMapper.updateInitMoney(uid,initMoney)==1){
+            return true;
+        }
+        return false;
+    }
+
 
 
 }

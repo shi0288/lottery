@@ -1,12 +1,14 @@
 package com.mcp.lottery.model;
 
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Transient;
+import javax.persistence.Table;
 import java.util.Date;
 
-public class User {
+@Table(name = "manage")
+public class Manage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,17 +18,12 @@ public class User {
 
     private String password;
 
-    private Double balance;
+    private Integer status;
 
     private Date createAt;
 
-    private Integer status;
+    private Date updateAt;
 
-    @Transient
-    private Integer isOpen;
-
-    @Transient
-    private Double initMoney;
 
     public Long getId() {
         return id;
@@ -52,12 +49,12 @@ public class User {
         this.password = password;
     }
 
-    public Double getBalance() {
-        return balance;
+    public Integer getStatus() {
+        return status;
     }
 
-    public void setBalance(Double balance) {
-        this.balance = balance;
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     public Date getCreateAt() {
@@ -68,27 +65,11 @@ public class User {
         this.createAt = createAt;
     }
 
-    public Integer getStatus() {
-        return status;
+    public Date getUpdateAt() {
+        return updateAt;
     }
 
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    public Integer getIsOpen() {
-        return isOpen;
-    }
-
-    public void setIsOpen(Integer isOpen) {
-        this.isOpen = isOpen;
-    }
-
-    public Double getInitMoney() {
-        return initMoney;
-    }
-
-    public void setInitMoney(Double initMoney) {
-        this.initMoney = initMoney;
+    public void setUpdateAt(Date updateAt) {
+        this.updateAt = updateAt;
     }
 }

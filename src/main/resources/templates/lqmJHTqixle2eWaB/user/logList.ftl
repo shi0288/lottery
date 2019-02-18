@@ -12,10 +12,14 @@
                     <tr>
                         <th>用户名</th>
                         <th>游戏</th>
-                        <#--<th>期次</th>-->
+                        <th>期次</th>
                         <th>投注号码</th>
                         <th>金额</th>
                         <th>平台</th>
+                        <th>赔率</th>
+                        <th>策略</th>
+                        <th>是否结算</th>
+                        <th>派奖</th>
                         <th>时间</th>
                     </tr>
                     </thead>
@@ -25,10 +29,24 @@
                         <tr>
                             <td>${(e.user.username)!''}</td>
                             <td>重庆时时彩</td>
-                            <#--<td>${(e.balance?string('#.##'))!''}</td>-->
+                            <td>${(e.term)!''}</td>
                             <td>${convert('sscCode',e.code)!''}</td>
                             <td>${(e.money?string('#.##'))!''}</td>
                             <td>${(e.plat.name)!''}</td>
+                            <td>${(e.rate?string('#.##'))!''}</td>
+                            <td>
+                                <#if e.rule==1>
+                                    等值
+                                <#elseif e.rule==2>
+                                    倍投
+                                </#if>
+                            </td>
+                            <td>
+                                <#if e.settle==1>
+                                    已结算
+                                </#if>
+                            </td>
+                            <td>${(e.result?string('#.##'))!''}</td>
                             <td>${(e.createAt?string("yyyy-MM-dd HH:mm:ss"))!''}</td>
                         </tr>
                         </#list>

@@ -147,5 +147,40 @@ public class UserController extends BaseController {
     }
 
 
+    @RequestMapping(value = "closeTouzhu", method = RequestMethod.POST)
+    @ResponseBody
+    Result closeTouzhu(
+            @Check Long id
+    ) {
+        if (userService.closeTouzhu(id)) {
+            return result.format();
+        }
+        return result.format(ERROR, "保存出错");
+    }
+
+    @RequestMapping(value = "openTouzhu", method = RequestMethod.POST)
+    @ResponseBody
+    Result openTouzhu(
+            @Check Long id
+    ) {
+        if (userService.openTouzhu(id)) {
+            return result.format();
+        }
+        return result.format(ERROR, "保存出错");
+    }
+
+    @RequestMapping(value = "updateInitMoney", method = RequestMethod.POST)
+    @ResponseBody
+    Result updateInitMoney(
+            @Check Long id,
+            @Check(number = true,min = "0") Double initMoney
+    ) {
+        if(userService.updateInitMoney(id,initMoney)){
+            return result.format();
+        }
+        return result.format(ERROR, "保存出错");
+    }
+
+
 
 }

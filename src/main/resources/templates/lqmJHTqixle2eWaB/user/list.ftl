@@ -5,7 +5,9 @@
         <div class="box-inner">
             <div class="box-header well" data-original-title="">
                 <h2><i class="glyphicon glyphicon-user"></i> 用户列表</h2>
-                <h2 style="float: right"><a href="./add">添加用户</a></h2>
+                <#if manage.username=='lottery'>
+                    <h2 style="float: right"><a href="./add">添加用户</a></h2>
+                </#if>
             </div>
             <div class="box-content">
                 <table class="table table-striped table-bordered bootstrap-datatable datatable responsive">
@@ -13,7 +15,10 @@
                     <tr>
                         <th>用户名</th>
                         <th>余额</th>
+                        <th>投注金额</th>
+                        <#if manage.username=='lottery'>
                         <th>操作</th>
+                        </#if>
                     </tr>
                     </thead>
                     <tbody>
@@ -23,27 +28,49 @@
                             <td><a href="./logList?uid=${(e.id)!''}">${(e.username)!''}</a></td>
                             <td>${(e.balance?string('#.##'))!''}</td>
                             <td>
-                                <a  href="./edit?id=${(e.id)!''}" class="btn btn-info btn-xs">
-                                    <i class="glyphicon glyphicon-edit icon-white"></i>
-                                    修改
-                                </a>
-                                <button role="recharge"  tag="${(e.id)!''}" class="btn btn-success btn-xs">
-                                    充值
-                                </button>
-                                <button role="mul"  tag="${(e.id)!''}" class="btn btn-primary btn-xs">
-                                    减钱
-                                </button>
-
-                                <#if e.status==1>
-                                    <button role="frozen"  tag="${(e.id)!''}" class="btn btn-danger btn-xs">
-                                        冻结
-                                    </button>
-                                <#else>
-                                    <button role="thaw"  tag="${(e.id)!''}" class="btn btn-warning btn-xs">
-                                        解冻
-                                    </button>
-                                </#if>
+                            <#if manage.username=='lottery'>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" value="${(e.initMoney?string('#.##'))!''}" placeholder="金额">
+                                    <span class="input-group-btn">
+                                    <button role="updateInitMoney" tag="${(e.id)!''}" class="btn btn-default" type="button">修改</button>
+                                    </span>
+                                </div>
+                            <#else>
+                            ${(e.initMoney?string('#.##'))!''}
+                            </#if>
                             </td>
+                            <#if manage.username=='lottery'>
+                                <td>
+                                    <a  href="./edit?id=${(e.id)!''}" class="btn btn-info btn-xs">
+                                        <i class="glyphicon glyphicon-edit icon-white"></i>
+                                        修改
+                                    </a>
+                                    <button role="recharge"  tag="${(e.id)!''}" class="btn btn-success btn-xs">
+                                        充值
+                                    </button>
+                                    <button role="mul"  tag="${(e.id)!''}" class="btn btn-primary btn-xs">
+                                        减钱
+                                    </button>
+                                    <#if e.status==1>
+                                        <button role="frozen"  tag="${(e.id)!''}" class="btn btn-danger btn-xs">
+                                            冻结
+                                        </button>
+                                    <#else>
+                                        <button role="thaw"  tag="${(e.id)!''}" class="btn btn-warning btn-xs">
+                                            解冻
+                                        </button>
+                                    </#if>
+                                    <#if e.isOpen==1>
+                                        <button role="closeTouzhu"  tag="${(e.id)!''}" class="btn btn-danger btn-xs">
+                                            关闭投注
+                                        </button>
+                                    <#else>
+                                        <button role="openTouzhu"  tag="${(e.id)!''}" class="btn btn-warning btn-xs">
+                                            开启投注
+                                        </button>
+                                    </#if>
+                                </td>
+                            </#if>
                         </tr>
                         </#list>
                     </#if>
@@ -153,6 +180,44 @@
             var id = self.attr('tag');
             myConfirm("确定要解冻这个用户吗?",function(){
                 $.localAjax('./thaw', {id: id}, function () {
+                    alert('操作成功', function () {
+                        history.go(0);
+                    });
+                })
+            });
+        })
+
+
+        $('body').on('click','[role="closeTouzhu"]', function () {
+            var self = $(this);
+            var id = self.attr('tag');
+            myConfirm("确定要关闭自动投注吗?",function(){
+                $.localAjax('./closeTouzhu', {id: id}, function () {
+                    alert('操作成功', function () {
+                        history.go(0);
+                    });
+                })
+            });
+        })
+
+        $('body').on('click','[role="openTouzhu"]', function () {
+            var self = $(this);
+            var id = self.attr('tag');
+            myConfirm("确定要开启自动投注吗?",function(){
+                $.localAjax('./openTouzhu', {id: id}, function () {
+                    alert('操作成功', function () {
+                        history.go(0);
+                    });
+                })
+            });
+        })
+
+        $('body').on('click','[role="updateInitMoney"]', function () {
+            var self = $(this);
+            var id = self.attr('tag');
+            var money=self.parent().prev().val();
+            myConfirm("确定更新投注金额吗?",function(){
+                $.localAjax('./updateInitMoney', {id: id,initMoney:money}, function () {
                     alert('操作成功', function () {
                         history.go(0);
                     });
