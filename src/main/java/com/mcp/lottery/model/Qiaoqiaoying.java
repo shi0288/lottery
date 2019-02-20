@@ -25,6 +25,10 @@ public class Qiaoqiaoying {
 
     private String prizeUrl;
 
+    private String dataUrlFfc;
+
+    private String prizeUrlFfc;
+
     private String refreshToken;
 
     private Date createAt;
@@ -109,5 +113,21 @@ public class Qiaoqiaoying {
 
     public void setPrizeUrl(String prizeUrl) {
         this.prizeUrl = prizeUrl;
+    }
+
+    public String getDataUrlFfc() {
+        return dataUrlFfc;
+    }
+
+    public void setDataUrlFfc(String dataUrlFfc) {
+        this.dataUrlFfc = dataUrlFfc;
+    }
+
+    public String getPrizeUrlFfc() {
+        return prizeUrlFfc;
+    }
+
+    public void setPrizeUrlFfc(String prizeUrlFfc) {
+        this.prizeUrlFfc = prizeUrlFfc;
     }
 }

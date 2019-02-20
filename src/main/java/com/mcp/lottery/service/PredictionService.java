@@ -2,12 +2,15 @@ package com.mcp.lottery.service;
 
 
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.mcp.lottery.mapper.PredictionMapper;
 import com.mcp.lottery.model.Prediction;
+import com.mcp.lottery.util.Pager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class PredictionService {
@@ -29,9 +32,11 @@ public class PredictionService {
     }
 
 
-    public List<Prediction> getAll() {
-        PageHelper.orderBy("id desc");
-        return predictionMapper.selectAll();
+    public PageInfo<Prediction> getAll(Pager pager, Map<String, Object> map) {
+        Prediction prediction = new Prediction();
+        prediction.setGame(String.valueOf(map.get("type")));
+        PageInfo pageInfo = PageHelper.startPage(pager.getPage(), pager.getLimit(), "id desc").doSelectPageInfo(() -> predictionMapper.select(prediction));
+        return pageInfo;
     }
 
 

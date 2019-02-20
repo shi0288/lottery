@@ -123,6 +123,13 @@ create table qiaoqiaoying(
 	PRIMARY KEY (`id`)
 )engine=innodb default charset=utf8 comment '悄悄赢';
 
+alter table qiaoqiaoying  add  data_url_ffc varchar(200) not null DEFAULT '' comment '分分彩数据url';
+alter table qiaoqiaoying  add  prize_url_ffc varchar(200) not null DEFAULT '' comment '分分彩中奖查询url';
+
+
+
+
+
 
 create table prediction(
 	id int unsigned not null auto_increment comment 'id',
@@ -152,6 +159,8 @@ create table manage(
 
 insert ignore into manage(username, password) values ('lottery', 'abc.123');
 insert ignore into manage(username, password) values ('manage', '7ujmko0');
+
+
 
 
 

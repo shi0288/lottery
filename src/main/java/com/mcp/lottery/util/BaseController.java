@@ -10,12 +10,18 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.ModelMap;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.mcp.lottery.util.ResultCode.ERROR;
 
@@ -63,6 +69,28 @@ public class BaseController {
             result.format(ERROR, "未知错误");
         }
         return new ResponseEntity(result, HttpStatus.OK);
+    }
+
+    protected Map getParamMap() {
+        Map<String, Object> map = new HashMap();
+        Enumeration<String> paramMap = httpServletRequest.getParameterNames();
+        while (paramMap.hasMoreElements()) {
+            String paramName = paramMap.nextElement();
+            String paramValue = httpServletRequest.getParameter(paramName);
+            //形成键值对应的map
+            if (!StringUtils.isEmpty(paramValue)) {
+                map.put(paramName, paramValue);
+            }
+        }
+        map.remove("page");
+        map.remove("limit");
+        return map;
+    }
+
+    protected Map getParamMap(ModelMap modelMap) {
+        Map param = this.getParamMap();
+        modelMap.putAll(param);
+        return param;
     }
 
 }

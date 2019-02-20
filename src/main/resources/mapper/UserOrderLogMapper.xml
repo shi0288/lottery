@@ -26,7 +26,33 @@
 
     <select id="getAll" resultMap="ResultMapForUser">
         SELECT  a.*,b.username,c.name from user_order_log a left join user b on a.uid=b.id left join plat c on a.plat_id=c.id
-        WHERE a.uid=#{uid} order by a.create_at desc;
+        WHERE 1=1
+        <if test="uid != null and uid != ''">
+            and  a.uid = #{uid}
+        </if>
+        <if test="game != null and game != ''">
+            and  a.game = #{game}
+        </if>
+        <if test="day != null and day != ''">
+            and
+            a.create_at <![CDATA[ >=  ]]> unix_timestamp('${day} 00:00:00')
+            and a.create_at <![CDATA[ <=  ]]>   unix_timestamp('${day} 23:59:59')
+        </if>
+         order by a.create_at desc
+    </select>
+
+
+
+    <select id="getAllByDays" resultType="java.util.Map" >
+        SELECT FROM_UNIXTIME(create_at, '%Y-%m-%d') AS everyday ,count(*) AS num,sum(money) as money,sum(result) as result FROM user_order_log
+        where 1=1
+        <if test="game != null and game != ''">
+            and  game = #{game}
+        </if>
+        <if test="uid != null and uid != ''">
+            and  uid = #{uid}
+        </if>
+        GROUP BY everyday order by everyday desc
     </select>
 
 

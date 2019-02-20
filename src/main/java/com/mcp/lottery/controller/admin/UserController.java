@@ -1,20 +1,20 @@
 package com.mcp.lottery.controller.admin;
 
 
-import com.mcp.lottery.mapper.UserOrderLogMapper;
 import com.mcp.lottery.model.User;
+import com.mcp.lottery.service.UserOrderLogService;
 import com.mcp.lottery.service.UserService;
-import com.mcp.lottery.util.ArithUtil;
-import com.mcp.lottery.util.BaseController;
-import com.mcp.lottery.util.MD5Encoder;
-import com.mcp.lottery.util.Result;
+import com.mcp.lottery.util.*;
 import com.mcp.validate.annotation.Check;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.Map;
 
 import static com.mcp.lottery.util.ResultCode.ERROR;
 
@@ -26,12 +26,12 @@ public class UserController extends BaseController {
     private UserService userService;
 
     @Autowired
-    private UserOrderLogMapper userOrderLogMapper;
+    private UserOrderLogService userOrderLogService;
 
 
     @RequestMapping("list")
-    void list(ModelMap map) {
-        map.put("list", userService.getAll());
+    void list(ModelMap map, Pager pager) {
+        map.put("page", userService.getAll(pager));
     }
 
 
@@ -141,9 +141,24 @@ public class UserController extends BaseController {
     }
 
 
-    @RequestMapping("logList")
-    void logList(ModelMap map,@Check Long uid) {
-        map.put("list", userOrderLogMapper.getAll(uid));
+    @RequestMapping("dayList/{uid}")
+    String dayList(ModelMap map,Pager pager,@PathVariable(value = "uid") Long uid) {
+        Map param =  this.getParamMap(map);
+        param.put("uid",uid);
+        map.put("page", userOrderLogService.getAllByDays(pager,param));
+        map.put("uid", uid);
+        return "lqmJHTqixle2eWaB/user/dayList";
+    }
+
+
+
+    @RequestMapping("dayList/{uid}/{day}")
+    String logList(ModelMap map,Pager pager,@PathVariable(value = "uid") Long uid,@PathVariable(value = "day") String day) {
+        Map param =  this.getParamMap(map);
+        param.put("uid",uid);
+        param.put("day",day);
+        map.put("page", userOrderLogService.getAll(pager,param));
+        return "lqmJHTqixle2eWaB/user/logList";
     }
 
 

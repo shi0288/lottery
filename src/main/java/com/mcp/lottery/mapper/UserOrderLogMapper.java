@@ -6,10 +6,15 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface UserOrderLogMapper extends BaseMapper<UserOrderLog>{
 
-    List<UserOrderLog> getAll(@Param("uid")Long uid);
+    List<UserOrderLog> getAll(Map<String,Object> param);
+
+
+    List<Map> getAllByDays(Map<String,Object> param);
+
 
 }

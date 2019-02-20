@@ -1,10 +1,14 @@
 package com.mcp.lottery.util.core.inter;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
 
 
 public class ResourceInterceptor implements HandlerInterceptor {
@@ -24,7 +28,8 @@ public class ResourceInterceptor implements HandlerInterceptor {
         httpServletRequest.setAttribute("cssPath", cssPath);
         httpServletRequest.setAttribute("imgPath", imgPath);
         String prefix = httpServletRequest.getRequestURI();
-        httpServletRequest.setAttribute("getRequestUrl", prefix);
+        httpServletRequest.setAttribute("curPath", prefix);
+        httpServletRequest.setAttribute("curParam", clearPage(httpServletRequest));
     }
 
     public  String getBasePath(HttpServletRequest request) {
@@ -32,6 +37,29 @@ public class ResourceInterceptor implements HandlerInterceptor {
         String basePath = request.getScheme() + "://" + request.getServerName()
                 + ":" + request.getServerPort() + path;
         return basePath;
+    }
+
+    public String clearPage(HttpServletRequest httpServletRequest) {
+        if(httpServletRequest.getQueryString()==null){
+            return null;
+        }
+        List<String> list = new ArrayList();
+        Enumeration<String> paramMap = httpServletRequest.getParameterNames();
+        while (paramMap.hasMoreElements()) {
+            String paramName = paramMap.nextElement();
+            if (paramName.equals("page") || paramName.equals("page")) {
+                continue;
+            }
+            String paramValue = httpServletRequest.getParameter(paramName);
+            //形成键值对应的map
+            if (!StringUtils.isEmpty(paramValue)) {
+                list.add(paramName + "=" + paramValue);
+            }
+        }
+        if(list.size()==0){
+            return null;
+        }
+        return StringUtils.join(list,"&");
     }
 
 

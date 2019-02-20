@@ -8,7 +8,7 @@
                 <h2 style="float: right"><a href="javascript:void(0);" role="setting">查看账号</a></h2>
             </div>
             <div class="box-content">
-                <table class="table table-striped table-bordered bootstrap-datatable datatable responsive">
+                <table class="table table-striped table-bordered bootstrap-datatable responsive">
                     <thead>
                     <tr>
                         <th>游戏名称</th>
@@ -18,10 +18,10 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <#if list??>
-                        <#list list as e>
+                    <#if page.list??>
+                        <#list page.list as e>
                         <tr>
-                            <td>重庆时时彩</td>
+                            <td>${convert('gameCode',e.game)!''}</td>
                             <td>${(e.term)!''}</td>
                             <td>${convert('ssc',e.data)!''}</td>
                             <td>${(e.createAt?string("yyyy-MM-dd HH:mm:ss"))!''}</td>
@@ -30,6 +30,10 @@
                     </#if>
                     </tbody>
                 </table>
+            <#if  (page.list)??>
+                <#import "/fragment/pager.ftl" as p>
+                <@p.pager pager = page />
+            </#if>
             </div>
         </div>
     </div>
@@ -59,12 +63,20 @@
                         <input type="text"  class="form-control" value="${(e.loginUrl)!''}"  id="login_url">
                     </div>
                     <div class="control-group">
-                        <label class="control-label">数据地址</label>
+                        <label class="control-label">时时彩数据地址</label>
                         <input type="text"  class="form-control" value="${(e.dataUrl)!''}"  id="data_url">
                     </div>
                     <div class="control-group">
-                        <label class="control-label">中奖历史</label>
+                        <label class="control-label">时时彩中奖历史</label>
                         <input type="text"  class="form-control" value="${(e.prizeUrl)!''}"  id="prize_url">
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">分分彩数据地址</label>
+                        <input type="text"  class="form-control" value="${(e.dataUrlFfc)!''}"  id="data_url">
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">分分彩中奖历史</label>
+                        <input type="text"  class="form-control" value="${(e.prizeUrlFfc)!''}"  id="prize_url">
                     </div>
                 </div>
             </div>

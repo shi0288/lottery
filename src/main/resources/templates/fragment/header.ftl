@@ -48,10 +48,20 @@
                                 <i class="glyphicon glyphicon-user"></i>&nbsp;<span>用户管理</span>
                             </a>
                         </li>
-                        <li>
-                            <a class="ajax-link" href="${base}/lqmJHTqixle2eWaB/prediction/list">
-                                <i class="glyphicon glyphicon-time"></i>&nbsp;<span>预测管理</span>
-                            </a>
+                        <li class="accordion">
+                            <a href="javascript:void(0);"><i
+                                    class="glyphicon glyphicon-plus"></i><span> 投注管理</span></a>
+                            <ul class="nav nav-pills nav-stacked"  style="display: block;" >
+                                <li><a href="${base}/lqmJHTqixle2eWaB/order/list"> 投注列表</a></li>
+                            </ul>
+                        </li>
+                        <li class="accordion">
+                            <a href="javascript:void(0);"><i
+                                    class="glyphicon glyphicon-plus"></i><span> 预测管理</span></a>
+                            <ul class="nav nav-pills nav-stacked"  style="display: block;" >
+                                <li><a href="${base}/lqmJHTqixle2eWaB/prediction/list/chongqingshishicai"> 重庆时时彩</a></li>
+                                <li><a href="${base}/lqmJHTqixle2eWaB/prediction/list/T01"> 腾讯分分彩</a></li>
+                            </ul>
                         </li>
                         <li>
                             <a class="ajax-link" href="${base}/lqmJHTqixle2eWaB/plat/list">

@@ -5,6 +5,7 @@ import com.mcp.lottery.model.Plat;
 import com.mcp.lottery.service.PlatCategoryService;
 import com.mcp.lottery.service.PlatService;
 import com.mcp.lottery.util.BaseController;
+import com.mcp.lottery.util.Pager;
 import com.mcp.lottery.util.Result;
 import com.mcp.validate.annotation.Check;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +28,8 @@ public class PlatController extends BaseController{
     private PlatCategoryService platCategoryService;
 
     @RequestMapping("list")
-    void list(ModelMap map){
-        map.put("list", platService.getAll());
+    void list(ModelMap map,Pager pager){
+        map.put("page", platService.getAll(pager));
     }
 
 

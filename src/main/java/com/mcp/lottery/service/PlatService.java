@@ -1,9 +1,13 @@
 package com.mcp.lottery.service;
 
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.mcp.lottery.mapper.PlatMapper;
 import com.mcp.lottery.model.Plat;
 import java.util.List;
+
+import com.mcp.lottery.util.Pager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,8 +29,9 @@ public class PlatService {
         return false;
     }
 
-    public List<Plat> getAll(){
-        return platMapper.getAll();
+    public PageInfo<Plat> getAll(Pager pager){
+        PageInfo pageInfo = PageHelper.startPage(pager.getPage(), pager.getLimit()).doSelectPageInfo(() -> platMapper.getAll());
+        return pageInfo;
     }
 
     public boolean save(Plat plat){

@@ -10,7 +10,7 @@
                 </#if>
             </div>
             <div class="box-content">
-                <table class="table table-striped table-bordered bootstrap-datatable datatable responsive">
+                <table class="table table-striped table-bordered bootstrap-datatable responsive">
                     <thead>
                     <tr>
                         <th>用户名</th>
@@ -22,10 +22,10 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <#if list??>
-                        <#list list as e>
+                    <#if page.list??>
+                        <#list page.list as e>
                         <tr>
-                            <td><a href="./logList?uid=${(e.id)!''}">${(e.username)!''}</a></td>
+                            <td><a href="./dayList/${(e.id)!''}">${(e.username)!''}</a></td>
                             <td>${(e.balance?string('#.##'))!''}</td>
                             <td>
                             <#if manage.username=='lottery'>
@@ -76,6 +76,10 @@
                     </#if>
                     </tbody>
                 </table>
+            <#if  (page.list)??>
+                <#import "/fragment/pager.ftl" as p>
+                <@p.pager pager = page />
+            </#if>
             </div>
         </div>
     </div>

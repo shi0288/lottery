@@ -1,8 +1,11 @@
 package com.mcp.lottery.service;
 
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.mcp.lottery.mapper.UserMapper;
 import com.mcp.lottery.model.User;
+import com.mcp.lottery.util.Pager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,7 +39,12 @@ public class UserService {
         return false;
     }
 
-    public List<User> getAll() {
+    public PageInfo<User> getAll(Pager pager) {
+        PageInfo pageInfo = PageHelper.startPage(pager.getPage(), pager.getLimit()).doSelectPageInfo(() -> userMapper.getAll());
+        return pageInfo;
+    }
+
+    public List<User> getAll(){
         return userMapper.getAll();
     }
 
