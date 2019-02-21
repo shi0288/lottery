@@ -39,24 +39,39 @@ public class ExecutorService {
         for (int i = 0; i < chars.length; i++) {
             stringBuffer.append(String.valueOf((char) Integer.parseInt(chars[i])));
         }
-        logger.info("接收："+stringBuffer.toString());
+        logger.info("接收：" + stringBuffer.toString());
         JSONObject params = JSONObject.parseObject(stringBuffer.toString());
         Long pid = Long.valueOf(params.get("pid").toString());
+        String game = null;
+        if (params.containsKey("game")) {
+            game = params.get("game").toString();
+        }else{
+            logger.info("没有游戏参数");
+            return;
+        }
+        String term = null;
+        if (params.containsKey("term")) {
+            term = params.get("term").toString();
+        }else{
+            logger.info("没有期次参数");
+            return;
+        }
         Plat plat = platService.get(pid);
         JSONArray list = params.getJSONArray("list");
         Plugin plugin = (Plugin) SpringIocUtil.getBean(plat.getPlatCategory().getExecutor());
         LotteryResult lotteryResult;
         try {
-            lotteryResult = plugin.send(plat, list);
-            logger.info("返回："+lotteryResult.getResponse());
+            lotteryResult = plugin.send(plat, game,term, list);
+            logger.info("返回：" + lotteryResult.getResponse());
 //            updateLottery(lotteryResult);
         } catch (ApiException e) {
+            logger.info("更新账户信息后重试");
             //更新账户信息重新试下
             plugin.getAuthor(plat);
             if (platService.update(plat)) {
                 try {
-                    lotteryResult = plugin.send(plat, list);
-                    logger.info("返回："+lotteryResult.getResponse());
+                    lotteryResult = plugin.send(plat, game,term, list);
+                    logger.info("返回：" + lotteryResult.getResponse());
 //                    updateLottery(lotteryResult);
                 } catch (Exception ex) {
                     //真的失败了。。
@@ -79,8 +94,8 @@ public class ExecutorService {
         JSONArray data = lotteryResult.getData();
         logger.info(lotteryResult.getResponse());
         for (int i = 0; i < data.size(); i++) {
-            JSONObject obj=data.getJSONObject(i);
-            UserOrderLog userOrderLog=new UserOrderLog();
+            JSONObject obj = data.getJSONObject(i);
+            UserOrderLog userOrderLog = new UserOrderLog();
             userOrderLog.setId(obj.getLong("log_id"));
             userOrderLog.setRate(obj.getDouble("odds"));
             userOrderLogMapper.updateByPrimaryKeySelective(userOrderLog);

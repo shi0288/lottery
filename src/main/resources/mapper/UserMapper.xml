@@ -12,7 +12,6 @@
         select a.*,b.is_open as isOpen,b.init_money as initMoney from user a left join user_rule b on a.id=b.uid
     </select>
 
-
     <update id="openTouzhu">
         update user_rule set is_open=1 where uid=#{uid}
     </update>

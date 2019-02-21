@@ -10,6 +10,7 @@ import com.mcp.lottery.util.HttpClientWrapper;
 import com.mcp.lottery.util.HttpResult;
 import com.mcp.lottery.util.annotation.Log;
 import com.mcp.lottery.util.annotation.Type;
+import com.mcp.lottery.util.cons.Cons;
 import com.mcp.lottery.util.cons.JinzhizunCons;
 import com.mcp.lottery.util.exception.ApiException;
 import org.slf4j.Logger;
@@ -18,8 +19,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.*;
-
-import static com.mcp.lottery.util.cons.Cons.SUCCESS;
 
 @Type(name = "金至尊", value = "jinzhizun")
 public class JinzhizunPlugin extends Plugin {
@@ -80,7 +79,7 @@ public class JinzhizunPlugin extends Plugin {
         header.put(":scheme:", plat.getBalanceUrl().split(":")[0]);
         header.put("user-agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36");
         header.put("cookie", plat.getCookies());
-        HttpResult httpResult = HttpClientWrapper.sendPost(plat.getBalanceUrl() + getUrl, header, null);
+        HttpResult httpResult = HttpClientWrapper.sendPost(plat.getBalanceUrl() + getUrl, header, new HashMap<>());
         if (httpResult.getResult().indexOf("登录已超时") > -1) {
             return null;
         }
@@ -89,11 +88,18 @@ public class JinzhizunPlugin extends Plugin {
 
 
     @Override
-    public LotteryResult send(Plat plat, JSONArray list) {
+    public LotteryResult send(Plat plat,String game,String termCode, JSONArray list) {
+        if(game.equals(Cons.Game.CQSSC)){
+            return sendSSC(plat,list);
+        }
+        return null;
+    }
+
+    public LotteryResult sendSSC(Plat plat, JSONArray list){
         resetOdds(plat);
         LotteryResult lotteryResult = new LotteryResult();
         String touzhu = this.transform(plat, list, lotteryResult);
-        logger.info("金至尊投注:"+touzhu);
+        logger.info("金至尊时时彩投注:"+touzhu);
         Date date = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("YYYY-M-dd HH:mm:ss.SSS");
         String getUrl = "uid=" + plat.getAssist() + "&InsetOrderTime=";
@@ -128,14 +134,15 @@ public class JinzhizunPlugin extends Plugin {
         return lotteryResult;
     }
 
+
     public void resetOdds(Plat plat) {
         String getUrl = "SSC.aspx?&uid=" + plat.getAssist();
-        String[] urlArr = "https://hy1.868akk.com/PostHandler.ashx".replace("https://", "").replace("http://", "").split("\\/");
+        String[] urlArr = plat.getTouzhuUrl().replace("https://", "").replace("http://", "").split("\\/");
         Map<String, String> header = new HashMap<>();
         header.put(":authority:", urlArr[0]);
         header.put(":method:", "POST");
         header.put(":path:", "/" + getUrl);
-        header.put(":scheme:", "https://hy1.868akk.com/PostHandler.ashx".split(":")[0]);
+        header.put(":scheme:", plat.getTouzhuUrl().split(":")[0]);
         header.put("user-agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36");
         header.put("cookie", plat.getCookies());
         HttpResult httpResult = HttpClientWrapper.sendGet("https://hy1.868akk.com/PostHandler.ashx".split(":")[0] + "://" + urlArr[0] + "/" + getUrl, header, null);

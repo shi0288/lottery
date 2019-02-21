@@ -1,5 +1,6 @@
 package com.mcp.lottery.util;
 
+import com.alibaba.fastjson.JSONObject;
 import org.apache.http.Consts;
 import org.apache.http.Header;
 import org.apache.http.NameValuePair;
@@ -22,6 +23,7 @@ import org.springframework.util.Base64Utils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -72,12 +74,23 @@ public class HttpClientWrapper {
             }
         }
         List<NameValuePair> reqParams = new ArrayList<NameValuePair>();
-        if (params != null) {
+        if (params != null && params.size()==0) {
             for (String key : params.keySet()) {
                 reqParams.add(new BasicNameValuePair(key, params.get(key)));
             }
         }
         httpPost.setEntity(new UrlEncodedFormEntity(reqParams, Consts.UTF_8));
+        return HttpClientWrapper.execute(httpPost);
+    }
+
+    public static HttpResult sendPost(String url, Map<String, String> headers, JSONObject jsonObject) {
+        HttpPost httpPost = new HttpPost(url);
+        if (headers != null) {
+            for (String key : headers.keySet()) {
+                httpPost.addHeader(key, headers.get(key));
+            }
+        }
+        httpPost.setEntity(new StringEntity(jsonObject.toString(),"utf-8"));
         return HttpClientWrapper.execute(httpPost);
     }
 
@@ -143,6 +156,7 @@ public class HttpClientWrapper {
                 }
             }
             String retString = EntityUtils.toString(response.getEntity());
+            System.out.println(retString);
             httpResult.setResult(retString);
             return httpResult;
         } catch (Exception e) {

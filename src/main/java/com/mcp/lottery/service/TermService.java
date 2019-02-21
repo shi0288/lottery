@@ -4,7 +4,6 @@ package com.mcp.lottery.service;
 import com.github.pagehelper.PageHelper;
 import com.mcp.lottery.mapper.TermMapper;
 import com.mcp.lottery.model.Term;
-import com.mcp.lottery.util.cons.Cons;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,6 +38,11 @@ public class TermService {
         }
         return false;
 
+    }
+
+
+    public List<Term> getNoneWinNumber(String game,String day){
+        return termMapper.getNoneWinNumber(game,day);
     }
 
 

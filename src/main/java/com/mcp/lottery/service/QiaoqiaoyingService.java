@@ -86,7 +86,7 @@ public class QiaoqiaoyingService {
     }
 
 
-    public String getPrize(String game,Date date) {
+    public String getPrize(String game, Date date) {
         PageHelper.startPage(1, 1);
         PageHelper.orderBy("id asc");
         Qiaoqiaoying query = new Qiaoqiaoying();
@@ -175,8 +175,8 @@ public class QiaoqiaoyingService {
         Integer issue = lastIssue + 1;
         Prediction prediction = new Prediction();
         prediction.setGame(game);
-        prediction.setTerm(formatGameTermCode(game,issue));
-        if(prediction.getTerm()==null){
+        prediction.setTerm(formatGameTermCode(game, issue));
+        if (prediction.getTerm() == null) {
             return;
         }
         Prediction predictionDB = predictionService.get(prediction);
@@ -206,39 +206,33 @@ public class QiaoqiaoyingService {
         return null;
     }
 
-
     public void updatePrize(String game) {
-        //获取当前期次
-        Term term = termService.getOpenTerm(game);
-        if (term == null) {
-            //当前没有可售期次则不再执行
-            return;
-        }
-        Term preTerm = new Term();
-        preTerm.setGame(game);
-        preTerm.setCloseAt(term.getOpenAt());
-        preTerm = termService.get(preTerm);
-        if (preTerm == null || !StringUtils.isEmpty(preTerm.getWinNumber())) {
-            return;
-        }
-        String result = this.getPrize(game,preTerm.getOpenAt());
+        Date date = new Date();
+        String result = this.getPrize(game, date);
         if (StringUtils.isEmpty(result)) {
             return;
         }
         JSONObject resultObj = JSONObject.parseObject(result).getJSONObject("result");
         JSONArray jsonArray = resultObj.getJSONArray("hisLotteryInfo");
+        List<Term> list = termService.getNoneWinNumber(game, DateUtil.DateToString(date, "yyyyMMdd"));
+        for (int m = 0; m < list.size(); m++) {
+            Term targetTerm = list.get(m);
+            analysisTerm(targetTerm,jsonArray);
+        }
+    }
+
+    public void analysisTerm(Term target, JSONArray jsonArray) {
         for (int i = 0; i < jsonArray.size(); i++) {
             JSONObject temp = jsonArray.getJSONObject(i);
-            if (temp.getString("preDrawIssue").equals(preTerm.getTermCode())) {
+            if (temp.getString("preDrawIssue").equals(target.getTermCode())) {
                 Term update = new Term();
-                update.setId(preTerm.getId());
+                update.setId(target.getId());
                 update.setWinNumber(temp.getString("preDrawCode"));
                 termService.update(update);
                 return;
             }
         }
     }
-
 
 
 }

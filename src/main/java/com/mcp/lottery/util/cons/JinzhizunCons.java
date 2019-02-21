@@ -33,8 +33,11 @@ public class JinzhizunCons {
         put("512", JSON.parseObject("{\"ID\":\"167\",\"LeiXing\":\"第五球大小\",\"FangXiang\":\"小\",\"XiangMu\":\"5\",\"Type\":\"2\"}"));
         put("521", JSON.parseObject("{\"ID\":\"168\",\"LeiXing\":\"第五球單雙\",\"FangXiang\":\"單\",\"XiangMu\":\"5\",\"Type\":\"2\"}"));
         put("522", JSON.parseObject("{\"ID\":\"169\",\"LeiXing\":\"第五球單雙\",\"FangXiang\":\"雙\",\"XiangMu\":\"5\",\"Type\":\"2\"}"));
-
-
     }};
+
+
+
+
+
 
 }

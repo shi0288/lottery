@@ -20,7 +20,7 @@ public abstract class Plugin {
 
     public abstract Double getBalance(Plat plat);
 
-    public abstract LotteryResult send(Plat plat,JSONArray list);
+    public abstract LotteryResult send(Plat plat,String game,String termCode,JSONArray list);
 
 
 
