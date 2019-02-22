@@ -8,6 +8,7 @@ import com.mcp.lottery.util.annotation.Log;
 import com.mcp.lottery.util.annotation.Type;
 import com.mcp.lottery.util.cons.Cons;
 import com.mcp.lottery.util.cons.TaiyangCons;
+import com.mcp.lottery.util.exception.ApiException;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 
@@ -74,14 +75,30 @@ public class TaiyangPlugin extends Plugin {
         return null;
     }
 
+    public String transTermCodeForFFC(String termCode) {
+        String day = termCode.substring(0, 8);
+        int num = Integer.parseInt(termCode.substring(8, termCode.length()));
+        if (num < 10) {
+            return day+"00"+num;
+        }
+        if (num < 100) {
+            return day+"0"+num;
+        }
+        if (num < 1000) {
+            return day+num;
+        }
+        return termCode;
+    }
+
+
     @Override
     public LotteryResult send(Plat plat, String game, String termCode, JSONArray list) {
-        termCode = termCode.substring(0, 8) + Integer.parseInt(termCode.substring(8, termCode.length()));
         switch (game) {
             case Cons.Game.CQSSC: {
                 return sendSSC(plat, list, termCode);
             }
             case Cons.Game.TXFFC: {
+                termCode = transTermCodeForFFC(termCode);
                 return sendFFC(plat, list, termCode);
             }
         }
@@ -132,10 +149,10 @@ public class TaiyangPlugin extends Plugin {
         Map<String, String> header = this.getHeader(plat.getTouzhuUrl(), plat);
         HttpResult httpResult = HttpClientWrapper.sendPost(plat.getTouzhuUrl(), header, param);
         LotteryResult lotteryResult = new LotteryResult();
-        if (httpResult.getResult().equals("投注成功")) {
+        if (httpResult.getResult().indexOf("投注成功") > -1 || httpResult.getResult().indexOf("截止") > -1) {
             lotteryResult.setSuccess(true);
         } else {
-            lotteryResult.setSuccess(false);
+            throw new ApiException("登录已超时");
         }
         lotteryResult.setResponse(httpResult.getResult());
         return lotteryResult;
@@ -146,7 +163,6 @@ public class TaiyangPlugin extends Plugin {
         //赔率获取
 //        Double rate = this.getNewOdds(plat, TaiyangCons.FFC_CODE);
         Double rate = TaiyangCons.RATE;
-
         String touzhuStr = transform(list, TaiyangCons.TOU_ZHU_FFC, rate);
         String[] arr = touzhuStr.split("\\|");
         int amount = 0;
@@ -173,10 +189,10 @@ public class TaiyangPlugin extends Plugin {
         Map<String, String> header = this.getHeader(plat.getTouzhuUrl(), plat);
         HttpResult httpResult = HttpClientWrapper.sendPost(plat.getTouzhuUrl(), header, param);
         LotteryResult lotteryResult = new LotteryResult();
-        if (httpResult.getResult().equals("投注成功")) {
+        if (httpResult.getResult().indexOf("投注成功") > -1 || httpResult.getResult().indexOf("截止") > -1) {
             lotteryResult.setSuccess(true);
         } else {
-            lotteryResult.setSuccess(false);
+            throw new ApiException("登录已超时");
         }
         lotteryResult.setResponse(httpResult.getResult());
         return lotteryResult;
@@ -248,33 +264,31 @@ public class TaiyangPlugin extends Plugin {
         return StringUtils.join(trans, "|");
     }
 
-
-    public static void main(String[] args) {
-        Plat plat = new Plat();
-        plat.setLoginUrl("https://wap.roostyle.com/api/token");
-        plat.setBalanceUrl("https://wap.roostyle.com/api/User/GetUserModel");
-        plat.setTouzhuUrl("https://wap.roostyle.com/api/Lottery/KQWFBetting");
-        plat.setCookies("__cfduid=d38150e8e56cb42eea2f43388851a75611550720455;");
-        plat.setAssist("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlxdWVfbmFtZSI6ImV1Z2VuZTg4OCIsInJvbGUiOiJ1c2VyIiwiaXNzIjoibGVnZW5kIiwiYXVkIjoiQW55IiwiZXhwIjoxNTgyMjY5NjcyLCJuYmYiOjE1NTA3MzM2NzJ9.TomPjtvlIBhgnKljJaoIzikTHl8GvVg_uwNSzO8BE2Q");
-        plat.setUsername("eugene888");
-        plat.setPassword("eugenewu117519");
-        TaiyangPlugin taiyangPlugin = new TaiyangPlugin();
-//        System.out.println(taiyangPlugin.getBalance(plat));
-        JSONArray list = new JSONArray() {{
-            add(new JSONObject() {{
-                put("value", 112);
-                put("money", 1);
-            }});
-            add(new JSONObject() {{
-                put("value", 112);
-                put("money", 2);
-            }});
-        }};
-        taiyangPlugin.send(plat, Cons.Game.TXFFC, "201902211990", list);
-
-
-
-    }
+//
+//    public static void main(String[] args) {
+//        Plat plat = new Plat();
+//        plat.setLoginUrl("https://wap.roostyle.com/api/token");
+//        plat.setBalanceUrl("https://wap.roostyle.com/api/User/GetUserModel");
+//        plat.setTouzhuUrl("https://wap.roostyle.com/api/Lottery/KQWFBetting");
+//        plat.setCookies("__cfduid=d38150e8e56cb42eea2f43388851a75611550720455;");
+//        plat.setAssist("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlxdWVfbmFtZSI6ImV1Z2VuZTg4OCIsInJvbGUiOiJ1c2VyIiwiaXNzIjoibGVnZW5kIiwiYXVkIjoiQW55IiwiZXhwIjoxNTgyMjY5NjcyLCJuYmYiOjE1NTA3MzM2NzJ9.TomPjtvlIBhgnKljJaoIzikTHl8GvVg_uwNSzO8BE2Q");
+//        plat.setUsername("eugene888");
+//        plat.setPassword("eugenewu117519");
+//        TaiyangPlugin taiyangPlugin = new TaiyangPlugin();
+////        System.out.println(taiyangPlugin.getBalance(plat));
+//        JSONArray list = new JSONArray() {{
+//            add(new JSONObject() {{
+//                put("value", 112);
+//                put("money", 1);
+//            }});
+//            add(new JSONObject() {{
+//                put("value", 112);
+//                put("money", 2);
+//            }});
+//        }};
+//        taiyangPlugin.send(plat, Cons.Game.TXFFC, "201902211990", list);
+//
+//    }
 
 
 }

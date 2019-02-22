@@ -22,7 +22,7 @@ public class TermTask {
 
     @Scheduled(fixedDelay = 1000)
     public void resetFenfencai() {
-        termService.resetTerm(Cons.Game.TXFFC,3000);
+        termService.resetTerm(Cons.Game.TXFFC,500);
     }
 
 }

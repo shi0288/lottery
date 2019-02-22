@@ -63,7 +63,6 @@ public class ExecutorService {
         try {
             lotteryResult = plugin.send(plat, game,term, list);
             logger.info("返回：" + lotteryResult.getResponse());
-//            updateLottery(lotteryResult);
         } catch (ApiException e) {
             logger.info("更新账户信息后重试");
             //更新账户信息重新试下
@@ -72,7 +71,6 @@ public class ExecutorService {
                 try {
                     lotteryResult = plugin.send(plat, game,term, list);
                     logger.info("返回：" + lotteryResult.getResponse());
-//                    updateLottery(lotteryResult);
                 } catch (Exception ex) {
                     //真的失败了。。
                     ex.printStackTrace();

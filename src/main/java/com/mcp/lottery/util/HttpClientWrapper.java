@@ -74,7 +74,7 @@ public class HttpClientWrapper {
             }
         }
         List<NameValuePair> reqParams = new ArrayList<NameValuePair>();
-        if (params != null && params.size()==0) {
+        if (params != null && params.size()>0) {
             for (String key : params.keySet()) {
                 reqParams.add(new BasicNameValuePair(key, params.get(key)));
             }
@@ -156,7 +156,6 @@ public class HttpClientWrapper {
                 }
             }
             String retString = EntityUtils.toString(response.getEntity());
-            System.out.println(retString);
             httpResult.setResult(retString);
             return httpResult;
         } catch (Exception e) {

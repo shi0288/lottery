@@ -49,9 +49,12 @@ public class JinzhizunPlugin extends Plugin {
             String[] attr = cookie.split(";");
             setCookies += (attr[0] + ";");
         }
-        plat.setCookies(setCookies);
-        String uid = JSONObject.parseObject(httpResult.getResult()).getString("uid");
-        plat.setAssist(uid);
+        try {
+            String uid = JSONObject.parseObject(httpResult.getResult()).getString("uid");
+            plat.setCookies(setCookies);
+            plat.setAssist(uid);
+        }catch (Exception e){
+        }
     }
 
 

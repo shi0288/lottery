@@ -12,17 +12,16 @@ import com.mcp.lottery.model.Term;
 import com.mcp.lottery.util.DateUtil;
 import com.mcp.lottery.util.HttpClientWrapper;
 import com.mcp.lottery.util.HttpResult;
+import com.mcp.lottery.util.annotation.Log;
 import com.mcp.lottery.util.cons.Cons;
 import freemarker.template.utility.StringUtil;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.text.DecimalFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class QiaoqiaoyingService {
@@ -38,6 +37,10 @@ public class QiaoqiaoyingService {
 
     @Autowired
     private TermMapper termMapper;
+
+    @Log
+    private Logger logger;
+
 
     public Qiaoqiaoying get() {
         PageHelper.startPage(1, 1);
@@ -148,14 +151,21 @@ public class QiaoqiaoyingService {
         query = predictionService.get(query);
         if (query != null) {
             JSONObject dataObj = JSONObject.parseObject(query.getData());
-            if (dataObj == null || !dataObj.containsKey("subtotal")) {
-                return;
-            }
-            if (dataObj.getIntValue("subtotal") > 0) {
+            if (dataObj.containsKey("subtotal")) {
                 //如果当前有预测结果则不再执行
-                return;
+                if (dataObj.getIntValue("subtotal") > 0) {
+                    return;
+                } else {
+                    //如果当前秒数大于30 不再获取
+                    Calendar c = Calendar.getInstance();
+                    int second = c.get(Calendar.SECOND);
+                    if (second >30) {
+                        return;
+                    }
+                }
             }
         }
+        logger.info("获取预测：" + game + "_" + term.getTermCode());
         String res = this.getResult(game);
         if (StringUtils.isEmpty(res)) {
             //获取预测为空则返回
@@ -206,8 +216,7 @@ public class QiaoqiaoyingService {
         return null;
     }
 
-    public void updatePrize(String game) {
-        Date date = new Date();
+    public void updatePrize(String game,Date date) {
         String result = this.getPrize(game, date);
         if (StringUtils.isEmpty(result)) {
             return;
@@ -217,7 +226,7 @@ public class QiaoqiaoyingService {
         List<Term> list = termService.getNoneWinNumber(game, DateUtil.DateToString(date, "yyyyMMdd"));
         for (int m = 0; m < list.size(); m++) {
             Term targetTerm = list.get(m);
-            analysisTerm(targetTerm,jsonArray);
+            analysisTerm(targetTerm, jsonArray);
         }
     }
 
