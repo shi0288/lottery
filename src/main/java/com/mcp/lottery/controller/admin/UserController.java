@@ -2,7 +2,9 @@ package com.mcp.lottery.controller.admin;
 
 
 import com.mcp.lottery.model.User;
+import com.mcp.lottery.model.UserRule;
 import com.mcp.lottery.service.UserOrderLogService;
+import com.mcp.lottery.service.UserRuleService;
 import com.mcp.lottery.service.UserService;
 import com.mcp.lottery.util.*;
 import com.mcp.validate.annotation.Check;
@@ -28,6 +30,9 @@ public class UserController extends BaseController {
     @Autowired
     private UserOrderLogService userOrderLogService;
 
+    @Autowired
+    private UserRuleService userRuleService;
+
 
     @RequestMapping("list")
     void list(ModelMap map, Pager pager) {
@@ -38,7 +43,6 @@ public class UserController extends BaseController {
     @RequestMapping("add")
     void add() {
     }
-
 
     @RequestMapping("edit")
     void edit(
@@ -53,7 +57,9 @@ public class UserController extends BaseController {
     Result save(
             @Check String username,
             @Check(defaultValue = "123456") String password,
-            @Check(number = true) Double balance
+            @Check(number = true) Double balance,
+            @Check String realname,
+            String[] games
     ) {
         User user = new User();
         user.setUsername(username);
@@ -62,7 +68,12 @@ public class UserController extends BaseController {
         }
         user.setPassword(MD5Encoder.encode(password));
         user.setBalance(balance);
+        user.setRealname(realname);
         if (userService.saveOrUpdate(user)) {
+            try {
+                userRuleService.saveGame(user.getId(), games);
+            } catch (Exception e) {
+            }
             return result.format();
         }
         return result.format(ERROR, "保存出错");
@@ -73,15 +84,15 @@ public class UserController extends BaseController {
     @ResponseBody
     Result update(
             @Check Long id,
-            @Check String password
+            @Check String realname,
+            String[] games
     ) {
-        User user = new User();
+        User user=new User();
         user.setId(id);
-        user.setPassword(MD5Encoder.encode(password));
-        if (userService.saveOrUpdate(user)) {
-            return result.format();
-        }
-        return result.format(ERROR, "保存出错");
+        user.setRealname(realname);
+        userService.saveOrUpdate(user);
+        userRuleService.saveGame(id, games);
+        return result.format();
     }
 
 
@@ -89,9 +100,9 @@ public class UserController extends BaseController {
     @ResponseBody
     Result recharge(
             @Check Long id,
-            @Check(number = true,min = "0") Double balance
+            @Check(number = true, min = "0") Double balance
     ) {
-        if(userService.addBalance(id,balance)){
+        if (userService.addBalance(id, balance)) {
             return result.format();
         }
         return result.format(ERROR, "保存出错");
@@ -132,9 +143,9 @@ public class UserController extends BaseController {
     @ResponseBody
     Result mul(
             @Check Long id,
-            @Check(number = true,min = "0") Double balance
+            @Check(number = true, min = "0") Double balance
     ) {
-        if(userService.addBalance(id,-balance)){
+        if (userService.addBalance(id, -balance)) {
             return result.format();
         }
         return result.format(ERROR, "保存出错");
@@ -142,22 +153,21 @@ public class UserController extends BaseController {
 
 
     @RequestMapping("dayList/{uid}")
-    String dayList(ModelMap map,Pager pager,@PathVariable(value = "uid") Long uid) {
-        Map param =  this.getParamMap(map);
-        param.put("uid",uid);
-        map.put("page", userOrderLogService.getAllByDays(pager,param));
+    String dayList(ModelMap map, Pager pager, @PathVariable(value = "uid") Long uid) {
+        Map param = this.getParamMap(map);
+        param.put("uid", uid);
+        map.put("page", userOrderLogService.getAllByDays(pager, param));
         map.put("uid", uid);
         return "lqmJHTqixle2eWaB/user/dayList";
     }
 
 
-
     @RequestMapping("dayList/{uid}/{day}")
-    String logList(ModelMap map,Pager pager,@PathVariable(value = "uid") Long uid,@PathVariable(value = "day") String day) {
-        Map param =  this.getParamMap(map);
-        param.put("uid",uid);
-        param.put("day",day);
-        map.put("page", userOrderLogService.getAll(pager,param));
+    String logList(ModelMap map, Pager pager, @PathVariable(value = "uid") Long uid, @PathVariable(value = "day") String day) {
+        Map param = this.getParamMap(map);
+        param.put("uid", uid);
+        param.put("day", day);
+        map.put("page", userOrderLogService.getAll(pager, param));
         return "lqmJHTqixle2eWaB/user/logList";
     }
 
@@ -188,14 +198,13 @@ public class UserController extends BaseController {
     @ResponseBody
     Result updateInitMoney(
             @Check Long id,
-            @Check(number = true,min = "0") Double initMoney
+            @Check(number = true, min = "1") Double initMoney
     ) {
-        if(userService.updateInitMoney(id,initMoney)){
+        if (userService.updateInitMoney(id, initMoney)) {
             return result.format();
         }
         return result.format(ERROR, "保存出错");
     }
-
 
 
 }

@@ -1,8 +1,10 @@
 package com.mcp.lottery.model;
 
 
+
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Table
 public class Plat {
@@ -37,6 +39,9 @@ public class Plat {
 
     @Transient
     private PlatCategory platCategory;
+
+    @Transient
+    private List<PlatGame> platGameList;
 
 
     public Long getId() {
@@ -149,5 +154,13 @@ public class Plat {
 
     public void setPlatCategory(PlatCategory platCategory) {
         this.platCategory = platCategory;
+    }
+
+    public List<PlatGame> getPlatGameList() {
+        return platGameList;
+    }
+
+    public void setPlatGameList(List<PlatGame> platGameList) {
+        this.platGameList = platGameList;
     }
 }

@@ -21,6 +21,11 @@
             <result column="cateName"  property="name"/>
             <result column="executor"  property="executor"/>
         </association>
+        <collection property="platGameList" ofType="com.mcp.lottery.model.PlatGame" column="id">
+            <result column="platGameId"  property="id"/>
+            <result column="game"  property="game"/>
+            <result column="direction"  property="direction"/>
+        </collection>
     </resultMap>
 
     <select id="get" resultMap="ResultMapForCategory">
@@ -32,8 +37,9 @@
         SELECT a.*,b.name as cateName,b.executor FROM plat a left join plat_category b on a.category_id=b.id
     </select>
 
-
-
+    <select id="getAllForTerminal" resultMap="ResultMapForCategory">
+        SELECT a.*,b.name as cateName,b.executor,c.game,c.direction,c.id as platGameId FROM plat_game c left join plat a  on a.id=c.plat_id   left join plat_category b on a.category_id=b.id
+    </select>
 
 
 

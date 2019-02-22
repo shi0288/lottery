@@ -2,6 +2,7 @@ package com.mcp.lottery.controller.admin;
 
 
 import com.mcp.lottery.model.Plat;
+import com.mcp.lottery.model.PlatGame;
 import com.mcp.lottery.service.PlatCategoryService;
 import com.mcp.lottery.service.PlatService;
 import com.mcp.lottery.util.BaseController;
@@ -30,6 +31,12 @@ public class PlatController extends BaseController{
     @RequestMapping("list")
     void list(ModelMap map,Pager pager){
         map.put("page", platService.getAll(pager));
+    }
+
+
+    @RequestMapping("listTerminal")
+    void listTerminal(ModelMap map,Pager pager){
+        map.put("page", platService.getAllForTerminal(pager));
     }
 
 
@@ -100,6 +107,51 @@ public class PlatController extends BaseController{
         }
         return result.format(ERROR, "保存出错");
     }
+
+
+    @RequestMapping(value = "update_convert", method = RequestMethod.POST)
+    @ResponseBody
+    Result update_convert(
+            @Check Long id
+    ) {
+        platService.updateConvert(id);
+        return result.format();
+    }
+
+
+    @RequestMapping(value = "del_plat_game", method = RequestMethod.POST)
+    @ResponseBody
+    Result del(
+            @Check Long id
+    ) {
+        platService.delPlatGame(id);
+        return result.format();
+    }
+
+
+    @RequestMapping("addTerminal")
+    void addTerminal(ModelMap map) {
+        map.put("platList",platService.getAll());
+    }
+
+
+    @RequestMapping(value = "savePlatGame", method = RequestMethod.POST)
+    @ResponseBody
+    Result savePlatGame(
+            @Check(name = "平台") Long platId,
+            @Check(name = "游戏") String game
+    ) {
+        PlatGame platGame=new PlatGame();
+        platGame.setPlatId(platId);
+        platGame.setGame(game);
+        if(platService.isExistPlatGame(platGame)){
+            return result.format(ERROR, "已经存在");
+        }
+        platGame.setDirection(1);
+        platService.savePlatGame(platGame);
+        return result.format();
+    }
+
 
 
 

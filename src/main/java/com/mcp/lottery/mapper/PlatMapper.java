@@ -13,4 +13,7 @@ public interface PlatMapper extends BaseMapper<Plat>{
 
     List<Plat> getAll();
 
+    List<Plat> getAllForTerminal();
+
+
 }

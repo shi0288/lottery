@@ -1,10 +1,12 @@
 package com.mcp.lottery.model;
 
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Transient;
 import java.util.Date;
+import java.util.List;
 
 public class User {
 
@@ -22,11 +24,11 @@ public class User {
 
     private Integer status;
 
-    @Transient
-    private Integer isOpen;
+    private String realname;
 
     @Transient
-    private Double initMoney;
+    private List<UserRule> userRuleList;
+
 
     public Long getId() {
         return id;
@@ -76,19 +78,19 @@ public class User {
         this.status = status;
     }
 
-    public Integer getIsOpen() {
-        return isOpen;
+    public List<UserRule> getUserRuleList() {
+        return userRuleList;
     }
 
-    public void setIsOpen(Integer isOpen) {
-        this.isOpen = isOpen;
+    public void setUserRuleList(List<UserRule> userRuleList) {
+        this.userRuleList = userRuleList;
     }
 
-    public Double getInitMoney() {
-        return initMoney;
+    public String getRealname() {
+        return realname;
     }
 
-    public void setInitMoney(Double initMoney) {
-        this.initMoney = initMoney;
+    public void setRealname(String realname) {
+        this.realname = realname;
     }
 }

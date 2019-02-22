@@ -14,11 +14,11 @@ public interface UserMapper extends BaseMapper<User>{
 
     List<User> getAll();
 
-    int openTouzhu(@Param("uid")Long uid);
+    int openTouzhu(@Param("id")Long id);
 
-    int closeTouzhu(@Param("uid")Long uid);
+    int closeTouzhu(@Param("id")Long id);
 
-    int updateInitMoney(@Param("uid")Long uid,@Param("initMoney")Double initMoney);
+    int updateInitMoney(@Param("id")Long id,@Param("initMoney")Double initMoney);
 
 
 }

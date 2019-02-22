@@ -63,10 +63,13 @@
                                 <li><a href="${base}/lqmJHTqixle2eWaB/prediction/list/T01"> 腾讯分分彩</a></li>
                             </ul>
                         </li>
-                        <li>
-                            <a class="ajax-link" href="${base}/lqmJHTqixle2eWaB/plat/list">
-                                <i class="glyphicon glyphicon-tasks"></i>&nbsp;<span>平台管理</span>
-                            </a>
+                        <li class="accordion">
+                            <a href="javascript:void(0);"><i
+                                    class="glyphicon glyphicon-plus"></i><span> 平台管理</span></a>
+                            <ul class="nav nav-pills nav-stacked"  style="display: block;" >
+                                <li><a href="${base}/lqmJHTqixle2eWaB/plat/list"> 平台列表</a></li>
+                                <li><a href="${base}/lqmJHTqixle2eWaB/plat/listTerminal"> 交互控制</a></li>
+                            </ul>
                         </li>
                     </ul>
                 </div>

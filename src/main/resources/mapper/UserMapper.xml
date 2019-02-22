@@ -3,25 +3,43 @@
 <mapper namespace="com.mcp.lottery.mapper.UserMapper">
 
 
+    <resultMap id="BaseResultMap" type="com.mcp.lottery.model.User">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="realname" jdbcType="VARCHAR" property="realname"/>
+        <result column="balance"  property="balance"/>
+        <result column="create_at"  property="createAt"/>
+        <result column="status"  property="status"/>
+        <collection property="userRuleList" ofType="com.mcp.lottery.model.UserRule" select="getUserRuleList" column="id">
+        </collection>
+    </resultMap>
+
+
 
     <update id="addBalance">
         UPDATE USER SET  balance=balance+#{balance}  where id=#{id}
     </update>
 
-    <select id="getAll" resultType="com.mcp.lottery.model.User">
-        select a.*,b.is_open as isOpen,b.init_money as initMoney from user a left join user_rule b on a.id=b.uid
+    <select id="getAll" resultMap="BaseResultMap">
+        select *  from user
     </select>
 
+    <select id="getUserRuleList" resultType="com.mcp.lottery.model.UserRule">
+        select *,is_open as isOpen,init_money as initMoney from user_rule where  uid=#{id}
+    </select>
+
+
     <update id="openTouzhu">
-        update user_rule set is_open=1 where uid=#{uid}
+        update user_rule set is_open=1 where id=#{id}
     </update>
 
     <update id="closeTouzhu">
-        update user_rule set is_open=0 where uid=#{uid}
+        update user_rule set is_open=0 where id=#{id}
     </update>
 
     <update id="updateInitMoney">
-        UPDATE user_rule SET  init_money=#{initMoney}  where uid=#{uid}
+        UPDATE user_rule SET  init_money=#{initMoney}  where id=#{id}
     </update>
 
 

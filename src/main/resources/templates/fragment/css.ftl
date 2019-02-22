@@ -19,5 +19,5 @@
 <link type="text/css" href="${base}/css/animate.min.css" rel="stylesheet">
 <link type="text/css" href="${base}/css/bootstrap-treeview.min.css" rel="stylesheet">
 <link type="text/css" href="${base}/bower_components/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
-<link type="text/css" href="${base}/css/common.css?v=1.0" rel="stylesheet">
+<link type="text/css" href="${base}/css/common.css?v=1.1" rel="stylesheet">
 
