@@ -1,11 +1,4 @@
 $(document).ready(function () {
-    var defaultTheme = 'cerulean';
-
-    var currentTheme = $.cookie('currentTheme') == null ? defaultTheme : $.cookie('currentTheme');
-    var msie = navigator.userAgent.match(/msie/i);
-    $.browser = {};
-    $.browser.msie = {};
-    switchTheme(currentTheme);
 
     $('.navbar-toggle').click(function (e) {
         e.preventDefault();
@@ -30,82 +23,6 @@ $(document).ready(function () {
         }
     });
 
-
-    $('#themes a').click(function (e) {
-        e.preventDefault();
-        currentTheme = $(this).attr('data-value');
-        $.cookie('currentTheme', currentTheme, {expires: 365});
-        switchTheme(currentTheme);
-    });
-
-
-    function switchTheme(themeName) {
-        if (themeName == 'classic') {
-            $('#bs-css').attr('href', 'bower_components/bootstrap/dist/css/bootstrap.min.css');
-        } else {
-            $('#bs-css').attr('href', 'css/bootstrap-' + themeName + '.min.css');
-        }
-
-        $('#themes i').removeClass('glyphicon glyphicon-ok whitespace').addClass('whitespace');
-        $('#themes a[data-value=' + themeName + ']').find('i').removeClass('whitespace').addClass('glyphicon glyphicon-ok');
-    }
-
-    //ajax menu checkbox
-    $('#is-ajax').click(function (e) {
-        $.cookie('is-ajax', $(this).prop('checked'), {expires: 365});
-    });
-    $('#is-ajax').prop('checked', $.cookie('is-ajax') === 'true' ? true : false);
-
-    //disbaling some functions for Internet Explorer
-    if (msie) {
-        $('#is-ajax').prop('checked', false);
-        $('#for-is-ajax').hide();
-        $('#toggle-fullscreen').hide();
-        $('.login-box').find('.input-large').removeClass('span10');
-
-    }
-
-
-    //highlight current / active link
-    $('ul.main-menu li a').each(function () {
-        if ($($(this))[0].href == String(window.location).split('?')[0]) {
-            $(this).parent().addClass('active');
-            var parent = $(this).parent().parent().parent()
-            if (parent.hasClass('accordion')) {
-                var page_url_title = parent.children("a:first-child").find('span').html();
-                $('#page-url-title').html(page_url_title);
-                var page_url_cur_title = $(this).html();
-                $('#page-url-cur-title').html(page_url_cur_title);
-                $('#page-url-cur-title').parent().show();
-            } else {
-                var page_url_title = $(this).find('span').html();
-                $('#page-url-title').html(page_url_title);
-                $('#page-url-cur-title').parent().hide();
-            }
-        }
-    });
-
-    //establish history variables
-    var
-        History = window.History, // Note: We are using a capital H instead of a lower h
-        State = History.getState(),
-        $log = $('#log');
-
-    //bind to State Change
-    History.Adapter.bind(window, 'statechange', function () { // Note: We are using statechange instead of popstate
-        var State = History.getState(); // Note: We are using History.getState() instead of event.state
-        $.ajax({
-            url: State.url,
-            success: function (msg) {
-                $('#content').html($(msg).find('#content').html());
-                $('#loading').remove();
-                $('#content').fadeIn();
-                var newTitle = $(msg).filter('title').text();
-                $('title').text(newTitle);
-                docReady();
-            }
-        });
-    });
 
     //ajaxify menus
     $('a.ajax-link').click(function (e) {
@@ -170,12 +87,6 @@ function docReady() {
         score: 4 //default stars
     });
 
-    //uploadify - multiple uploads
-    $('#file_upload').uploadify({
-        'swf': 'misc/uploadify.swf',
-        'uploader': 'misc/uploadify.php'
-        // Put your options here
-    });
 
     //gallery controls container animation
     $('ul.gallery li').hover(function () {
@@ -193,137 +104,6 @@ function docReady() {
     });
 
 
-    //gallery image controls example
-    //gallery delete
-    $('.thumbnails').on('click', '.gallery-delete', function (e) {
-        e.preventDefault();
-        //get image id
-        //alert($(this).parents('.thumbnail').attr('id'));
-        $(this).parents('.thumbnail').fadeOut();
-    });
-    //gallery edit
-    $('.thumbnails').on('click', '.gallery-edit', function (e) {
-        e.preventDefault();
-        //get image id
-        //alert($(this).parents('.thumbnail').attr('id'));
-    });
-
-    //gallery colorbox
-    $('.thumbnail a').colorbox({
-        rel: 'thumbnail a',
-        transition: "elastic",
-        maxWidth: "95%",
-        maxHeight: "95%",
-        slideshow: true
-    });
-
-    //gallery fullscreen
-    $('#toggle-fullscreen').button().click(function () {
-        var button = $(this), root = document.documentElement;
-        if (!button.hasClass('active')) {
-            $('#thumbnails').addClass('modal-fullscreen');
-            if (root.webkitRequestFullScreen) {
-                root.webkitRequestFullScreen(
-                    window.Element.ALLOW_KEYBOARD_INPUT
-                );
-            } else if (root.mozRequestFullScreen) {
-                root.mozRequestFullScreen();
-            }
-        } else {
-            $('#thumbnails').removeClass('modal-fullscreen');
-            (document.webkitCancelFullScreen ||
-            document.mozCancelFullScreen ||
-            $.noop).apply(document);
-        }
-    });
-
-    //tour
-    if ($('.tour').length && typeof(tour) == 'undefined') {
-        var tour = new Tour();
-        tour.addStep({
-            element: "#content", /* html element next to which the step popover should be shown */
-            placement: "top",
-            title: "Custom Tour", /* title of the popover */
-            content: "You can create tour like this. Click Next." /* content of the popover */
-        });
-        tour.addStep({
-            element: ".theme-container",
-            placement: "left",
-            title: "Themes",
-            content: "You change your theme from here."
-        });
-        tour.addStep({
-            element: "ul.main-menu a:first",
-            title: "Dashboard",
-            content: "This is your dashboard from here you will find highlights."
-        });
-        tour.addStep({
-            element: "#for-is-ajax",
-            title: "Ajax",
-            content: "You can change if pages load with Ajax or not."
-        });
-        tour.addStep({
-            element: ".top-nav a:first",
-            placement: "bottom",
-            title: "Visit Site",
-            content: "Visit your front end from here."
-        });
-
-        tour.restart();
-    }
-
-    //datatable
-    try {
-        $('.datatable').dataTable({
-            "sDom": "<'row'<'col-md-6'l><'col-md-6'f>r>t<'row'<'col-md-12'i><'col-md-12 center-block'p>>",
-            "sPaginationType": "bootstrap",
-            'bSort': false,
-            'bFilter': false, //过滤功能
-            "aLengthMenu" : [20, 40, 60], //更改显示记录数选项
-            "iDisplayLength" : 40, //默认显示的记录数
-            "oLanguage": {
-                "sLengthMenu": "每页显示 _MENU_ 条记录",
-                "sSearch": "查找:",
-                "sZeroRecords": "没有查找到记录",
-                "sInfo": "当前显示 _START_ 到 _END_ 条记录 总共 _TOTAL_ 条记录",
-                "sInfoEmpty": "",
-                "sInfoFiltered": "从 _MAX_ 条记录搜索的结果",
-                "oPaginate": {
-                    "sPrevious": "上一页",
-                    "sNext": "下一页",
-                    "sLast": "末页",
-                    "sFirst": "首页"
-                }
-            }
-        });
-
-        $('.no-page').dataTable({
-            "sDom": "<'row'<'col-md-6'l><'col-md-6'f>r>t<'row'<'col-md-12'i><'col-md-12 center-block'p>>",
-            "sPaginationType": "bootstrap",
-            'bSort': false,
-            'bFilter': false, //过滤功能
-            'bPaginate': false, //翻页功能
-            'bLengthChange': false, //改变每页显示数据数量
-            "iDisplayLength" : 40, //默认显示的记录数
-            'bInfo': false,//页脚信息
-            "oLanguage": {
-                "sLengthMenu": "每页显示 _MENU_ 条记录",
-                "sSearch": "查找:",
-                "sZeroRecords": "没有查找到记录",
-                "sInfo": "当前显示 _START_ 到 _END_ 条记录 总共 _TOTAL_ 条记录",
-                "sInfoEmpty": "",
-                "sInfoFiltered": "从 _MAX_ 条记录搜索的结果",
-                "oPaginate": {
-                    "sPrevious": "上一页",
-                    "sNext": "下一页",
-                    "sLast": "末页",
-                    "sFirst": "首页"
-                }
-            }
-        });
-    }catch (e){}
-
-
     $('.btn-close').click(function (e) {
         e.preventDefault();
         $(this).parent().parent().parent().fadeOut();
@@ -339,7 +119,6 @@ function docReady() {
 
     //chosen - improves select
     $('[data-rel="chosen"]').chosen({width: '80%'});
-
 }
 
 

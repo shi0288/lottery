@@ -30,6 +30,21 @@
                     </#list>
                     </select>
                 </div>
+                <br/>
+                <br/>
+
+                <div class="form-group">
+                    <label>时间</label>
+                    <input type="text" class="form-control" value="${(startTime)!''}" name="startTime" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"
+                           style="cursor: default;"
+                           readonly>
+                </div>
+                <div class="form-group">
+                    <label>--</label>
+                    <input type="text" class="form-control" value="${(endTime)!''}" name="endTime" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"
+                           style="cursor: default;"
+                           readonly>
+                </div>
         </div>
         <button type="submit" class="btn btn-default">查询</button>
         </form>

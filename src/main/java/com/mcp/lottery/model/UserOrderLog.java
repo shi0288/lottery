@@ -38,6 +38,9 @@ public class UserOrderLog {
     @Transient
     private User user;
 
+    @Transient
+    private Double bonus;
+
     public Long getId() {
         return id;
     }
@@ -148,5 +151,13 @@ public class UserOrderLog {
 
     public void setRule(Integer rule) {
         this.rule = rule;
+    }
+
+    public Double getBonus() {
+        return bonus;
+    }
+
+    public void setBonus(Double bonus) {
+        this.bonus = bonus;
     }
 }

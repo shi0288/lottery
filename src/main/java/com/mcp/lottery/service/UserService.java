@@ -91,5 +91,48 @@ public class UserService {
         return false;
     }
 
+    public boolean updateLimitLose(Long id, Double limitLose) {
+        if (userMapper.updateLimitLose(id, limitLose) == 1) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean updateLimitWin(Long id, Double limitWin) {
+        if (userMapper.updateLimitWin(id, limitWin) == 1) {
+            return true;
+        }
+        return false;
+    }
+
+
+    public boolean openDividing(Long id) {
+        if (userMapper.openDividing(id) == 1) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean closeDividing(Long id) {
+        if (userMapper.closeDividing(id) == 1) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean openTraceLose(Long id) {
+        if (userMapper.openTraceLose(id) == 1) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean closeTraceLose(Long id) {
+        if (userMapper.closeTraceLose(id) == 1) {
+            return true;
+        }
+        return false;
+    }
+
 
 }

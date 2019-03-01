@@ -191,4 +191,8 @@ input[type=number]::-webkit-inner-spin-button,
     background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.1) 100%) !important;
 }
 
+input{
+    z-index: auto !important;
+}
+
 

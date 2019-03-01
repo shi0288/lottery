@@ -20,5 +20,17 @@ public interface UserMapper extends BaseMapper<User>{
 
     int updateInitMoney(@Param("id")Long id,@Param("initMoney")Double initMoney);
 
+    int updateLimitLose(@Param("id")Long id,@Param("limitLoseMoney")Double initMoney);
+
+    int updateLimitWin(@Param("id")Long id,@Param("limitWinMoney")Double initMoney);
+
+    int openDividing(@Param("id")Long id);
+
+    int closeDividing(@Param("id")Long id);
+
+    int openTraceLose(@Param("id")Long id);
+
+    int closeTraceLose(@Param("id")Long id);
+
 
 }

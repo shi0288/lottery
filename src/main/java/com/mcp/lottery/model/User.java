@@ -27,6 +27,15 @@ public class User {
     private String realname;
 
     @Transient
+    private Double money;
+
+    @Transient
+    private Double bonus;
+
+    @Transient
+    private Double result;
+
+    @Transient
     private List<UserRule> userRuleList;
 
 
@@ -92,5 +101,29 @@ public class User {
 
     public void setRealname(String realname) {
         this.realname = realname;
+    }
+
+    public Double getMoney() {
+        return money;
+    }
+
+    public void setMoney(Double money) {
+        this.money = money;
+    }
+
+    public Double getBonus() {
+        return bonus;
+    }
+
+    public void setBonus(Double bonus) {
+        this.bonus = bonus;
+    }
+
+    public Double getResult() {
+        return result;
+    }
+
+    public void setResult(Double result) {
+        this.result = result;
     }
 }

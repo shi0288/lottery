@@ -44,13 +44,19 @@
 
 
     <select id="getAllByDays" resultType="java.util.Map" >
-        SELECT FROM_UNIXTIME(create_at, '%Y-%m-%d') AS everyday ,count(*) AS num,sum(money) as money,sum(result) as result FROM user_order_log
-        where 1=1
+        SELECT FROM_UNIXTIME(create_at, '%Y-%m-%d') AS everyday ,count(*) AS num,sum(money) as money,sum(result) as result,sum(result)-sum(money) as bonus  FROM user_order_log
+        where settle=1
         <if test="game != null and game != ''">
             and  game = #{game}
         </if>
         <if test="uid != null and uid != ''">
             and  uid = #{uid}
+        </if>
+        <if test="startTime != null and startTime != ''">
+            and create_at <![CDATA[ >=  ]]>   unix_timestamp('${startTime} 00:00:00')
+        </if>
+        <if test="endTime != null and endTime != ''">
+            and create_at <![CDATA[ <=  ]]>   unix_timestamp('${endTime} 23:59:59')
         </if>
         GROUP BY everyday order by everyday desc
     </select>

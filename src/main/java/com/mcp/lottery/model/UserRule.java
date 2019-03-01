@@ -1,9 +1,6 @@
 package com.mcp.lottery.model;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 @Table(name = "user_rule")
@@ -27,6 +24,16 @@ public class UserRule {
     private Date createAt;
 
     private Date updateAt;
+
+    private Integer isDividing;
+
+    private Double limitLose;
+
+    private Double limitWin;
+
+    private Double dividingTime;
+
+    private Integer isTraceLose;
 
 
     public Long getId() {
@@ -91,5 +98,45 @@ public class UserRule {
 
     public void setUpdateAt(Date updateAt) {
         this.updateAt = updateAt;
+    }
+
+    public Integer getIsDividing() {
+        return isDividing;
+    }
+
+    public void setIsDividing(Integer isDividing) {
+        this.isDividing = isDividing;
+    }
+
+    public Double getLimitLose() {
+        return limitLose;
+    }
+
+    public void setLimitLose(Double limitLose) {
+        this.limitLose = limitLose;
+    }
+
+    public Double getLimitWin() {
+        return limitWin;
+    }
+
+    public void setLimitWin(Double limitWin) {
+        this.limitWin = limitWin;
+    }
+
+    public Double getDividingTime() {
+        return dividingTime;
+    }
+
+    public void setDividingTime(Double dividingTime) {
+        this.dividingTime = dividingTime;
+    }
+
+    public Integer getIsTraceLose() {
+        return isTraceLose;
+    }
+
+    public void setIsTraceLose(Integer isTraceLose) {
+        this.isTraceLose = isTraceLose;
     }
 }

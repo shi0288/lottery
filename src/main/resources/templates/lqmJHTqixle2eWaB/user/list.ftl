@@ -10,12 +10,15 @@
             </#if>
             </div>
             <div class="box-content">
-                <table class="table table-striped table-bordered bootstrap-datatable responsive">
+                <table class="table table-condensed">
                     <thead>
                     <tr>
                         <th>用户名</th>
-                        <th>姓名</th>
                         <th>余额</th>
+                        <th>姓名</th>
+                        <th>总投注</th>
+                        <th>总赔付</th>
+                        <th>总盈收</th>
                     <#if manage.username=='lottery'>
                         <th>操作</th>
                     </#if>
@@ -25,9 +28,18 @@
                     <#if page.list??>
                         <#list page.list as e>
                         <tr   class="heng">
-                            <td><a href="./dayList/${(e.id)!''}">${(e.username)!''}</a></td>
-                            <td>${(e.realname)!''}</td>
+                            <td><a href="./dayList/${(e.id)!''}"><strong>${(e.username)!''}</strong></a></td>
                             <td><strong>${(e.balance?string('#.##'))!''}</strong></td>
+                            <td><strong>${(e.realname)!''}</strong></td>
+                            <td><strong>${(e.money?string('#.##'))!''}</strong></td>
+                            <td><strong>${(e.result?string('#.##'))!''}</strong></td>
+                            <td>
+                                <#if (e.bonus>0)>
+                                <strong><span>${(e.bonus?string('#.##'))!''}</span></strong>
+                                <#else>
+                                <strong> <span  style="color: red">${(e.bonus?string('#.##'))!''}</span></strong>
+                                </#if>
+                            </td>
                             <#if manage.username=='lottery'>
                                 <td>
                                     <a href="./edit?id=${(e.id)!''}" class="btn btn-info btn-xs">
@@ -55,13 +67,17 @@
                         </tr>
                             <#if (e.userRuleList)?? && (e.userRuleList?size>0)>
                             <tr>
-                                <td  <#if manage.username=='lottery'>colspan="4" <#else>colspan="3"  </#if>>
-                                    <table class="table table-striped table-bordered bootstrap-datatable responsive">
+                                <td  <#if manage.username=='lottery'>colspan="7" <#else>colspan="6"  </#if>>
+                                    <table class="table table-condensed table-hover">
                                         <thead>
                                         <tr>
                                             <th>游戏名</th>
                                             <th>投注金额</th>
-                                            <th>是否开启</th>
+                                            <th>止损金额</th>
+                                            <th>止盈金额</th>
+                                            <th>自动投注</th>
+                                            <th>止盈损</th>
+                                            <th>移动止损</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -69,7 +85,6 @@
                                             <tr>
                                                 <td>${convert('gameCode',userRule.game)!''}</td>
                                                 <td>
-
                                                     <#if manage.username=='lottery'>
                                                         <div class="input-group">
                                                             <input type="text" class="form-control"
@@ -85,16 +100,96 @@
                                                     </#if>
                                                 </td>
                                                 <td>
-                                                    <#if userRule.isOpen==1>
-                                                        <button role="closeTouzhu" tag="${(userRule.id)!''}"
-                                                                class="btn btn-danger btn-xs">
-                                                            关闭投注
-                                                        </button>
+                                                    <#if manage.username=='lottery'>
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control"
+                                                                   value="${(userRule.limitLose?string('#.##'))!''}"
+                                                                   placeholder="金额">
+                                                            <span class="input-group-btn">
+                                                                <button role="updateLimitLose" tag="${(userRule.id)!''}" class="btn btn-default"
+                                                                        type="button">修改</button>
+                                                            </span>
+                                                        </div>
                                                     <#else>
-                                                        <button role="openTouzhu" tag="${(userRule.id)!''}"
-                                                                class="btn btn-warning btn-xs">
-                                                            开启投注
-                                                        </button>
+                                                    ${(userRule.limitLose?string('#.##'))!''}
+                                                    </#if>
+                                                </td>
+                                                <td>
+                                                    <#if manage.username=='lottery'>
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control"
+                                                                   value="${(userRule.limitWin?string('#.##'))!''}"
+                                                                   placeholder="金额">
+                                                            <span class="input-group-btn">
+                                                                <button role="updateLimitWin" tag="${(userRule.id)!''}" class="btn btn-default"
+                                                                        type="button">修改</button>
+                                                            </span>
+                                                        </div>
+                                                    <#else>
+                                                    ${(userRule.limitWin?string('#.##'))!''}
+                                                    </#if>
+                                                </td>
+                                                <td>
+                                                    <#if manage.username=='lottery'>
+                                                        <#if userRule.isOpen==1>
+                                                            <button role="closeTouzhu" tag="${(userRule.id)!''}"
+                                                                    class="btn btn-danger btn-xs">
+                                                                关闭投注
+                                                            </button>
+                                                        <#else>
+                                                            <button role="openTouzhu" tag="${(userRule.id)!''}"
+                                                                    class="btn btn-warning btn-xs">
+                                                                开启投注
+                                                            </button>
+                                                        </#if>
+                                                    <#else>
+                                                        <#if userRule.isOpen==1>
+                                                                开启中
+                                                        <#else>
+                                                                关闭中
+                                                        </#if>
+                                                    </#if>
+                                                </td>
+                                                <td>
+                                                    <#if manage.username=='lottery'>
+                                                        <#if userRule.isDividing==1>
+                                                            <button role="closeDividing" tag="${(userRule.id)!''}"
+                                                                    class="btn btn-danger btn-xs">
+                                                                关闭止盈损
+                                                            </button>
+                                                        <#else>
+                                                            <button role="openDividing" tag="${(userRule.id)!''}"
+                                                                    class="btn btn-warning btn-xs">
+                                                                开启止盈损
+                                                            </button>
+                                                        </#if>
+                                                    <#else>
+                                                        <#if userRule.isDividing==1>
+                                                            开启中
+                                                        <#else>
+                                                            关闭中
+                                                        </#if>
+                                                    </#if>
+                                                </td>
+                                                <td>
+                                                    <#if manage.username=='lottery'>
+                                                        <#if userRule.isTraceLose==1>
+                                                            <button role="closeTraceLose" tag="${(userRule.id)!''}"
+                                                                    class="btn btn-danger btn-xs">
+                                                                关闭移动止损
+                                                            </button>
+                                                        <#else>
+                                                            <button role="openTraceLose" tag="${(userRule.id)!''}"
+                                                                    class="btn btn-warning btn-xs">
+                                                                开启移动止损
+                                                            </button>
+                                                        </#if>
+                                                    <#else>
+                                                        <#if userRule.isTraceLose==1>
+                                                            开启中
+                                                        <#else>
+                                                            关闭中
+                                                        </#if>
                                                     </#if>
                                                 </td>
                                             </tr>
@@ -260,6 +355,85 @@
                 })
             });
         })
+
+
+        $('body').on('click', '[role="updateLimitLose"]', function () {
+            var self = $(this);
+            var id = self.attr('tag');
+            var money = self.parent().prev().val();
+            myConfirm("确定更新止损金额吗?", function () {
+                $.localAjax('./updateLimitLose', {id: id, limitLoseMoney: money}, function () {
+                    alert('操作成功', function () {
+                        history.go(0);
+                    });
+                })
+            });
+        })
+
+        $('body').on('click', '[role="updateLimitWin"]', function () {
+            var self = $(this);
+            var id = self.attr('tag');
+            var money = self.parent().prev().val();
+            myConfirm("确定更新止赢金额吗?", function () {
+                $.localAjax('./updateLimitWin', {id: id, limitWinMoney: money}, function () {
+                    alert('操作成功', function () {
+                        history.go(0);
+                    });
+                })
+            });
+        })
+
+
+        $('body').on('click', '[role="closeDividing"]', function () {
+            var self = $(this);
+            var id = self.attr('tag');
+            myConfirm("确定要关闭止损盈吗?", function () {
+                $.localAjax('./closeDividing', {id: id}, function () {
+                    alert('操作成功', function () {
+                        history.go(0);
+                    });
+                })
+            });
+        })
+
+        $('body').on('click', '[role="openDividing"]', function () {
+            var self = $(this);
+            var id = self.attr('tag');
+            myConfirm("确定要开启止损盈吗?", function () {
+                $.localAjax('./openDividing', {id: id}, function () {
+                    alert('操作成功', function () {
+                        history.go(0);
+                    });
+                })
+            });
+        })
+
+
+        $('body').on('click', '[role="closeTraceLose"]', function () {
+            var self = $(this);
+            var id = self.attr('tag');
+            myConfirm("确定要关闭移动止损吗?", function () {
+                $.localAjax('./closeTraceLose', {id: id}, function () {
+                    alert('操作成功', function () {
+                        history.go(0);
+                    });
+                })
+            });
+        })
+
+        $('body').on('click', '[role="openTraceLose"]', function () {
+            var self = $(this);
+            var id = self.attr('tag');
+            myConfirm("确定要开启移动止损吗?", function () {
+                $.localAjax('./openTraceLose', {id: id}, function () {
+                    alert('操作成功', function () {
+                        history.go(0);
+                    });
+                })
+            });
+        })
+
+
 
     })
 </script>

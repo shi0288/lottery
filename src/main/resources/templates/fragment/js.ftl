@@ -35,7 +35,7 @@
 
 <script type="text/javascript"  src="${base}/js/bootstrap-treeview.js"></script>
 <!-- application script for Charisma demo -->
-<script type="text/javascript"  src="${base}/js/charisma.js"></script>
+<script type="text/javascript"  src="${base}/js/charisma.js?v=1.1"></script>
 
 <script type="text/javascript"  src="${base}/bower_components/bootstrap-table/bootstrap-table.js"></script>
 <script type="text/javascript"  src="${base}/bower_components/bootstrap-table/bootstrap-table-zh-CN.min.js"></script>

@@ -51,9 +51,9 @@ public class QiaoqiaoyingTask {
 
 
     /**
-     * 获取时时彩开奖结果
+     * 获取分分彩开奖结果
      */
-    @Scheduled(fixedDelay = 60000) // 30秒执行一次
+    @Scheduled(fixedDelay = 30000) // 30秒执行一次
     public void updatePrizeFenfencai() {
         try {
             qiaoqiaoyingService.updatePrize(Cons.Game.TXFFC,new Date());

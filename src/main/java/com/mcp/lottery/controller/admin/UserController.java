@@ -87,7 +87,7 @@ public class UserController extends BaseController {
             @Check String realname,
             String[] games
     ) {
-        User user=new User();
+        User user = new User();
         user.setId(id);
         user.setRealname(realname);
         userService.saveOrUpdate(user);
@@ -206,5 +206,74 @@ public class UserController extends BaseController {
         return result.format(ERROR, "保存出错");
     }
 
+    @RequestMapping(value = "updateLimitLose", method = RequestMethod.POST)
+    @ResponseBody
+    Result updateLimitLose(
+            @Check Long id,
+            @Check(number = true, min = "0") Double limitLoseMoney
+    ) {
+        if (userService.updateLimitLose(id, limitLoseMoney)) {
+            return result.format();
+        }
+        return result.format(ERROR, "保存出错");
+    }
+
+    @RequestMapping(value = "updateLimitWin", method = RequestMethod.POST)
+    @ResponseBody
+    Result updateLimitWin(
+            @Check Long id,
+            @Check(number = true, min = "0") Double limitWinMoney
+    ) {
+        if (userService.updateLimitWin(id, limitWinMoney)) {
+            return result.format();
+        }
+        return result.format(ERROR, "保存出错");
+    }
+
+    @RequestMapping(value = "openDividing", method = RequestMethod.POST)
+    @ResponseBody
+    Result openDividing(
+            @Check Long id
+    ) {
+        if (userService.openDividing(id)) {
+            return result.format();
+        }
+        return result.format(ERROR, "保存出错");
+    }
+
+    @RequestMapping(value = "closeDividing", method = RequestMethod.POST)
+    @ResponseBody
+    Result closeDividing(
+            @Check Long id
+    ) {
+        if (userService.closeDividing(id)) {
+            return result.format();
+        }
+        return result.format(ERROR, "保存出错");
+    }
+
+
+
+    @RequestMapping(value = "openTraceLose", method = RequestMethod.POST)
+    @ResponseBody
+    Result openTraceLose(
+            @Check Long id
+    ) {
+        if (userService.openTraceLose(id)) {
+            return result.format();
+        }
+        return result.format(ERROR, "保存出错");
+    }
+
+    @RequestMapping(value = "closeTraceLose", method = RequestMethod.POST)
+    @ResponseBody
+    Result closeTraceLose(
+            @Check Long id
+    ) {
+        if (userService.closeTraceLose(id)) {
+            return result.format();
+        }
+        return result.format(ERROR, "保存出错");
+    }
 
 }

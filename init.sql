@@ -166,6 +166,10 @@ insert ignore into manage(username, password) values ('manage', '7ujmko0');
 
 
 
+alter table user_rule  add  is_dividing  tinyint unsigned not null default 0 comment '止盈止损： 1-启用；0-禁用';
+alter table user_rule  add  limit_lose DOUBLE not null  DEFAULT 0 comment '止损值';
+alter table user_rule  add  limit_win DOUBLE not null  DEFAULT 0 comment '止盈值';
+alter table user_rule  add  dividing_time int unsigned not null default 0  comment '开启时间(每次启用时都会更新)';
 
 
 
