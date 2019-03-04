@@ -173,6 +173,10 @@ alter table user_rule  add  dividing_time int unsigned not null default 0  comme
 
 
 
+alter table user add setting tinyint unsigned not null default 0 comment '用户设置： 1-启用；0-禁用';
+
+
+
 
 
 

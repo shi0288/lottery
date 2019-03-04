@@ -139,6 +139,38 @@ public class UserController extends BaseController {
     }
 
 
+    @RequestMapping(value = "setting_open", method = RequestMethod.POST)
+    @ResponseBody
+    Result setting_open(
+            @Check Long id
+    ) {
+        User user = new User();
+        user.setId(id);
+        user.setSetting(1);
+        if (userService.saveOrUpdate(user)) {
+            return result.format();
+        }
+        return result.format(ERROR, "保存出错");
+    }
+
+
+    @RequestMapping(value = "setting_close", method = RequestMethod.POST)
+    @ResponseBody
+    Result setting_close(
+            @Check Long id
+    ) {
+        User user = new User();
+        user.setId(id);
+        user.setSetting(0);
+        if (userService.saveOrUpdate(user)) {
+            return result.format();
+        }
+        return result.format(ERROR, "保存出错");
+    }
+
+
+
+
     @RequestMapping(value = "mul", method = RequestMethod.POST)
     @ResponseBody
     Result mul(

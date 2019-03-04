@@ -24,6 +24,8 @@ public class User {
 
     private Integer status;
 
+    private Integer setting;
+
     private String realname;
 
     @Transient
@@ -125,5 +127,13 @@ public class User {
 
     public void setResult(Double result) {
         this.result = result;
+    }
+
+    public Integer getSetting() {
+        return setting;
+    }
+
+    public void setSetting(Integer setting) {
+        this.setting = setting;
     }
 }

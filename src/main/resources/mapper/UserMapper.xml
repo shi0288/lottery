@@ -11,6 +11,7 @@
         <result column="balance" property="balance"/>
         <result column="create_at" property="createAt"/>
         <result column="status" property="status"/>
+        <result column="setting" property="setting"/>
         <collection property="userRuleList" ofType="com.mcp.lottery.model.UserRule" select="getUserRuleList"
                     column="id">
         </collection>
@@ -22,11 +23,11 @@
     </update>
 
     <select id="getAll" resultMap="BaseResultMap">
-        select a.*,sum(b.money) as money,sum(b.result) as result,sum(b.result)-sum(b.money) as bonus  from user a left join user_order_log b on a.id=b.uid where  b.settle=1 group by a.id
+        select a.*,sum(b.money) as money,sum(b.result) as result,sum(b.result)-sum(b.money) as bonus  from user a left join user_order_log b on a.id=b.uid and b.settle=1  group by a.id
     </select>
 
     <select id="getUserRuleList" resultType="com.mcp.lottery.model.UserRule">
-        select *,is_open as isOpen,init_money as initMoney,is_dividing as isDividing,limit_lose as limitLose,limit_win as limitWin,dividing_time as dividingTime,is_trace_lose as isTraceLose from user_rule where  uid=#{id}
+        select *,is_open as isOpen,init_money as initMoney,is_dividing as isDividing,limit_lose as limitLose,limit_win as limitWin,dividing_time as dividingTime,is_trace_lose as isTraceLose from user_rule where  uid=#{id} order by game ASC
     </select>
 
     <update id="openTouzhu">

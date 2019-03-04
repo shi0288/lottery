@@ -61,7 +61,15 @@
                                             解冻
                                         </button>
                                     </#if>
-
+                                    <#if e.setting==1>
+                                        <button role="setting_close" tag="${(e.id)!''}" class="btn btn-danger btn-xs">
+                                            关闭客户设置
+                                        </button>
+                                    <#else>
+                                        <button role="setting_open" tag="${(e.id)!''}" class="btn btn-success btn-xs">
+                                            允许客户设置
+                                        </button>
+                                    </#if>
                                 </td>
                             </#if>
                         </tr>
@@ -317,6 +325,32 @@
                 })
             });
         })
+
+
+        $('body').on('click', '[role="setting_close"]', function () {
+            var self = $(this);
+            var id = self.attr('tag');
+            myConfirm("确定关闭这个用户自我设置的权限吗?", function () {
+                $.localAjax('./setting_close', {id: id}, function () {
+                    alert('操作成功', function () {
+                        history.go(0);
+                    });
+                })
+            });
+        })
+
+        $('body').on('click', '[role="setting_open"]', function () {
+            var self = $(this);
+            var id = self.attr('tag');
+            myConfirm("确定打开这个用户自我设置的权限吗?", function () {
+                $.localAjax('./setting_open', {id: id}, function () {
+                    alert('操作成功', function () {
+                        history.go(0);
+                    });
+                })
+            });
+        })
+
 
 
         $('body').on('click', '[role="closeTouzhu"]', function () {

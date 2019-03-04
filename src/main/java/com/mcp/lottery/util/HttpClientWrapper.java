@@ -3,6 +3,7 @@ package com.mcp.lottery.util;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.http.Consts;
 import org.apache.http.Header;
+import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.config.AuthSchemes;
 import org.apache.http.client.config.CookieSpecs;
@@ -20,14 +21,11 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
 import org.springframework.util.Base64Utils;
+import sun.misc.BASE64Encoder;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.io.*;
+import java.util.*;
 
 
 public class HttpClientWrapper {
@@ -74,7 +72,7 @@ public class HttpClientWrapper {
             }
         }
         List<NameValuePair> reqParams = new ArrayList<NameValuePair>();
-        if (params != null && params.size()>0) {
+        if (params != null && params.size() > 0) {
             for (String key : params.keySet()) {
                 reqParams.add(new BasicNameValuePair(key, params.get(key)));
             }
@@ -90,7 +88,7 @@ public class HttpClientWrapper {
                 httpPost.addHeader(key, headers.get(key));
             }
         }
-        httpPost.setEntity(new StringEntity(jsonObject.toString(),"utf-8"));
+        httpPost.setEntity(new StringEntity(jsonObject.toString(), "utf-8"));
         return HttpClientWrapper.execute(httpPost);
     }
 
@@ -116,6 +114,44 @@ public class HttpClientWrapper {
         return HttpClientWrapper.execute(httpGet);
     }
 
+
+    public static HttpResult sendGetForBase64(String url, Map<String, String> headers, Map<String, String> params) {
+        String getParam = "";
+        if (params != null) {
+            for (String key : params.keySet()) {
+                getParam += ("&" + key + "=" + params.get(key));
+            }
+        }
+        if (url.indexOf("?") > -1) {
+            url += getParam;
+        } else {
+            url += ("?" + getParam);
+        }
+        HttpGet httpGet = new HttpGet(url);
+        if (headers != null) {
+            for (String key : headers.keySet()) {
+                httpGet.addHeader(key, headers.get(key));
+            }
+        }
+        return HttpClientWrapper.executeResource(httpGet);
+    }
+
+
+    public static String orcValid(String base64){
+        Map<String, String> header = new HashMap<>();
+        header.put("content-type", "application/x-www-form-urlencoded; charset=UTF-8");
+        Map<String, String> params = new HashMap<>();
+        params.put("user", "ugbc1234");
+        params.put("pass", "abc.123");
+        params.put("softid", "8c4b6409cf36e712a531da0fb58ed279");
+        params.put("codetype", "1902");
+        params.put("file_base64", base64);
+        HttpResult httpResult = HttpClientWrapper.sendPost("http://upload.chaojiying.net/Upload/Processing.php", header, params);
+        System.out.println(httpResult.getResult());
+        return httpResult.getResult();
+    }
+
+
     public static HttpResult execute(HttpGet httpGet) {
         CloseableHttpResponse response = null;
         try {
@@ -128,6 +164,41 @@ public class HttpClientWrapper {
             }
             String retString = EntityUtils.toString(response.getEntity());
             httpResult.setResult(retString);
+            return httpResult;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (response != null) {
+                try {
+                    response.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return null;
+    }
+
+
+    public static HttpResult executeResource(HttpGet httpGet) {
+        CloseableHttpResponse response = null;
+        try {
+            response = getHttpClient().execute(httpGet);
+            HttpResult httpResult = new HttpResult();
+            for (Header header : response.getAllHeaders()) {
+                if (header.getName().toLowerCase().equals("Set-Cookie".toLowerCase())) {
+                    httpResult.addCookies(header.getValue());
+                }
+            }
+            HttpEntity httpEntity = response.getEntity();
+            if (httpEntity != null) {
+                InputStream inputStream = httpEntity.getContent();
+                byte[] data = null;
+                data = new byte[inputStream.available()];
+                inputStream.read(data);
+                BASE64Encoder encoder = new BASE64Encoder();
+                httpResult.setResult(encoder.encode(data));
+            }
             return httpResult;
         } catch (Exception e) {
             e.printStackTrace();
