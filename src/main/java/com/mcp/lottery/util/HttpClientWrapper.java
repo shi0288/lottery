@@ -227,6 +227,7 @@ public class HttpClientWrapper {
                 }
             }
             String retString = EntityUtils.toString(response.getEntity());
+            System.out.println(retString);
             httpResult.setResult(retString);
             return httpResult;
         } catch (Exception e) {
