@@ -75,13 +75,19 @@ public class BingoPlugin extends Plugin {
 
 
         System.out.println(bingoPlugin.sendFFC(null,null,null));
+//
+//        Map<String, String> header = new HashMap<>();
+//        header.put("user-agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36");
+//        header.put("cookie", "PHPSESSID=19f5fba49f459501e53a6da8da9da06e;");
+//        Map<String, String> params = new HashMap<>();
+//        HttpResult httpResult = HttpClientWrapper.sendPost("http://www.503319.com/index.php", header, params);
+//        System.out.println(httpResult.getResult());
 
-        Map<String, String> header = new HashMap<>();
-        header.put("user-agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36");
-        header.put("cookie", "PHPSESSID=19f5fba49f459501e53a6da8da9da06e;");
-        Map<String, String> params = new HashMap<>();
-        HttpResult httpResult = HttpClientWrapper.sendPost("http://www.503319.com/index.php", header, params);
-        System.out.println(httpResult.getResult());
+//
+//        Map<String, String> header = new HashMap<>();
+//        header.put("user-agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36");
+//        Map<String, String> params = new HashMap<>();
+//        HttpResult httpResult = HttpClientWrapper.sendPost("http://www.503319.com/index.php", header, params);
 
 
 
