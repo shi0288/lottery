@@ -45,14 +45,14 @@ public class ExecutorService {
         String game = null;
         if (params.containsKey("game")) {
             game = params.get("game").toString();
-        }else{
+        } else {
             logger.info("没有游戏参数");
             return;
         }
         String term = null;
         if (params.containsKey("term")) {
             term = params.get("term").toString();
-        }else{
+        } else {
             logger.info("没有期次参数");
             return;
         }
@@ -61,19 +61,25 @@ public class ExecutorService {
         Plugin plugin = (Plugin) SpringIocUtil.getBean(plat.getPlatCategory().getExecutor());
         LotteryResult lotteryResult;
         try {
-            lotteryResult = plugin.send(plat, game,term, list);
-            logger.info("返回：" + lotteryResult.getResponse());
+            lotteryResult = plugin.send(plat, game, term, list);
+            logger.info("返回：" + lotteryResult.getResponse(), list);
+            updateLottery(lotteryResult, list);
         } catch (ApiException e) {
             logger.info("更新账户信息后重试");
             //更新账户信息重新试下
             plugin.getAuthor(plat);
             if (platService.update(plat)) {
                 try {
-                    lotteryResult = plugin.send(plat, game,term, list);
+                    lotteryResult = plugin.send(plat, game, term, list);
                     logger.info("返回：" + lotteryResult.getResponse());
+                    updateLottery(lotteryResult, list);
                 } catch (Exception ex) {
                     //真的失败了。。
                     ex.printStackTrace();
+                    lotteryResult = new LotteryResult();
+                    lotteryResult.setSuccess(false);
+                    lotteryResult.setResponse("真的失败了");
+                    updateLottery(lotteryResult, list);
                 }
             } else {
                 e.printStackTrace();
@@ -83,26 +89,20 @@ public class ExecutorService {
         }
     }
 
-
     @Async
-    public void updateLottery(LotteryResult lotteryResult) {
-        if (lotteryResult == null) {
-            return;
-        }
-        JSONArray data = lotteryResult.getData();
-        logger.info(lotteryResult.getResponse());
-        for (int i = 0; i < data.size(); i++) {
-            JSONObject obj = data.getJSONObject(i);
+    public void updateLottery(LotteryResult lotteryResult, JSONArray list) {
+        for (int i = 0; i < list.size(); i++) {
+            JSONObject obj = list.getJSONObject(i);
             UserOrderLog userOrderLog = new UserOrderLog();
             userOrderLog.setId(obj.getLong("log_id"));
-            userOrderLog.setRate(obj.getDouble("odds"));
+            if (lotteryResult.isSuccess()) {
+                userOrderLog.setSend(1);
+            } else {
+                userOrderLog.setSend(2);
+            }
+            userOrderLog.setResponse(lotteryResult.getResponse());
             userOrderLogMapper.updateByPrimaryKeySelective(userOrderLog);
-            //todo 增加出票状态和结果报文
-//            if (lotteryResult.isSuccess()) {
-//            } else {
-//            }
         }
-
     }
 
 

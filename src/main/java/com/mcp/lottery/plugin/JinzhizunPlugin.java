@@ -101,7 +101,7 @@ public class JinzhizunPlugin extends Plugin {
     public LotteryResult sendSSC(Plat plat, JSONArray list){
         resetOdds(plat);
         LotteryResult lotteryResult = new LotteryResult();
-        String touzhu = this.transform(plat, list, lotteryResult);
+        String touzhu = this.transform(plat, list);
         logger.info("金至尊时时彩投注:"+touzhu);
         Date date = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("YYYY-M-dd HH:mm:ss.SSS");
@@ -179,8 +179,7 @@ public class JinzhizunPlugin extends Plugin {
         return JSONObject.parseObject(httpResult.getResult()).getJSONArray("NewOdds");
     }
 
-    public String transform(Plat plat, JSONArray list, LotteryResult lotteryResult) {
-        JSONArray data = new JSONArray();
+    public String transform(Plat plat, JSONArray list) {
         JSONArray odds = this.getNewOdds(plat);
         JSONArray arr = new JSONArray();
         for (int i = 0; i < list.size(); i++) {
@@ -188,13 +187,8 @@ public class JinzhizunPlugin extends Plugin {
             JSONObject curTou = (JSONObject) JinzhizunCons.TOU_ZHU.get(temp.getString("value")).clone();
             curTou.put("Money", temp.getIntValue("money"));
             this.addOdds(odds, curTou);
-            data.add(new JSONObject() {{
-                put("log_id", temp.getString("log_id"));
-                put("odds", curTou.getString("Odds"));
-            }});
             arr.add(curTou);
         }
-        lotteryResult.setData(data);
         //合单
         Map<String, JSONObject> result = new HashMap();
         for (int i = 0; i < arr.size(); i++) {

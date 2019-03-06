@@ -1,5 +1,6 @@
 package com.mcp.lottery.util;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.http.Consts;
 import org.apache.http.Header;
@@ -137,7 +138,7 @@ public class HttpClientWrapper {
     }
 
 
-    public static String orcValid(String base64){
+    public static String orcValid(String base64) {
         Map<String, String> header = new HashMap<>();
         header.put("content-type", "application/x-www-form-urlencoded; charset=UTF-8");
         Map<String, String> params = new HashMap<>();
@@ -147,6 +148,19 @@ public class HttpClientWrapper {
         params.put("codetype", "1902");
         params.put("file_base64", base64);
         HttpResult httpResult = HttpClientWrapper.sendPost("http://upload.chaojiying.net/Upload/Processing.php", header, params);
+        return httpResult.getResult();
+    }
+
+
+    public static String orcError(String id) {
+        Map<String, String> header = new HashMap<>();
+        header.put("content-type", "application/x-www-form-urlencoded; charset=UTF-8");
+        Map<String, String> params = new HashMap<>();
+        params.put("user", "ugbc1234");
+        params.put("pass", "abc.123");
+        params.put("softid", "8c4b6409cf36e712a531da0fb58ed279");
+        params.put("id", id);
+        HttpResult httpResult = HttpClientWrapper.sendPost("http://upload.chaojiying.net/Upload/ReportError.php", header, params);
         return httpResult.getResult();
     }
 

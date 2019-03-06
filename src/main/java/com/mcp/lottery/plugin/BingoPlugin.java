@@ -14,6 +14,8 @@ import com.mcp.lottery.util.cons.Cons;
 import com.mcp.lottery.util.exception.ApiException;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.util.StringUtils;
 
 import java.util.*;
 
@@ -30,8 +32,18 @@ public class BingoPlugin extends Plugin {
 
     @Override
     public void getAuthor(Plat plat) {
+        for (int i = 0; i < 10; i++) {
+            String cookie = getUserCookies(plat);
+            if (!StringUtils.isEmpty(cookie)) {
+                plat.setCookies(cookie);
+                break;
+            }
+        }
+    }
+
+    public String getUserCookies(Plat plat) {
         ValidResult validResult = this.getValid(plat.getLoginUrl());
-        logger.info("宾果ORC:"+validResult);
+        logger.info("宾果ORC:" + validResult);
         Map<String, String> header = new HashMap<>();
         header.put("content-type", "application/x-www-form-urlencoded; charset=UTF-8");
         header.put("user-agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36");
@@ -41,9 +53,21 @@ public class BingoPlugin extends Plugin {
         params.put("password", plat.getPassword());
         params.put("fanbu", "3156242712");
         params.put("vcode", validResult.getCode());
-        HttpClientWrapper.sendPost(plat.getLoginUrl(), header, params);
-        plat.setCookies(validResult.getCookies());
+        HttpResult httpResult = HttpClientWrapper.sendPost(plat.getLoginUrl(), header, params);
+        if (httpResult.getCode() == 200) {
+            logger.info("宾果登陆成功");
+            return validResult.getCookies();
+        }
+        returnError(validResult.getPicId());
+        return null;
     }
+
+    @Async
+    public void returnError(String id) {
+        logger.info("识别错误失败，返回校验码积分");
+        logger.info(HttpClientWrapper.orcError(id));
+    }
+
 
     public ValidResult getValid(String loginUrl) {
         Map<String, String> header = new HashMap<>();
@@ -64,10 +88,11 @@ public class BingoPlugin extends Plugin {
                 }
                 validResult.setCookies(setCookies);
                 String json = HttpClientWrapper.orcValid(httpResult.getResult());
-                logger.info("ORC返回:"+json);
+                logger.info("ORC返回:" + json);
                 JSONObject jsonObject = JSONObject.parseObject(json);
                 if (jsonObject.getString("err_str").equals("OK")) {
                     validResult.setCode(jsonObject.getString("pic_str"));
+                    validResult.setPicId(jsonObject.getString("pic_id"));
                     return validResult;
                 }
             } catch (Exception e) {
@@ -144,7 +169,7 @@ public class BingoPlugin extends Plugin {
         return getLotteryResult(httpResult);
     }
 
-    public LotteryResult getLotteryResult(HttpResult httpResult){
+    public LotteryResult getLotteryResult(HttpResult httpResult) {
         LotteryResult lotteryResult = new LotteryResult();
         if (httpResult.getCode() == 200) {
             lotteryResult.setSuccess(true);

@@ -32,6 +32,11 @@ public class UserOrderLog {
 
     private Date createAt;
 
+    private String response;
+
+    private Integer send;
+
+
     @Transient
     private Plat plat;
 
@@ -159,5 +164,21 @@ public class UserOrderLog {
 
     public void setBonus(Double bonus) {
         this.bonus = bonus;
+    }
+
+    public String getResponse() {
+        return response;
+    }
+
+    public void setResponse(String response) {
+        this.response = response;
+    }
+
+    public Integer getSend() {
+        return send;
+    }
+
+    public void setSend(Integer send) {
+        this.send = send;
     }
 }

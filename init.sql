@@ -177,6 +177,12 @@ alter table user add setting tinyint unsigned not null default 0 comment '用户
 
 
 
+alter table user_order_log  add  send  tinyint unsigned not null default 0 comment '是否发送  0 未发送  1成功 2失败';
+alter table user_order_log  add  response varchar(200) not null default '' comment '响应报文';
+
+
+
+
 
 
 

@@ -6,6 +6,8 @@ public class ValidResult {
 
     private String code;
 
+    private String picId;
+
     @Override
     public String toString() {
         return "ValidResult{" +
@@ -28,5 +30,13 @@ public class ValidResult {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public String getPicId() {
+        return picId;
+    }
+
+    public void setPicId(String picId) {
+        this.picId = picId;
     }
 }
