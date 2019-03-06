@@ -147,7 +147,6 @@ public class HttpClientWrapper {
         params.put("codetype", "1902");
         params.put("file_base64", base64);
         HttpResult httpResult = HttpClientWrapper.sendPost("http://upload.chaojiying.net/Upload/Processing.php", header, params);
-        System.out.println(httpResult.getResult());
         return httpResult.getResult();
     }
 
@@ -226,8 +225,8 @@ public class HttpClientWrapper {
                     httpResult.addCookies(header.getValue());
                 }
             }
+            httpResult.setCode(response.getStatusLine().getStatusCode());
             String retString = EntityUtils.toString(response.getEntity());
-            System.out.println(retString);
             httpResult.setResult(retString);
             return httpResult;
         } catch (Exception e) {

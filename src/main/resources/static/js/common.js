@@ -84,6 +84,7 @@ jQuery.extend({
         } else {
             temp = '<select id="' + id + '"  multiple class="form-control">';
         }
+        temp += '<option value="0">请选择</option>';
         data.forEach(function (obj) {
             var btn = false;
             for (var i = 0; i < target.length; i++) {

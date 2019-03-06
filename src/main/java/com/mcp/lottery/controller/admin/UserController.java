@@ -1,8 +1,10 @@
 package com.mcp.lottery.controller.admin;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.mcp.lottery.model.User;
 import com.mcp.lottery.model.UserRule;
+import com.mcp.lottery.service.PlatService;
 import com.mcp.lottery.service.UserOrderLogService;
 import com.mcp.lottery.service.UserRuleService;
 import com.mcp.lottery.service.UserService;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import static com.mcp.lottery.util.ResultCode.ERROR;
@@ -32,6 +35,9 @@ public class UserController extends BaseController {
 
     @Autowired
     private UserRuleService userRuleService;
+
+    @Autowired
+    private PlatService platService;
 
 
     @RequestMapping("list")
@@ -307,5 +313,39 @@ public class UserController extends BaseController {
         }
         return result.format(ERROR, "保存出错");
     }
+
+
+
+    @RequestMapping(value = "getPlat", method = RequestMethod.POST)
+    @ResponseBody
+    Result getPlat(
+            @Check Long id
+    ) {
+        UserRule rule=userRuleService.get(id);
+        Map map=new HashMap();
+        map.put("game",rule.getGame());
+        JSONObject object=new JSONObject();
+        object.put("list",platService.getAllForTerminal(map));
+        object.put("target",rule);
+        return result.format(object);
+    }
+
+
+    @RequestMapping(value = "chosePlat", method = RequestMethod.POST)
+    @ResponseBody
+    Result chosePlat(
+            @Check Long id,
+            @Check Long platGameId
+    ) {
+        UserRule userRule=new UserRule();
+        userRule.setId(id);
+        userRule.setPlatGameId(platGameId);
+
+        if(userRuleService.saveOrUpdate(userRule)==1){
+            return result.format();
+        }
+        return result.format(ERROR, "保存出错");
+    }
+
 
 }

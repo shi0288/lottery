@@ -8,6 +8,8 @@ public class HttpResult {
 
     private String result;
 
+    private int code;
+
     private List<String> cookies=new ArrayList<>();
 
 
@@ -15,6 +17,7 @@ public class HttpResult {
     public String toString() {
         return "HttpResult{" +
                 "result='" + result + '\'' +
+                ", code=" + code +
                 ", cookies=" + cookies +
                 '}';
     }
@@ -33,5 +36,13 @@ public class HttpResult {
 
     public void setResult(String result) {
         this.result = result;
+    }
+
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
     }
 }

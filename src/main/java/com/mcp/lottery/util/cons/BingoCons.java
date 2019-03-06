@@ -37,5 +37,9 @@ public class BingoCons {
         put("522", "-,-,-,-,02468");
     }};
 
+    public static String PLAY_SSC = "1037";
+    public static String GROUP_SSC = "107";
+    public static String TYPE_SSC = "1";
+
 
 }

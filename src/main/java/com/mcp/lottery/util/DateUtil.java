@@ -739,21 +739,21 @@ public class DateUtil {
      *
      * @param date 日期
      */
-    public static Integer getTimestamp(String date) {
+    public static String getTimestamp(String date) {
         if ("".equals(date) || "0".equals(date) || null == date) {
             return null;
         }
         Date temp = StringToDate(date, DateStyle.YYYY_MM_DD_HH_MM_SS);
         String timestamp = String.valueOf(temp.getTime() / 1000);
-        return Integer.valueOf(timestamp);
+        return timestamp;
     }
 
-    public static Integer getTimestamp(Date date) {
+    public static String getTimestamp(Date date) {
         if (null == date) {
             return null;
         }
         String timestamp = String.valueOf(date.getTime() / 1000);
-        return Integer.valueOf(timestamp);
+        return timestamp;
     }
 
 

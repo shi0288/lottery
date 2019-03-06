@@ -27,7 +27,7 @@
     </select>
 
     <select id="getUserRuleList" resultType="com.mcp.lottery.model.UserRule">
-        select *,is_open as isOpen,init_money as initMoney,is_dividing as isDividing,limit_lose as limitLose,limit_win as limitWin,dividing_time as dividingTime,is_trace_lose as isTraceLose from user_rule where  uid=#{id} order by game ASC
+        select user_rule.*,is_open as isOpen,init_money as initMoney,is_dividing as isDividing,limit_lose as limitLose,limit_win as limitWin,dividing_time as dividingTime,is_trace_lose as isTraceLose,plat.name as platName from user_rule left join plat_game on user_rule.plat_game_id=plat_game.id and user_rule.plat_game_id>0  LEFT JOIN plat on plat_game.plat_id =plat.id  where  uid=#{id} order by game ASC
     </select>
 
     <update id="openTouzhu">

@@ -35,6 +35,11 @@ public class UserRule {
 
     private Integer isTraceLose;
 
+    private Long platGameId;
+
+    @Transient
+    private String platName;
+
 
     public Long getId() {
         return id;
@@ -138,5 +143,21 @@ public class UserRule {
 
     public void setIsTraceLose(Integer isTraceLose) {
         this.isTraceLose = isTraceLose;
+    }
+
+    public Long getPlatGameId() {
+        return platGameId;
+    }
+
+    public void setPlatGameId(Long platGameId) {
+        this.platGameId = platGameId;
+    }
+
+    public String getPlatName() {
+        return platName;
+    }
+
+    public void setPlatName(String platName) {
+        this.platName = platName;
     }
 }

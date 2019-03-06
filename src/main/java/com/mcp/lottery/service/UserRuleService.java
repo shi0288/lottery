@@ -11,6 +11,15 @@ public class UserRuleService {
     @Autowired
     private UserRuleMapper userRuleMapper;
 
+
+    public int saveOrUpdate(UserRule userRule){
+        if(userRule.getId()==null){
+            return userRuleMapper.insertSelective(userRule);
+        }
+        return userRuleMapper.updateByPrimaryKeySelective(userRule);
+    }
+
+
     public void saveGame(Long uid, String... games) {
         if (games != null && games.length > 0) {
             for (int i = 0; i < games.length; i++) {
@@ -33,6 +42,10 @@ public class UserRuleService {
             return true;
         }
         return false;
+    }
+
+    public UserRule get(Long id){
+        return userRuleMapper.selectByPrimaryKey(id);
     }
 
 

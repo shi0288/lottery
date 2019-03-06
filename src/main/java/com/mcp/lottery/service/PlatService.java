@@ -8,6 +8,7 @@ import com.mcp.lottery.mapper.PlatMapper;
 import com.mcp.lottery.model.Plat;
 
 import java.util.List;
+import java.util.Map;
 
 import com.mcp.lottery.model.PlatGame;
 import com.mcp.lottery.util.Pager;
@@ -45,8 +46,12 @@ public class PlatService {
     }
 
     public PageInfo<Plat> getAllForTerminal(Pager pager) {
-        PageInfo pageInfo = PageHelper.startPage(pager.getPage(), pager.getLimit()).doSelectPageInfo(() -> platMapper.getAllForTerminal());
+        PageInfo pageInfo = PageHelper.startPage(pager.getPage(), pager.getLimit()).doSelectPageInfo(() -> platMapper.getAllForTerminal(null));
         return pageInfo;
+    }
+
+    public List<Plat> getAllForTerminal(Map map) {
+        return platMapper.getAllForTerminal(map);
     }
 
 

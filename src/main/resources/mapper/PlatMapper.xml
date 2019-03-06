@@ -39,6 +39,10 @@
 
     <select id="getAllForTerminal" resultMap="ResultMapForCategory">
         SELECT a.*,b.name as cateName,b.executor,c.game,c.direction,c.id as platGameId FROM plat_game c left join plat a  on a.id=c.plat_id   left join plat_category b on a.category_id=b.id
+      WHERE 1=1
+        <if test="game != null and game != ''">
+            and  c.game = #{game}
+        </if>
     </select>
 
 

@@ -1,45 +1,51 @@
 package com.mcp.lottery.plugin;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.mcp.lottery.model.Plat;
+import com.mcp.lottery.model.Term;
+import com.mcp.lottery.service.TermService;
 import com.mcp.lottery.util.*;
 import com.mcp.lottery.util.annotation.Log;
 import com.mcp.lottery.util.annotation.Type;
+import com.mcp.lottery.util.cons.BingoCons;
 import com.mcp.lottery.util.cons.Cons;
+import com.mcp.lottery.util.exception.ApiException;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.List;
+import java.util.*;
 
 
-@Type(name = "宾果", value = "jinzhizun")
+@Type(name = "宾果", value = "bingo")
 public class BingoPlugin extends Plugin {
 
     @Log
     private Logger logger;
 
+    @Autowired
+    private TermService termService;
+
 
     @Override
     public void getAuthor(Plat plat) {
-        ValidResult validResult = this.getValid();
-        System.out.println(validResult);
+        ValidResult validResult = this.getValid(plat.getLoginUrl());
+        logger.info("宾果ORC:"+validResult);
         Map<String, String> header = new HashMap<>();
         header.put("content-type", "application/x-www-form-urlencoded; charset=UTF-8");
         header.put("user-agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36");
         header.put("cookie", validResult.getCookies());
         Map<String, String> params = new HashMap<>();
-        params.put("username", "papa001");
-        params.put("password", "wu789789");
+        params.put("username", plat.getUsername());
+        params.put("password", plat.getPassword());
         params.put("fanbu", "3156242712");
         params.put("vcode", validResult.getCode());
-        HttpResult httpResult = HttpClientWrapper.sendPost("http://www.503319.com/index.php?tnt=uld", header, params);
-        System.out.println(httpResult.getResult());
+        HttpClientWrapper.sendPost(plat.getLoginUrl(), header, params);
+        plat.setCookies(validResult.getCookies());
     }
 
-    public ValidResult getValid() {
+    public ValidResult getValid(String loginUrl) {
         Map<String, String> header = new HashMap<>();
         header.put("user-agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.119 Safari/537.36");
         ValidResult validResult = new ValidResult();
@@ -48,7 +54,7 @@ public class BingoPlugin extends Plugin {
                 Map<String, String> params = new HashMap<>();
                 params.put("tnt", "vcode");
                 params.put("rmt", String.valueOf(new Date().getTime()));
-                HttpResult httpResult = HttpClientWrapper.sendGetForBase64("http://www.503319.com/index.php", header, params);
+                HttpResult httpResult = HttpClientWrapper.sendGetForBase64(loginUrl.split("\\?")[0], header, params);
                 List<String> cookies = httpResult.getCookies();
                 String setCookies = "";
                 for (int m = 0; m < cookies.size(); m++) {
@@ -58,6 +64,7 @@ public class BingoPlugin extends Plugin {
                 }
                 validResult.setCookies(setCookies);
                 String json = HttpClientWrapper.orcValid(httpResult.getResult());
+                logger.info("ORC返回:"+json);
                 JSONObject jsonObject = JSONObject.parseObject(json);
                 if (jsonObject.getString("err_str").equals("OK")) {
                     validResult.setCode(jsonObject.getString("pic_str"));
@@ -67,30 +74,6 @@ public class BingoPlugin extends Plugin {
             }
         }
         return null;
-    }
-
-    public static void main(String[] args) {
-        BingoPlugin bingoPlugin = new BingoPlugin();
-//        bingoPlugin.getAuthor(null);
-
-
-        System.out.println(bingoPlugin.sendFFC(null,null,null));
-//
-//        Map<String, String> header = new HashMap<>();
-//        header.put("user-agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36");
-//        header.put("cookie", "PHPSESSID=19f5fba49f459501e53a6da8da9da06e;");
-//        Map<String, String> params = new HashMap<>();
-//        HttpResult httpResult = HttpClientWrapper.sendPost("http://www.503319.com/index.php", header, params);
-//        System.out.println(httpResult.getResult());
-
-//
-//        Map<String, String> header = new HashMap<>();
-//        header.put("user-agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36");
-//        Map<String, String> params = new HashMap<>();
-//        HttpResult httpResult = HttpClientWrapper.sendPost("http://www.503319.com/index.php", header, params);
-
-
-
     }
 
     public String getOrderId() {
@@ -108,6 +91,9 @@ public class BingoPlugin extends Plugin {
     @Override
     public LotteryResult send(Plat plat, String game, String termCode, JSONArray list) {
         switch (game) {
+            case Cons.Game.CQSSC: {
+                return sendSSC(plat, list, termCode);
+            }
             case Cons.Game.TXFFC: {
                 return sendFFC(plat, list, termCode);
             }
@@ -115,28 +101,86 @@ public class BingoPlugin extends Plugin {
         return null;
     }
 
+
+    public LotteryResult sendSSC(Plat plat, JSONArray list, String termCode) {
+        Map<String, String> header = new HashMap<>();
+        header.put("content-type", "application/x-www-form-urlencoded; charset=UTF-8");
+        header.put("user-agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36");
+        header.put("cookie", plat.getCookies());
+        header.put("Referer", plat.getTouzhuUrl().split("\\?")[0] + "?tnt=igm&type=" + BingoCons.TYPE_SSC + "&groupId=" + BingoCons.GROUP_SSC + "&played=" + BingoCons.PLAY_SSC);
+        Map<String, String> params = this.transform(list, BingoCons.TOU_ZHU_FFC, BingoCons.GROUP_SSC, BingoCons.PLAY_SSC, BingoCons.TYPE_SSC);
+        Term query = new Term();
+        query.setGame(Cons.Game.CQSSC);
+        query.setTermCode(termCode);
+        Term term = termService.get(query);
+        params.put("para[type]", BingoCons.TYPE_SSC);
+        params.put("para[actionNo]", termCode);
+        params.put("para[kjTime]", DateUtil.getTimestamp(term.getCloseAt()));
+        HttpResult httpResult = HttpClientWrapper.sendPost(plat.getTouzhuUrl(), header, params);
+        logger.info("宾果时时彩投注:");
+        logger.info(JSON.toJSONString(params));
+        return getLotteryResult(httpResult);
+
+    }
+
+
     public LotteryResult sendFFC(Plat plat, JSONArray list, String termCode) {
         Map<String, String> header = new HashMap<>();
         header.put("content-type", "application/x-www-form-urlencoded; charset=UTF-8");
         header.put("user-agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36");
-        header.put("cookie", "PHPSESSID=19f5fba49f459501e53a6da8da9da06e;");
+        header.put("cookie", plat.getCookies());
+        header.put("Referer", plat.getTouzhuUrl().split("\\?")[0] + "?tnt=igm&type=" + BingoCons.TYPE_FFC + "&groupId=" + BingoCons.GROUP_FFC + "&played=" + BingoCons.PLAY_FFC);
+        Map<String, String> params = this.transform(list, BingoCons.TOU_ZHU_FFC, BingoCons.GROUP_FFC, BingoCons.PLAY_FFC, BingoCons.TYPE_FFC);
+        Term query = new Term();
+        query.setGame(Cons.Game.TXFFC);
+        query.setTermCode(termCode);
+        Term term = termService.get(query);
+        params.put("para[type]", BingoCons.TYPE_FFC);
+        params.put("para[actionNo]", termCode);
+        params.put("para[kjTime]", DateUtil.getTimestamp(term.getCloseAt()));
+        HttpResult httpResult = HttpClientWrapper.sendPost(plat.getTouzhuUrl(), header, params);
+        logger.info("宾果分分彩投注:");
+        logger.info(JSON.toJSONString(params));
+        return getLotteryResult(httpResult);
+    }
+
+    public LotteryResult getLotteryResult(HttpResult httpResult){
+        LotteryResult lotteryResult = new LotteryResult();
+        if (httpResult.getCode() == 200) {
+            lotteryResult.setSuccess(true);
+            lotteryResult.setResponse("投注成功");
+            return lotteryResult;
+        } else {
+            throw new ApiException("登录已超时");
+        }
+    }
+
+    public Map transform(JSONArray list, Map<String, String> gameTrans, String group, String play, String type) {
+        Map<String, JSONObject> sumMap = this.tranSum(list);
         Map<String, String> params = new HashMap<>();
-        params.put("code[0][fanDian]", "0");
-        params.put("code[0][bonusProp]", "20.000");
-        params.put("code[0][beiShu]", "1");
-        params.put("code[0][orderId]", getOrderId());
-        params.put("code[0][actionData]", "-,-,-,02468,-");
-        params.put("code[0][actionNum]", "5");
-        params.put("code[0][weiShu]", "0");
-        params.put("code[0][playedGroup]", "26408");
-        params.put("code[0][playedId]", "261977");
-        params.put("code[0][type]", "113");
-        params.put("para[type]", "113");
-        params.put("para[actionNo]", "201903041144");
-        params.put("para[kjTime]", "1551697440");
-        HttpResult httpResult = HttpClientWrapper.sendPost("http://www.503319.com/index.php?tnt=gpc", header, params);
-        System.out.println(httpResult.getResult());
-        return null;
+        int i = 0;
+        for (String key : sumMap.keySet()) {
+            JSONObject temp = sumMap.get(key);
+            int money = temp.getIntValue("money");
+            if (money % 5 == 0) {
+                params.put("code[" + i + "][mode]", "1");
+                params.put("code[" + i + "][beiShu]", String.valueOf(money / 5));
+            } else {
+                params.put("code[" + i + "][mode]", "0.1");
+                params.put("code[" + i + "][beiShu]", String.valueOf(money * 10 / 5));
+            }
+            params.put("code[" + i + "][fanDian]", "0");
+            params.put("code[" + i + "][bonusProp]", "20.000");
+            params.put("code[" + i + "][orderId]", getOrderId());
+            params.put("code[" + i + "][actionData]", gameTrans.get(key));
+            params.put("code[" + i + "][actionNum]", "5");
+            params.put("code[" + i + "][weiShu]", "0");
+            params.put("code[" + i + "][playedGroup]", group);
+            params.put("code[" + i + "][playedId]", play);
+            params.put("code[" + i + "][type]", type);
+            i++;
+        }
+        return params;
     }
 
 

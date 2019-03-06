@@ -27,7 +27,7 @@
                     <tbody>
                     <#if page.list??>
                         <#list page.list as e>
-                        <tr   class="heng">
+                        <tr class="heng">
                             <td><a href="./dayList/${(e.id)!''}"><strong>${(e.username)!''}</strong></a></td>
                             <td><strong>${(e.balance?string('#.##'))!''}</strong></td>
                             <td><strong>${(e.realname)!''}</strong></td>
@@ -35,9 +35,9 @@
                             <td><strong>${(e.result?string('#.##'))!''}</strong></td>
                             <td>
                                 <#if (e.bonus>0)>
-                                <strong><span>${(e.bonus?string('#.##'))!''}</span></strong>
+                                    <strong><span>${(e.bonus?string('#.##'))!''}</span></strong>
                                 <#else>
-                                <strong> <span  style="color: red">${(e.bonus?string('#.##'))!''}</span></strong>
+                                    <strong> <span style="color: red">${(e.bonus?string('#.##'))!''}</span></strong>
                                 </#if>
                             </td>
                             <#if manage.username=='lottery'>
@@ -86,6 +86,7 @@
                                             <th>自动投注</th>
                                             <th>止盈损</th>
                                             <th>移动止损</th>
+                                            <th>投注平台</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -99,12 +100,13 @@
                                                                    value="${(userRule.initMoney?string('#.##'))!''}"
                                                                    placeholder="金额">
                                                             <span class="input-group-btn">
-                                                                <button role="updateInitMoney" tag="${(userRule.id)!''}" class="btn btn-default"
-                                                                type="button">修改</button>
+                                                                <button role="updateInitMoney" tag="${(userRule.id)!''}"
+                                                                        class="btn btn-default"
+                                                                        type="button">修改</button>
                                                             </span>
                                                         </div>
                                                     <#else>
-                                                        ${(userRule.initMoney?string('#.##'))!''}
+                                                    ${(userRule.initMoney?string('#.##'))!''}
                                                     </#if>
                                                 </td>
                                                 <td>
@@ -114,7 +116,8 @@
                                                                    value="${(userRule.limitLose?string('#.##'))!''}"
                                                                    placeholder="金额">
                                                             <span class="input-group-btn">
-                                                                <button role="updateLimitLose" tag="${(userRule.id)!''}" class="btn btn-default"
+                                                                <button role="updateLimitLose" tag="${(userRule.id)!''}"
+                                                                        class="btn btn-default"
                                                                         type="button">修改</button>
                                                             </span>
                                                         </div>
@@ -129,7 +132,8 @@
                                                                    value="${(userRule.limitWin?string('#.##'))!''}"
                                                                    placeholder="金额">
                                                             <span class="input-group-btn">
-                                                                <button role="updateLimitWin" tag="${(userRule.id)!''}" class="btn btn-default"
+                                                                <button role="updateLimitWin" tag="${(userRule.id)!''}"
+                                                                        class="btn btn-default"
                                                                         type="button">修改</button>
                                                             </span>
                                                         </div>
@@ -152,9 +156,9 @@
                                                         </#if>
                                                     <#else>
                                                         <#if userRule.isOpen==1>
-                                                                开启中
+                                                            开启中
                                                         <#else>
-                                                                关闭中
+                                                            关闭中
                                                         </#if>
                                                     </#if>
                                                 </td>
@@ -198,6 +202,14 @@
                                                         <#else>
                                                             关闭中
                                                         </#if>
+                                                    </#if>
+                                                </td>
+                                                <td>
+                                                    <#if manage.username=='lottery'>
+                                                        <button role="plat-setting" tag="${(userRule.id)!''}"
+                                                                class="btn btn-warning btn-xs" data-toggle="tooltip" data-placement="top" title="点击选择">
+                                                            <strong>${(userRule.platName)!'未设置'}</strong>
+                                                        </button>
                                                     </#if>
                                                 </td>
                                             </tr>
@@ -258,6 +270,32 @@
                     <div class="control-group">
                         <label class="control-label">减少金额</label>
                         <input type="text" class="form-control" id="mul" placeholder="金额">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary conform-but">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="plat_setting" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
+                    <span class="sr-only">Close</span></button>
+                <h4 class="modal-title">平台选择</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="control-group">
+                        <label class="control-label">请选择投注平台</label>
+                        <div class="controls plat_select">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -350,7 +388,6 @@
                 })
             });
         })
-
 
 
         $('body').on('click', '[role="closeTouzhu"]', function () {
@@ -467,6 +504,41 @@
             });
         })
 
+        function transToChosenData(data) {
+            var resData = [];
+            data.forEach(function (o) {
+                o.platGameList.forEach(function (val) {
+                    resData.push({key: val.id, val: o.platCategory.name+'-->'+o.name})
+                })
+            });
+            return resData;
+        }
+        function transToTarget(data) {
+            var resData = [];
+            resData.push({key: data.platGameId, val: data.game})
+            return resData;
+        }
+
+        $('body').on('click','[role="plat-setting"]', function () {
+            var self = $(this);
+            var id = self.attr('tag');
+            $.localAjax('getPlat', {id: id}, function (res) {
+                var data = transToChosenData(res.data.list);
+                var target = transToTarget(res.data.target);
+                $.chosenSetting($('.plat_select'), 'plat_select', data, target, {
+                    width: '100%',
+                    placeholder_text_single: '选择平台账号'
+                },true);
+                $.showModal("plat_setting", function () {
+                    var value = $('#plat_select').val();
+                    $.localAjax('chosePlat', {id: id, platGameId: value}, function () {
+                        alert('操作成功', function () {
+                            history.go(0);
+                        });
+                    })
+                })
+            })
+        })
 
 
     })
