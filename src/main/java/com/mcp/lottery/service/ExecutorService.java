@@ -62,7 +62,7 @@ public class ExecutorService {
         LotteryResult lotteryResult;
         try {
             lotteryResult = plugin.send(plat, game, term, list);
-            logger.info("返回：" + lotteryResult.getResponse(), list);
+            logger.info("返回：" + lotteryResult.getResponse());
             updateLottery(lotteryResult, list);
         } catch (ApiException e) {
             logger.info("更新账户信息后重试");
@@ -78,14 +78,17 @@ public class ExecutorService {
                     ex.printStackTrace();
                     lotteryResult = new LotteryResult();
                     lotteryResult.setSuccess(false);
-                    lotteryResult.setResponse("真的失败了");
+                    lotteryResult.setResponse("更新账号后依旧失败");
                     updateLottery(lotteryResult, list);
                 }
             } else {
                 e.printStackTrace();
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            lotteryResult = new LotteryResult();
+            lotteryResult.setSuccess(false);
+            lotteryResult.setResponse("请求出错失败");
+            updateLottery(lotteryResult, list);
         }
     }
 

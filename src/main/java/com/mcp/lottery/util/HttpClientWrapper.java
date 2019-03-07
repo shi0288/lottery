@@ -21,10 +21,8 @@ import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
-import org.springframework.util.Base64Utils;
 import sun.misc.BASE64Encoder;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.util.*;
 
@@ -32,7 +30,7 @@ import java.util.*;
 public class HttpClientWrapper {
 
     /* 请求超时时间 */
-    private static int Request_TimeOut = 20000;
+    private static int Request_TimeOut = 8000;
     /* 当前连接池中链接 */
     private static CloseableHttpClient httpClientCur = null;
 
