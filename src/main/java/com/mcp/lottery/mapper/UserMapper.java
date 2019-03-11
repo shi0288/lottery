@@ -32,5 +32,13 @@ public interface UserMapper extends BaseMapper<User>{
 
     int closeTraceLose(@Param("id")Long id);
 
+    int updateLimitMaxWin(@Param("id")Long id,@Param("limitMaxWin")Double limitMaxWin);
+
+    int updateLimitMinWin(@Param("id")Long id,@Param("limitMinWin")Double limitMinWin);
+
+    int openBottomWin(@Param("id")Long id);
+
+    int closeBottomWin(@Param("id")Long id);
+
 
 }

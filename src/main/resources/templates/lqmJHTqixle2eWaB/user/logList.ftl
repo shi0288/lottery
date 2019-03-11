@@ -31,7 +31,7 @@
                 <h2><i class="glyphicon glyphicon-user"></i> 用户投注列表</h2>
             </div>
             <div class="box-content">
-                <table class="table table-striped table-bordered bootstrap-datatable responsive">
+                <table class="table table-condensed table-hover">
                     <thead>
                     <tr>
                         <th>用户名</th>

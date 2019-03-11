@@ -8,7 +8,7 @@
                 <h2 style="float: right"><a href="javascript:void(0);" role="setting">查看账号</a></h2>
             </div>
             <div class="box-content">
-                <table class="table table-striped table-bordered bootstrap-datatable responsive">
+                <table class="table table-condensed table-hover">
                     <thead>
                     <tr>
                         <th>游戏名称</th>

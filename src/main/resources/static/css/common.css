@@ -195,4 +195,23 @@ input{
     z-index: auto !important;
 }
 
+.input-group{
+    min-width:150px;
+}
+
+th{
+    word-break: keep-all !important;
+}
+
+.none-border{
+    border-top: none !important;
+}
+.none-border td{
+    border-top: none !important;
+}
+
+.td{
+    vertical-align: middle !important;
+}
+
 

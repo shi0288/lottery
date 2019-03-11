@@ -37,6 +37,12 @@ public class UserRule {
 
     private Long platGameId;
 
+    private Double limitMaxWin;
+
+    private Double limitMinWin;
+
+    private Integer isBottomwin;
+
     @Transient
     private String platName;
 
@@ -159,5 +165,29 @@ public class UserRule {
 
     public void setPlatName(String platName) {
         this.platName = platName;
+    }
+
+    public Double getLimitMaxWin() {
+        return limitMaxWin;
+    }
+
+    public void setLimitMaxWin(Double limitMaxWin) {
+        this.limitMaxWin = limitMaxWin;
+    }
+
+    public Double getLimitMinWin() {
+        return limitMinWin;
+    }
+
+    public void setLimitMinWin(Double limitMinWin) {
+        this.limitMinWin = limitMinWin;
+    }
+
+    public Integer getIsBottomwin() {
+        return isBottomwin;
+    }
+
+    public void setIsBottomwin(Integer isBottomwin) {
+        this.isBottomwin = isBottomwin;
     }
 }

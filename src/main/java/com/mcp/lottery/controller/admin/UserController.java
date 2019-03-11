@@ -340,8 +340,57 @@ public class UserController extends BaseController {
         UserRule userRule=new UserRule();
         userRule.setId(id);
         userRule.setPlatGameId(platGameId);
-
         if(userRuleService.saveOrUpdate(userRule)==1){
+            return result.format();
+        }
+        return result.format(ERROR, "保存出错");
+    }
+
+
+    @RequestMapping(value = "updateLimitMaxWin", method = RequestMethod.POST)
+    @ResponseBody
+    Result updateLimitMaxWin(
+            @Check Long id,
+            @Check(number = true, min = "0") Double money
+    ) {
+        if (userService.updateLimitMaxWin(id, money)) {
+            return result.format();
+        }
+        return result.format(ERROR, "保存出错");
+    }
+
+
+    @RequestMapping(value = "updateLimitMinWin", method = RequestMethod.POST)
+    @ResponseBody
+    Result updateLimitMinWin(
+            @Check Long id,
+            @Check(number = true, min = "0") Double money
+    ) {
+        if (userService.updateLimitMinWin(id, money)) {
+            return result.format();
+        }
+        return result.format(ERROR, "保存出错");
+    }
+
+
+
+    @RequestMapping(value = "openBottomWin", method = RequestMethod.POST)
+    @ResponseBody
+    Result openBottomWin(
+            @Check Long id
+    ) {
+        if (userService.openBottomWin(id)) {
+            return result.format();
+        }
+        return result.format(ERROR, "保存出错");
+    }
+
+    @RequestMapping(value = "closeBottomWin", method = RequestMethod.POST)
+    @ResponseBody
+    Result closeBottomWin(
+            @Check Long id
+    ) {
+        if (userService.closeBottomWin(id)) {
             return result.format();
         }
         return result.format(ERROR, "保存出错");

@@ -135,4 +135,34 @@ public class UserService {
     }
 
 
+    public boolean updateLimitMaxWin(Long id, Double limitWin) {
+        if (userMapper.updateLimitMaxWin(id, limitWin) == 1) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean updateLimitMinWin(Long id, Double limitWin) {
+        if (userMapper.updateLimitMinWin(id, limitWin) == 1) {
+            return true;
+        }
+        return false;
+    }
+
+
+    public boolean openBottomWin(Long id) {
+        if (userMapper.openBottomWin(id) == 1) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean closeBottomWin(Long id) {
+        if (userMapper.closeBottomWin(id) == 1) {
+            return true;
+        }
+        return false;
+    }
+
+
 }
