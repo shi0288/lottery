@@ -264,31 +264,5 @@ public class TaiyangPlugin extends Plugin {
         return StringUtils.join(trans, "|");
     }
 
-//
-//    public static void main(String[] args) {
-//        Plat plat = new Plat();
-//        plat.setLoginUrl("https://wap.roostyle.com/api/token");
-//        plat.setBalanceUrl("https://wap.roostyle.com/api/User/GetUserModel");
-//        plat.setTouzhuUrl("https://wap.roostyle.com/api/Lottery/KQWFBetting");
-//        plat.setCookies("__cfduid=d38150e8e56cb42eea2f43388851a75611550720455;");
-//        plat.setAssist("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlxdWVfbmFtZSI6ImV1Z2VuZTg4OCIsInJvbGUiOiJ1c2VyIiwiaXNzIjoibGVnZW5kIiwiYXVkIjoiQW55IiwiZXhwIjoxNTgyMjY5NjcyLCJuYmYiOjE1NTA3MzM2NzJ9.TomPjtvlIBhgnKljJaoIzikTHl8GvVg_uwNSzO8BE2Q");
-//        plat.setUsername("eugene888");
-//        plat.setPassword("eugenewu117519");
-//        TaiyangPlugin taiyangPlugin = new TaiyangPlugin();
-////        System.out.println(taiyangPlugin.getBalance(plat));
-//        JSONArray list = new JSONArray() {{
-//            add(new JSONObject() {{
-//                put("value", 112);
-//                put("money", 1);
-//            }});
-//            add(new JSONObject() {{
-//                put("value", 112);
-//                put("money", 2);
-//            }});
-//        }};
-//        taiyangPlugin.send(plat, Cons.Game.TXFFC, "201902211990", list);
-//
-//    }
-
 
 }

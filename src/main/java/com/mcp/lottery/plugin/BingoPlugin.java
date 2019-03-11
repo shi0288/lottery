@@ -42,13 +42,18 @@ public class BingoPlugin extends Plugin {
     }
 
     public String getUserCookies(Plat plat) {
-        ValidResult validResult = this.getValid(plat.getLoginUrl());
-        logger.info("宾果ORC:" + validResult);
         Map<String, String> header = new HashMap<>();
+        header.put("user-agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.119 Safari/537.36");
+        Map<String, String> params = new HashMap<>();
+        params.put("tnt", "vcode");
+        params.put("rmt", String.valueOf(new Date().getTime()));
+        ValidResult validResult = this.getValid(plat.getLoginUrl().split("\\?")[0],header,params);
+        logger.info("宾果ORC:" + validResult);
+        header = new HashMap<>();
         header.put("content-type", "application/x-www-form-urlencoded; charset=UTF-8");
         header.put("user-agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36");
         header.put("cookie", validResult.getCookies());
-        Map<String, String> params = new HashMap<>();
+        params = new HashMap<>();
         params.put("username", plat.getUsername());
         params.put("password", plat.getPassword());
         params.put("fanbu", "3156242712");
@@ -68,38 +73,6 @@ public class BingoPlugin extends Plugin {
         logger.info(HttpClientWrapper.orcError(id));
     }
 
-
-    public ValidResult getValid(String loginUrl) {
-        Map<String, String> header = new HashMap<>();
-        header.put("user-agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.119 Safari/537.36");
-        ValidResult validResult = new ValidResult();
-        for (int i = 0; i < 3; i++) {
-            try {
-                Map<String, String> params = new HashMap<>();
-                params.put("tnt", "vcode");
-                params.put("rmt", String.valueOf(new Date().getTime()));
-                HttpResult httpResult = HttpClientWrapper.sendGetForBase64(loginUrl.split("\\?")[0], header, params);
-                List<String> cookies = httpResult.getCookies();
-                String setCookies = "";
-                for (int m = 0; m < cookies.size(); m++) {
-                    String cookie = cookies.get(m);
-                    String[] attr = cookie.split(";");
-                    setCookies += (attr[0] + ";");
-                }
-                validResult.setCookies(setCookies);
-                String json = HttpClientWrapper.orcValid(httpResult.getResult());
-                logger.info("ORC返回:" + json);
-                JSONObject jsonObject = JSONObject.parseObject(json);
-                if (jsonObject.getString("err_str").equals("OK")) {
-                    validResult.setCode(jsonObject.getString("pic_str"));
-                    validResult.setPicId(jsonObject.getString("pic_id"));
-                    return validResult;
-                }
-            } catch (Exception e) {
-            }
-        }
-        return null;
-    }
 
     public String getOrderId() {
         long a = new Date().getTime();
@@ -145,7 +118,6 @@ public class BingoPlugin extends Plugin {
         logger.info("宾果时时彩投注:");
         logger.info(JSON.toJSONString(params));
         return getLotteryResult(httpResult);
-
     }
 
 
