@@ -2,7 +2,9 @@ package com.mcp.lottery.util;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class HttpResult {
 
@@ -10,7 +12,9 @@ public class HttpResult {
 
     private int code;
 
-    private List<String> cookies=new ArrayList<>();
+    private List<String> cookies = new ArrayList<>();
+
+    private Map param = new HashMap();
 
 
     @Override
@@ -22,11 +26,11 @@ public class HttpResult {
                 '}';
     }
 
-    public void addCookies(String cookie){
+    public void addCookies(String cookie) {
         cookies.add(cookie);
     }
 
-    public List<String> getCookies(){
+    public List<String> getCookies() {
         return cookies;
     }
 
@@ -44,5 +48,13 @@ public class HttpResult {
 
     public void setCode(int code) {
         this.code = code;
+    }
+
+    public Map getParam() {
+        return param;
+    }
+
+    public void setParam(String key, Object value) {
+        this.param.put(key, value);
     }
 }

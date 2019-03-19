@@ -22,6 +22,10 @@
                                placeholder="姓名">
                     </div>
                     <div class="form-group">
+                        <label for="realname">密码</label>
+                        <input type="text"  class="form-control"  value="" name="password" placeholder="密码">
+                    </div>
+                    <div class="form-group">
                         <label for="selectLeader">支持投注的游戏</label>
                         <div class="controls" style="height: 38px;">
                             <select id="selectGame" data-rel="chosen" data-placeholder="请选择" name="games" multiple>

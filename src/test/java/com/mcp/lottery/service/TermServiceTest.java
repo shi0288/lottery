@@ -34,6 +34,9 @@
 //    @Autowired
 //    private PlatService platService;
 //
+//    @Autowired
+//    private OnlineService onlineService;
+//
 //
 //
 //    @Test
@@ -130,6 +133,8 @@
 //    public void updatePrize() throws Exception {
 //       // qiaoqiaoyingService.updatePrize(Cons.Game.CQSSC);
 ////        qiaoqiaoyingService.updatePrize(Cons.Game.TXFFC);
+//        onlineService.updatePrizeNumber();
+//
 //    }
 //
 //    @Test

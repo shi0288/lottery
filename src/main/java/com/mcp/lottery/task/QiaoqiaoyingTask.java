@@ -1,6 +1,7 @@
 package com.mcp.lottery.task;
 
 
+import com.mcp.lottery.service.OnlineService;
 import com.mcp.lottery.service.QiaoqiaoyingService;
 import com.mcp.lottery.util.DateUtil;
 import com.mcp.lottery.util.annotation.Log;
@@ -18,8 +19,12 @@ public class QiaoqiaoyingTask {
     @Autowired
     private QiaoqiaoyingService qiaoqiaoyingService;
 
+    @Autowired
+    private OnlineService onlineService;
+
     @Log
     private Logger logger;
+
 
 
 
@@ -53,12 +58,13 @@ public class QiaoqiaoyingTask {
     /**
      * 获取分分彩开奖结果
      */
-    @Scheduled(fixedDelay = 30000) // 30秒执行一次
+    @Scheduled(fixedDelay = 5000) // 5秒执行一次
     public void updatePrizeFenfencai() {
         try {
-            qiaoqiaoyingService.updatePrize(Cons.Game.TXFFC,new Date());
+            onlineService.updatePrizeNumber();
         }catch (Exception e){}
     }
+
 
     /**
      * 获取时时彩前一天开奖结果
@@ -67,7 +73,7 @@ public class QiaoqiaoyingTask {
     public void updatePrizeYesterday() {
         try {
             logger.info("前一天开奖处理。。。。");
-            qiaoqiaoyingService.updatePrize(Cons.Game.TXFFC, DateUtil.addDay(new Date(),-1));
+//            qiaoqiaoyingService.updatePrize(Cons.Game.TXFFC, DateUtil.addDay(new Date(),-1));
             qiaoqiaoyingService.updatePrize(Cons.Game.CQSSC,DateUtil.addDay(new Date(),-1));
         }catch (Exception e){}
     }

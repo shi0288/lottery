@@ -1,6 +1,5 @@
 package com.mcp.lottery.util;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.http.Consts;
 import org.apache.http.Header;
@@ -14,16 +13,29 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.protocol.HttpClientContext;
+import org.apache.http.config.Registry;
+import org.apache.http.config.RegistryBuilder;
+import org.apache.http.conn.socket.ConnectionSocketFactory;
+import org.apache.http.conn.socket.PlainConnectionSocketFactory;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.conn.ssl.TrustStrategy;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HttpContext;
+import org.apache.http.ssl.SSLContextBuilder;
 import org.apache.http.util.EntityUtils;
 import sun.misc.BASE64Encoder;
 
+import javax.net.ssl.SSLContext;
 import java.io.*;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.util.*;
 
 
@@ -36,14 +48,31 @@ public class HttpClientWrapper {
 
     private synchronized static CloseableHttpClient getHttpClient() {
         if (httpClientCur == null) {
+
+            SSLContext sslContext = null;
+            try {
+                sslContext = new SSLContextBuilder().loadTrustMaterial(null, new TrustStrategy() {
+                    //信任所有
+                    public boolean isTrusted(X509Certificate[] chain,
+                                             String authType) throws CertificateException {
+                        return true;
+                    }
+                }).build();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            // 设置协议http和https对应的处理socket链接工厂的对象
+            Registry<ConnectionSocketFactory> socketFactoryRegistry = RegistryBuilder.<ConnectionSocketFactory>create()
+                    .register("http", PlainConnectionSocketFactory.INSTANCE)
+                    .register("https", new SSLConnectionSocketFactory(sslContext))
+                    .build();
              /* Http连接池只需要创建一个*/
-            PoolingHttpClientConnectionManager httpPoolManager = new PoolingHttpClientConnectionManager();
+            PoolingHttpClientConnectionManager httpPoolManager = new PoolingHttpClientConnectionManager(socketFactoryRegistry);
                 /* 连接池最大生成连接数200 */
             httpPoolManager.setMaxTotal(200);
               /* 连接池默认路由最大连接数,默认为20 */
             httpPoolManager.setDefaultMaxPerRoute(20);
 
-            //ConnectionConfig
             RequestConfig defaultRequestConfig = RequestConfig.custom()
                     .setConnectTimeout(Request_TimeOut)
                     .setConnectionRequestTimeout(Request_TimeOut)
@@ -53,6 +82,7 @@ public class HttpClientWrapper {
                     .setTargetPreferredAuthSchemes(
                             Arrays.asList(AuthSchemes.NTLM, AuthSchemes.DIGEST))
                     .setProxyPreferredAuthSchemes(Arrays.asList(AuthSchemes.BASIC))
+                    .setRedirectsEnabled(false)
                     .build();
             httpClientCur = HttpClients.custom()
                     .setConnectionManager(httpPoolManager)
@@ -144,7 +174,7 @@ public class HttpClientWrapper {
         params.put("user", "ugbc1234");
         params.put("pass", "abc.123");
         params.put("softid", "8c4b6409cf36e712a531da0fb58ed279");
-        params.put("codetype", "1902");
+        params.put("codetype", "4004");
         params.put("file_base64", base64);
         HttpResult httpResult = HttpClientWrapper.sendPost("http://upload.chaojiying.net/Upload/Processing.php", header, params);
         return httpResult.getResult();
@@ -206,6 +236,11 @@ public class HttpClientWrapper {
             if (httpEntity != null) {
                 InputStream inputStream = httpEntity.getContent();
                 byte[] data = readInputStream(inputStream);
+//                File storeFile = new File("/data/images/2008sohu.gif");
+//                FileOutputStream output = new FileOutputStream(storeFile);
+//                //得到网络资源的字节数组,并写入文件
+//                output.write(data);
+//                output.close();
                 BASE64Encoder encoder = new BASE64Encoder();
                 httpResult.setResult(encoder.encode(data));
             }

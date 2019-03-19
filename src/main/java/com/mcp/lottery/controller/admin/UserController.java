@@ -10,6 +10,7 @@ import com.mcp.lottery.service.UserRuleService;
 import com.mcp.lottery.service.UserService;
 import com.mcp.lottery.util.*;
 import com.mcp.validate.annotation.Check;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -91,11 +92,15 @@ public class UserController extends BaseController {
     Result update(
             @Check Long id,
             @Check String realname,
+            String password,
             String[] games
     ) {
         User user = new User();
         user.setId(id);
         user.setRealname(realname);
+        if(!StringUtils.isEmpty(password)){
+            user.setPassword(MD5Encoder.encode(password));
+        }
         userService.saveOrUpdate(user);
         userRuleService.saveGame(id, games);
         return result.format();
