@@ -165,4 +165,19 @@ public class UserService {
     }
 
 
+    public boolean openIsTiming(Long id) {
+        if (userMapper.openIsTiming(id) == 1) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean closeIsTiming(Long id) {
+        if (userMapper.closeIsTiming(id) == 1) {
+            return true;
+        }
+        return false;
+    }
+
+
 }

@@ -3,7 +3,7 @@
  */
 jQuery.extend({
     localAjax: function (url, cond, cb) {
-        before();
+        // before();
         $.ajax({
             type: "POST",
             url: url + "?timestamp=" + new Date().getTime(),
@@ -12,7 +12,7 @@ jQuery.extend({
             cache: false,
             data: cond,
             success: function (result) {
-                after();
+                // after();
                 if (result.code == 10000) {
                     cb(result);
                 } else {
@@ -21,7 +21,7 @@ jQuery.extend({
             },
             error: function (data, status, e)//服务器响应失败处理函数
             {
-                after();
+                // after();
                 alert('网络错误,请重试！');
             }
         })
@@ -29,15 +29,22 @@ jQuery.extend({
     localFormAjax: function (fromStr, cb, errCb) {
         var self = $("#" + fromStr);
         var url = self.attr("action");
-        before();
+        var array = self.serializeArray();
+        var param = new Array();
+        $(array).each(function () {
+            if (this.value != undefined && this.value != '' && this.value != null) {
+                param.push(this.name + '=' + this.value);
+            }
+        });
+        // before();
         $.ajax({
             type: "POST",
             dataType: "json",
             contentType: "application/x-www-form-urlencoded;charset=utf-8",
             url: url,
-            data: self.serialize(),
+            data: param.join("&"),
             success: function (result) {
-                after();
+                // after();
                 if (result.code == 10000) {
                     cb(result);
                 } else {
@@ -49,7 +56,7 @@ jQuery.extend({
                 }
             },
             error: function (e) {
-                after();
+                // after();
                 if (errCb) {
                     var result = {};
                     result.message = '网络错误,请重试！';
@@ -158,7 +165,7 @@ jQuery.extend({
             }
         )
     },
-    fileUpload: function (idStr,url, cb) {
+    fileUpload: function (idStr, url, cb) {
         before();
         $.ajaxFileUpload
         (
@@ -264,20 +271,20 @@ window.myConfirm = function (mes, callBack) {
 
 function before() {
     $('#loading').show();
-    $('.mask_area').fadeIn();
+   $('.mask_area').fadeIn();
 
 }
 
 function after() {
     $('#loading').hide();
-    $('.mask_area').fadeOut();
+   $('.mask_area').fadeOut();
 }
 after();
 window.onunload = after;
 
 $(function () {
     $('body').on('click', '.down-file', function () {
-        window.location.href='/assist/download?fileName='+$(this).text();
+        window.location.href = '/assist/download?fileName=' + $(this).text();
     })
     $('form').on('focus', 'input[type=number]', function (e) {
         $(this).on('mousewheel.disableScroll', function (e) {
@@ -288,15 +295,15 @@ $(function () {
         $(this).off('mousewheel.disableScroll')
     })
 
-    $('.btn-export').on('click',function(){
-        var href=$(this).attr('to')+'?timestamp='+new Date().getTime();
-        $('.form-inline').find('.form-control').each(function(){
-            var temp=$(this).val();
-            if(temp!=undefined && temp!=null && temp!=''){
-                href+='&'+$(this).attr('name')+'='+temp;
+    $('.btn-export').on('click', function () {
+        var href = $(this).attr('to') + '?timestamp=' + new Date().getTime();
+        $('.form-inline').find('.form-control').each(function () {
+            var temp = $(this).val();
+            if (temp != undefined && temp != null && temp != '') {
+                href += '&' + $(this).attr('name') + '=' + temp;
             }
         })
-        window.location.href=href;
+        window.location.href = href;
     })
 
 })

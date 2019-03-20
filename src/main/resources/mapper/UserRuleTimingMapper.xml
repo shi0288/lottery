@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mcp.lottery.mapper.UserRuleTimingMapper">
+
+    <resultMap id="ResultMap" type="com.mcp.lottery.model.UserRuleTiming">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="uid" property="uid"/>
+        <result column="game" property="game"/>
+        <result column="begin"  property="begin"/>
+        <result column="end"  property="end"/>
+        <result column="up_point"  property="upPoint"/>
+        <result column="down_point"  property="downPoint"/>
+        <result column="create_at" jdbcType="TIMESTAMP" property="createAt"/>
+        <result column="direction"  property="direction"/>
+    </resultMap>
+
+    <select id="getList" resultMap="ResultMap">
+        select * from user_rule_timing
+        WHERE 1=1
+        <if test="uid != null and uid != ''">
+            and  uid = #{uid}
+        </if>
+        <if test="game != null and game != ''">
+            and  game = #{game}
+        </if>
+        order by begin asc
+    </select>
+
+</mapper>

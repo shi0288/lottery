@@ -41,5 +41,5 @@
 <script type="text/javascript"  src="${base}/bower_components/bootstrap-table/bootstrap-table-zh-CN.min.js"></script>
 <script type="text/javascript"  src="${base}/bower_components/date/WdatePicker.js"></script>
 <script type="text/javascript"  src="${base}/js/ajaxfileupload.js"></script>
-<script type="text/javascript"  src="${base}/js/common.js?v=1.1"></script>
+<script type="text/javascript"  src="${base}/js/common.js?v=1.5"></script>
 

@@ -402,4 +402,28 @@ public class UserController extends BaseController {
     }
 
 
+
+    @RequestMapping(value = "openIsTiming", method = RequestMethod.POST)
+    @ResponseBody
+    Result openIsTiming(
+            @Check Long id
+    ) {
+        if (userService.openIsTiming(id)) {
+            return result.format();
+        }
+        return result.format(ERROR, "保存出错");
+    }
+
+    @RequestMapping(value = "closeIsTiming", method = RequestMethod.POST)
+    @ResponseBody
+    Result closeIsTiming(
+            @Check Long id
+    ) {
+        if (userService.closeIsTiming(id)) {
+            return result.format();
+        }
+        return result.format(ERROR, "保存出错");
+    }
+
+
 }

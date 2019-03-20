@@ -273,6 +273,28 @@
                                                                 <strong>${(userRule.platName)!'未设置投注平台'}</strong>
                                                             </button>
                                                         </#if>
+                                                        &nbsp; &nbsp; &nbsp;
+                                                        <#if manage.username=='lottery'>
+                                                        <div class="btn-group" role="group" >
+                                                            <button role="topDownSetting" tag="${(userRule.uid)!''}"
+                                                                    tagGame="${(userRule.game)!''}"
+                                                                    class="btn btn-warning btn-xs" data-toggle="tooltip"
+                                                                    data-placement="top" title="点击查看">
+                                                                <strong>上下穿设置</strong>
+                                                            </button>
+                                                            <#if userRule.isTiming==1>
+                                                                <button role="topDownClose" tag="${(userRule.id)!''}"
+                                                                        class="btn btn-danger btn-xs" >
+                                                                    <strong>关闭</strong>
+                                                                </button>
+                                                            <#else>
+                                                                <button role="topDownOpen"  tag="${(userRule.id)!''}"
+                                                                        class="btn btn-warning btn-xs" >
+                                                                    <strong>开启</strong>
+                                                                </button>
+                                                            </#if>
+                                                        </div>
+                                                        </#if>
                                                     </td>
                                                 </tr>
                                                 </#list>
@@ -363,6 +385,30 @@
                     </div>
                 </div>
                 <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary conform-but">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="upDownSetting" tabindex="-1">
+        <div class="modal-dialog  modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span><span class="sr-only">Close</span>
+                    </button>
+                    <h4 class="modal-title">上下穿设置</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <form class="form-inline" action="../userRuleTiming/save" id="upDownHtml">
+
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" role="add-userRuleTiming" class="btn btn-success">新增</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary conform-but">保存</button>
                 </div>
@@ -655,7 +701,102 @@
                 });
             })
 
+            $('body').on('click', '[role="topDownSetting"]', function () {
+                var self = $(this);
+                var uid = self.attr('tag');
+                var game = self.attr('tagGame');
+                $('#upDownHtml').empty();
+                $.localAjax('../userRuleTiming/getList', {uid: uid, game: game}, function (res) {
+                    $('#upDownHtml').append(res.data);
+                    $('#gameCode').val(game);
+                    $('#userRuleTimingUid').val(uid);
+                    var deal = function () {
+                        $.localFormAjax('upDownHtml', function (res) {
+                            alert('操作成功');
+                        }, function reShowModal(err) {
+                            alert(err.message, function () {
+                                $.showModal("upDownSetting", deal)
+                            });
+                        })
+                    }
+                    $.showModal("upDownSetting", deal)
+                })
+            })
 
+
+            $('body').on('click', '[role="del-userRuleTiming"]', function () {
+                var self = $(this);
+                var id = self.attr('tag');
+                if (id != undefined && id != '' && id != null) {
+                    myConfirm('确定要删除这条记录吗?', function () {
+                        $.localAjax('../userRuleTiming/delete', {id: id}, function () {
+                            var curContentObj = self.closest("tr");
+                            var index = $('#upDownHtml tr').index(curContentObj);
+                            var nextContentObj = curContentObj.next();
+                            while (nextContentObj.length > 0) {
+                                nextContentObj.find('input').replaceWith(function () {
+                                    var str = $(this).prop("outerHTML").replace(/userRuleTimingList\[\d+\]/g, "userRuleTimingList[" + index + "]");
+                                    var target = $(str);
+                                    target.val($(this).val());
+                                    return target;
+                                });
+                                index++;
+                                nextContentObj = nextContentObj.next();
+                            }
+                            curContentObj.remove();
+                        })
+                    })
+                } else {
+                    var curContentObj = self.closest("tr");
+                    var index = $('#upDownHtml tr').index(curContentObj);
+                    var nextContentObj = curContentObj.next();
+                    while (nextContentObj.length > 0) {
+                        nextContentObj.find('input').replaceWith(function () {
+                            var str = $(this).prop("outerHTML").replace(/userRuleTimingList\[\d+\]/g, "userRuleTimingList[" + index + "]");
+                            var target = $(str);
+                            target.val($(this).val());
+                            return target;
+                        });
+                        index++;
+                        nextContentObj = nextContentObj.next();
+                    }
+                    curContentObj.remove();
+                }
+            })
+
+            $('body').on('click', '[role="add-userRuleTiming"]', function () {
+                var i = $('#upDownHtml').find('tr').length;
+                var a = '<tr><td><input type="hidden"  name="userRuleTimingList[0].id" value="" /><div class="form-group"><label>开始时间</label>  <input type="text" name="userRuleTimingList[0].startTime" class="form-control" onclick="WdatePicker({dateFmt:\'HH:mm\',autoPickDate:true})"                           style="cursor: default;"                           readonly>                </div>                <div class="form-group">                    <label>结束时间</label>                    <input type="text" name="userRuleTimingList[0].endTime" class="form-control" onclick="WdatePicker({dateFmt:\'HH:mm\',autoPickDate:true})"                           style="cursor: default;"                           readonly>                </div>                <div class="form-group">                    <label>上穿点数</label>                    <input type="text" name="userRuleTimingList[0].upPoint" style="width:60px;" class="form-control">                </div>                <div class="form-group">                    <label>下穿点数</label>                    <input type="text" name="userRuleTimingList[0].downPoint"  style="width:60px;" class="form-control">                </div>                <div class="form-group">                    <button type="button" class="btn btn-danger" role="del-userRuleTiming">删除</button> </div> </td></tr>';
+                if (i > 0) {
+                    a = a.replace(/userRuleTimingList\[\d+\]/g, "userRuleTimingList[" + i + "]");
+                }
+                $('#upDownHtml').find('table').append(a);
+            })
+
+
+            $('body').on('click', '[role="topDownClose"]', function () {
+                var self = $(this);
+                var id = self.attr('tag');
+                myConfirm("确定要关闭上下穿吗?", function () {
+                    $.localAjax('./closeIsTiming', {id: id}, function () {
+                        alert('操作成功', function () {
+                            history.go(0);
+                        });
+                    })
+                });
+            })
+
+            $('body').on('click', '[role="topDownOpen"]', function () {
+                var self = $(this);
+                var id = self.attr('tag');
+                myConfirm("确定要开启上下穿吗?", function () {
+                    $.localAjax('./openIsTiming', {id: id}, function () {
+                        alert('操作成功', function () {
+                            history.go(0);
+                        });
+                    })
+                });
+            })
 
 
 

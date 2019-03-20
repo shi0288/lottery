@@ -43,6 +43,8 @@ public class UserRule {
 
     private Integer isBottomwin;
 
+    private Integer isTiming;
+
     @Transient
     private String platName;
 
@@ -189,5 +191,13 @@ public class UserRule {
 
     public void setIsBottomwin(Integer isBottomwin) {
         this.isBottomwin = isBottomwin;
+    }
+
+    public Integer getIsTiming() {
+        return isTiming;
+    }
+
+    public void setIsTiming(Integer isTiming) {
+        this.isTiming = isTiming;
     }
 }

@@ -8,28 +8,30 @@
                 <h2 style="float: right"><a href="javascript:void(0);" role="setting">查看账号</a></h2>
             </div>
             <div class="box-content">
-                <table class="table table-condensed table-hover">
-                    <thead>
-                    <tr>
-                        <th>游戏名称</th>
-                        <th>期次</th>
-                        <th>预测</th>
-                        <th>获取时间</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <#if page.list??>
-                        <#list page.list as e>
+                <div class="table-responsive">
+                    <table class="table table-condensed table-hover">
+                        <thead>
                         <tr>
-                            <td>${convert('gameCode',e.game)!''}</td>
-                            <td>${(e.term)!''}</td>
-                            <td>${convert('ssc',e.data)!''}</td>
-                            <td>${(e.createAt?string("yyyy-MM-dd HH:mm:ss"))!''}</td>
+                            <th>游戏名称</th>
+                            <th>期次</th>
+                            <th>预测</th>
+                            <th>获取时间</th>
                         </tr>
-                        </#list>
-                    </#if>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                        <#if page.list??>
+                            <#list page.list as e>
+                            <tr>
+                                <td>${convert('gameCode',e.game)!''}</td>
+                                <td>${(e.term)!''}</td>
+                                <td>${convert('ssc',e.data)!''}</td>
+                                <td>${(e.createAt?string("yyyy-MM-dd HH:mm:ss"))!''}</td>
+                            </tr>
+                            </#list>
+                        </#if>
+                        </tbody>
+                    </table>
+                </div>
             <#if  (page.list)??>
                 <#import "/fragment/pager.ftl" as p>
                 <@p.pager pager = page />
@@ -49,34 +51,34 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <input type="hidden"  class="form-control" value="${(e.id)!''}"  id="id" >
+                    <input type="hidden" class="form-control" value="${(e.id)!''}" id="id">
                     <div class="control-group">
                         <label class="control-label">用户名</label>
-                        <input type="text"  class="form-control" value="${(e.username)!''}"  id="username" >
+                        <input type="text" class="form-control" value="${(e.username)!''}" id="username">
                     </div>
                     <div class="control-group">
                         <label class="control-label">密码</label>
-                        <input type="text"  class="form-control" value="${(e.password)!''}"  id="password">
+                        <input type="text" class="form-control" value="${(e.password)!''}" id="password">
                     </div>
                     <div class="control-group">
                         <label class="control-label">登陆地址</label>
-                        <input type="text"  class="form-control" value="${(e.loginUrl)!''}"  id="login_url">
+                        <input type="text" class="form-control" value="${(e.loginUrl)!''}" id="login_url">
                     </div>
                     <div class="control-group">
                         <label class="control-label">时时彩数据地址</label>
-                        <input type="text"  class="form-control" value="${(e.dataUrl)!''}"  id="data_url">
+                        <input type="text" class="form-control" value="${(e.dataUrl)!''}" id="data_url">
                     </div>
                     <div class="control-group">
                         <label class="control-label">时时彩中奖历史</label>
-                        <input type="text"  class="form-control" value="${(e.prizeUrl)!''}"  id="prize_url">
+                        <input type="text" class="form-control" value="${(e.prizeUrl)!''}" id="prize_url">
                     </div>
                     <div class="control-group">
                         <label class="control-label">分分彩数据地址</label>
-                        <input type="text"  class="form-control" value="${(e.dataUrlFfc)!''}"  id="data_url">
+                        <input type="text" class="form-control" value="${(e.dataUrlFfc)!''}" id="data_url">
                     </div>
                     <div class="control-group">
                         <label class="control-label">分分彩中奖历史</label>
-                        <input type="text"  class="form-control" value="${(e.prizeUrlFfc)!''}"  id="prize_url">
+                        <input type="text" class="form-control" value="${(e.prizeUrlFfc)!''}" id="prize_url">
                     </div>
                 </div>
             </div>
@@ -92,7 +94,7 @@
 
 <script>
     $(function () {
-        $('body').on('click','[role="setting"]', function () {
+        $('body').on('click', '[role="setting"]', function () {
             var self = $(this);
             $.showModal("setting", function () {
                 var id = $('#id').val();
@@ -101,7 +103,14 @@
                 var loginUrl = $('#login_url').val();
                 var dataUrl = $('#data_url').val();
                 var prizeUrl = $('#prize_url').val();
-                $.localAjax('./setting', {id: id, username: username,password:password,loginUrl:loginUrl,dataUrl:dataUrl,prizeUrl:prizeUrl}, function () {
+                $.localAjax('./setting', {
+                    id: id,
+                    username: username,
+                    password: password,
+                    loginUrl: loginUrl,
+                    dataUrl: dataUrl,
+                    prizeUrl: prizeUrl
+                }, function () {
                     alert('操作成功', function () {
                         history.go(0);
                     });

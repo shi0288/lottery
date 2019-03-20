@@ -27,7 +27,7 @@
     </select>
 
     <select id="getUserRuleList" resultType="com.mcp.lottery.model.UserRule">
-        select user_rule.*,is_open as isOpen,init_money as initMoney,is_dividing as isDividing,limit_lose as limitLose,limit_win as limitWin,dividing_time as dividingTime,is_trace_lose as isTraceLose,plat.name as platName,limit_max_win as limitMaxWin,limit_min_win as limitMinWin,is_bottomwin as isBottomwin from user_rule left join plat_game on user_rule.plat_game_id=plat_game.id and user_rule.plat_game_id>0  LEFT JOIN plat on plat_game.plat_id =plat.id  where  uid=#{id} order by game ASC
+        select user_rule.*,is_open as isOpen,init_money as initMoney,is_dividing as isDividing,limit_lose as limitLose,limit_win as limitWin,dividing_time as dividingTime,is_trace_lose as isTraceLose,plat.name as platName,limit_max_win as limitMaxWin,limit_min_win as limitMinWin,is_bottomwin as isBottomwin,is_timing as isTiming from user_rule left join plat_game on user_rule.plat_game_id=plat_game.id and user_rule.plat_game_id>0  LEFT JOIN plat on plat_game.plat_id =plat.id  where  uid=#{id} order by game ASC
     </select>
 
     <update id="openTouzhu">
@@ -80,6 +80,14 @@
 
     <update id="updateLimitMinWin">
         UPDATE user_rule SET  limit_min_win=#{limitMinWin}  where id=#{id}
+    </update>
+
+    <update id="openIsTiming">
+        update user_rule set is_timing=1 where id=#{id}
+    </update>
+
+    <update id="closeIsTiming">
+        update user_rule set is_timing=0 where id=#{id}
     </update>
 
 

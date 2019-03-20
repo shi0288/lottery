@@ -40,5 +40,9 @@ public interface UserMapper extends BaseMapper<User>{
 
     int closeBottomWin(@Param("id")Long id);
 
+    int openIsTiming(@Param("id")Long id);
+
+    int closeIsTiming(@Param("id")Long id);
+
 
 }

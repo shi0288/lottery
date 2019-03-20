@@ -44,7 +44,6 @@ public class BaseController {
     protected HttpServletResponse httpServletResponse;
 
 
-
     @ExceptionHandler({Exception.class})
     public Object handleException(HttpServletRequest req, Exception ex) {
         Throwable e = ExceptionUtils.getRootCause(ex);
