@@ -22,6 +22,17 @@ public class Prediction {
 
     private Date updateAt;
 
+    @Override
+    public String toString() {
+        return "Prediction{" +
+                "id=" + id +
+                ", term='" + term + '\'' +
+                ", game='" + game + '\'' +
+                ", data='" + data + '\'' +
+                ", createAt=" + createAt +
+                ", updateAt=" + updateAt +
+                '}';
+    }
 
     public Long getId() {
         return id;

@@ -79,13 +79,13 @@ public class TaiyangPlugin extends Plugin {
         String day = termCode.substring(0, 8);
         int num = Integer.parseInt(termCode.substring(8, termCode.length()));
         if (num < 10) {
-            return day+"00"+num;
+            return day + "00" + num;
         }
         if (num < 100) {
-            return day+"0"+num;
+            return day + "0" + num;
         }
         if (num < 1000) {
-            return day+num;
+            return day + num;
         }
         return termCode;
     }
@@ -149,8 +149,10 @@ public class TaiyangPlugin extends Plugin {
         Map<String, String> header = this.getHeader(plat.getTouzhuUrl(), plat);
         HttpResult httpResult = HttpClientWrapper.sendPost(plat.getTouzhuUrl(), header, param);
         LotteryResult lotteryResult = new LotteryResult();
-        if (httpResult.getResult().indexOf("投注成功") > -1 || httpResult.getResult().indexOf("截止") > -1) {
+        if (httpResult.getResult().indexOf("投注成功") > -1) {
             lotteryResult.setSuccess(true);
+        } else if (httpResult.getResult().indexOf("截止销售") > -1) {
+            lotteryResult.setSuccess(false);
         } else {
             throw new ApiException("登录已超时");
         }

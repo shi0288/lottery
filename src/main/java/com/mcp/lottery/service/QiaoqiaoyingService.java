@@ -74,6 +74,7 @@ public class QiaoqiaoyingService {
             }
             Map<String, String> headers = new HashMap<>();
             headers.put("Authorization", "Bearer " + qiaoqiaoying.getToken());
+            headers.put("abp.tenantid", "1");
             Map<String, String> params = new HashMap<>();
             //区分游戏种类
             String url = null;
@@ -83,7 +84,10 @@ public class QiaoqiaoyingService {
                 url = qiaoqiaoying.getDataUrlFfc().replace("$data$", DateUtil.DateToString(new Date(), "yyyyMMdd"));
             }
             HttpResult httpResult = HttpClientWrapper.sendGet(url, headers, params);
-            return httpResult.getResult();
+            if(httpResult.getResult().indexOf("prediction")>-1){
+                return httpResult.getResult();
+            }
+            updateToken(qiaoqiaoying);
         }
         return null;
     }
@@ -137,6 +141,79 @@ public class QiaoqiaoyingService {
         return false;
     }
 
+
+    public void historyPrediction(String game) {
+        String res = this.getResult(game);
+        if (StringUtils.isEmpty(res)) {
+            //获取预测为空则返回
+            return;
+        }
+        JSONObject result = JSONObject.parseObject(res).getJSONObject("result");
+        JSONObject history = result.getJSONObject("history");
+        JSONArray items = history.getJSONArray("items");
+        String termDay = DateUtil.DateToString(new Date(), "yyyyMMdd");
+        for (int i = 0; i < items.size(); i++) {
+            try {
+                JSONObject temp = items.getJSONObject(i);
+                String str=temp.getString("drawIssue");
+                if(str.equals("0000")){
+                    str="1440";
+                }
+                String term = termDay + str;
+                Prediction prediction = new Prediction();
+                prediction.setGame(game);
+                prediction.setTerm(term);
+                Prediction target = predictionService.get(prediction);
+                if (target != null) {
+                    continue;
+                }
+                JSONObject data=new JSONObject();
+                data.put("subtotal",temp.get("betAmounts"));
+                JSONArray dataArr=new JSONArray();
+                data.put("items",dataArr);
+                JSONArray anlsItems=temp.getJSONArray("anlsItems");
+                for(int m=0;m<anlsItems.size();m++){
+                    JSONObject item=anlsItems.getJSONObject(m);
+                    item.remove("resultState");
+                    dataArr.add(item);
+                }
+                prediction.setData(data.toString());
+                predictionService.saveOrUpdate(prediction);
+            } catch (Exception e) {
+            }
+        }
+    }
+
+
+    //todo
+    public String getPredictionTxffc() {
+        PageHelper.startPage(1, 1);
+        PageHelper.orderBy("id asc");
+        Qiaoqiaoying query = new Qiaoqiaoying();
+        List<Qiaoqiaoying> list = qiaoqiaoyingMapper.select(query);
+        if (list.size() == 1) {
+            Qiaoqiaoying qiaoqiaoying = list.get(0);
+            if (qiaoqiaoying.getExpiresIn() == null || qiaoqiaoying.getExpiresIn().getTime() - new Date().getTime() <= 500) {
+                if (!updateToken(qiaoqiaoying)) {
+                    return null;
+                }
+            }
+            Map<String, String> headers = new HashMap<>();
+            headers.put("Authorization", "Bearer " + qiaoqiaoying.getToken());
+            headers.put("adp.tenantid", "1");
+            JSONObject params = new JSONObject();
+            params.put("name","ZhongQingShiShiCai");
+            params.put("baseCode","1");
+            params.put("ctlgAnlsSysId","8c8357d847f8223");
+            //区分游戏种类
+            String url = "http://www.qiaoqiaoying.cn/api/lottery/forecastToAutoBet";
+            HttpResult httpResult = HttpClientWrapper.sendPost(url, headers, params);
+            return httpResult.getResult();
+        }
+        return null;
+    }
+
+
     public void updatePrediction(String game) {
         //获取当前期次
         Term term = termService.getOpenTerm(game);
@@ -159,7 +236,7 @@ public class QiaoqiaoyingService {
                     //如果当前秒数大于30 不再获取
                     Calendar c = Calendar.getInstance();
                     int second = c.get(Calendar.SECOND);
-                    if (second >30) {
+                    if (second > 30) {
                         return;
                     }
                 }
@@ -207,6 +284,7 @@ public class QiaoqiaoyingService {
         }
     }
 
+
     public String formatGameTermCode(String game, int issue) {
         if (game.equals(Cons.Game.CQSSC)) {
             return DateUtil.DateToString(new Date(), "yyyyMMdd") + new DecimalFormat("000").format(issue);
@@ -216,7 +294,7 @@ public class QiaoqiaoyingService {
         return null;
     }
 
-    public void updatePrize(String game,Date date) {
+    public void updatePrize(String game, Date date) {
         String result = this.getPrize(game, date);
         if (StringUtils.isEmpty(result)) {
             return;
@@ -237,6 +315,7 @@ public class QiaoqiaoyingService {
                 Term update = new Term();
                 update.setId(target.getId());
                 update.setWinNumber(temp.getString("preDrawCode"));
+                System.out.println(target.getTermCode()+":"+update.getWinNumber());
                 termService.update(update);
                 return;
             }

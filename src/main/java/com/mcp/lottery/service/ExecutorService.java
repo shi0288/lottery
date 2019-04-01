@@ -34,55 +34,62 @@ public class ExecutorService {
     @RabbitListener(queues = "gen_server_test_queue", containerFactory = "taskContainerFactory")
     @RabbitHandler
     public void process(String data) {
-        String[] chars = data.split(",");
-        StringBuffer stringBuffer = new StringBuffer();
-        for (int i = 0; i < chars.length; i++) {
-            stringBuffer.append(String.valueOf((char) Integer.parseInt(chars[i])));
-        }
-        logger.info("接收：" + stringBuffer.toString());
-        JSONObject params = JSONObject.parseObject(stringBuffer.toString());
-        Long pid = Long.valueOf(params.get("pid").toString());
         String game = null;
-        if (params.containsKey("game")) {
-            game = params.get("game").toString();
-        } else {
-            logger.info("没有游戏参数");
-            return;
-        }
         String term = null;
-        if (params.containsKey("term")) {
-            term = params.get("term").toString();
-        } else {
-            logger.info("没有期次参数");
+        JSONArray list;
+        Plugin plugin;
+        Plat plat;
+        try {
+            String[] chars = data.split(",");
+            StringBuffer stringBuffer = new StringBuffer();
+            for (int i = 0; i < chars.length; i++) {
+                stringBuffer.append(String.valueOf((char) Integer.parseInt(chars[i])));
+            }
+            logger.info("接收：" + stringBuffer.toString());
+            JSONObject params = JSONObject.parseObject(stringBuffer.toString());
+            Long pid = Long.valueOf(params.get("pid").toString());
+            if (params.containsKey("game")) {
+                game = params.get("game").toString();
+            } else {
+                logger.info("没有游戏参数");
+                return;
+            }
+            if (params.containsKey("term")) {
+                term = params.get("term").toString();
+            } else {
+                logger.info("没有期次参数");
+                return;
+            }
+            plat = platService.get(pid);
+            list = params.getJSONArray("list");
+            plugin = (Plugin) SpringIocUtil.getBean(plat.getPlatCategory().getExecutor());
+        } catch (Exception e) {
+            logger.error("接收数据问题");
             return;
         }
-        Plat plat = platService.get(pid);
-        JSONArray list = params.getJSONArray("list");
-        Plugin plugin = (Plugin) SpringIocUtil.getBean(plat.getPlatCategory().getExecutor());
         LotteryResult lotteryResult;
         try {
             lotteryResult = plugin.send(plat, game, term, list);
             logger.info("返回：" + lotteryResult.getResponse());
             updateLottery(lotteryResult, list);
         } catch (ApiException e) {
-            logger.info("更新账户信息后重试");
-            //更新账户信息重新试下
-            plugin.getAuthor(plat);
-            if (platService.update(plat)) {
-                try {
+            try {
+                logger.info("更新账户信息后重试");
+                plugin.getAuthor(plat);
+                if (platService.update(plat)) {
                     lotteryResult = plugin.send(plat, game, term, list);
                     logger.info("返回：" + lotteryResult.getResponse());
                     updateLottery(lotteryResult, list);
-                } catch (Exception ex) {
-                    //真的失败了。。
-                    ex.printStackTrace();
-                    lotteryResult = new LotteryResult();
-                    lotteryResult.setSuccess(false);
-                    lotteryResult.setResponse("更新账号后依旧失败");
-                    updateLottery(lotteryResult, list);
+                } else {
+                    e.printStackTrace();
                 }
-            } else {
-                e.printStackTrace();
+            } catch (Exception ex) {
+                //真的失败了。。
+                ex.printStackTrace();
+                lotteryResult = new LotteryResult();
+                lotteryResult.setSuccess(false);
+                lotteryResult.setResponse("更新账号后依旧失败");
+                updateLottery(lotteryResult, list);
             }
         } catch (Exception e) {
             e.printStackTrace();

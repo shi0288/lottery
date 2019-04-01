@@ -91,8 +91,8 @@
 //
 //    @Test
 //    public void fenfencai() throws Exception {
-//        String str = "2019-03-01";
-//        String str1 = "2019-04-01"; //不包含
+//        String str = "2019-04-01";
+//        String str1 = "2019-06-01"; //不包含
 //        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 //        Calendar startDay = Calendar.getInstance();
 //        Calendar endDay = Calendar.getInstance();
@@ -185,6 +185,16 @@
 ////        } catch (Exception e) {
 ////            e.printStackTrace();
 ////        }
+//    }
+//
+//
+//    @Test
+//    public void updateHistory(){
+//
+////         qiaoqiaoyingService.updatePrize(Cons.Game.TXFFC, new Date());
+//
+////        qiaoqiaoyingService.historyPrediction(Cons.Game.TXFFC);
+//        System.out.println(qiaoqiaoyingService.getResult(Cons.Game.CQSSC));
 //    }
 //
 //
