@@ -50,6 +50,13 @@
                         </li>
                         <li class="accordion">
                             <a href="javascript:void(0);"><i
+                                    class="glyphicon glyphicon-plus"></i><span> 数据查看</span></a>
+                            <ul class="nav nav-pills nav-stacked"  style="display: block;" >
+                                <li><a href="${base}/lqmJHTqixle2eWaB/line/penetrated"> 穿越轴</a></li>
+                            </ul>
+                        </li>
+                        <li class="accordion">
+                            <a href="javascript:void(0);"><i
                                     class="glyphicon glyphicon-plus"></i><span> 投注管理</span></a>
                             <ul class="nav nav-pills nav-stacked"  style="display: block;" >
                                 <li><a href="${base}/lqmJHTqixle2eWaB/order/list"> 投注列表</a></li>

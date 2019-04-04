@@ -84,7 +84,7 @@ public class QiaoqiaoyingService {
                 url = qiaoqiaoying.getDataUrlFfc().replace("$data$", DateUtil.DateToString(new Date(), "yyyyMMdd"));
             }
             HttpResult httpResult = HttpClientWrapper.sendGet(url, headers, params);
-            if(httpResult.getResult().indexOf("prediction")>-1){
+            if (httpResult.getResult().indexOf("prediction") > -1) {
                 return httpResult.getResult();
             }
             updateToken(qiaoqiaoying);
@@ -155,9 +155,9 @@ public class QiaoqiaoyingService {
         for (int i = 0; i < items.size(); i++) {
             try {
                 JSONObject temp = items.getJSONObject(i);
-                String str=temp.getString("drawIssue");
-                if(str.equals("0000")){
-                    str="1440";
+                String str = temp.getString("drawIssue");
+                if (str.equals("0000")) {
+                    str = "1440";
                 }
                 String term = termDay + str;
                 Prediction prediction = new Prediction();
@@ -167,18 +167,18 @@ public class QiaoqiaoyingService {
                 if (target != null) {
                     continue;
                 }
-                JSONObject data=new JSONObject();
-                data.put("subtotal",temp.get("betAmounts"));
-                JSONArray dataArr=new JSONArray();
-                data.put("items",dataArr);
-                JSONArray anlsItems=temp.getJSONArray("anlsItems");
-                for(int m=0;m<anlsItems.size();m++){
-                    JSONObject item=anlsItems.getJSONObject(m);
+                JSONObject data = new JSONObject();
+                data.put("subtotal", temp.get("betAmounts"));
+                JSONArray dataArr = new JSONArray();
+                data.put("items", dataArr);
+                JSONArray anlsItems = temp.getJSONArray("anlsItems");
+                for (int m = 0; m < anlsItems.size(); m++) {
+                    JSONObject item = anlsItems.getJSONObject(m);
                     item.remove("resultState");
                     dataArr.add(item);
                 }
                 prediction.setData(data.toString());
-                predictionService.saveOrUpdate(prediction);
+//                predictionService.saveOrUpdate(prediction);
             } catch (Exception e) {
             }
         }
@@ -202,9 +202,9 @@ public class QiaoqiaoyingService {
             headers.put("Authorization", "Bearer " + qiaoqiaoying.getToken());
             headers.put("adp.tenantid", "1");
             JSONObject params = new JSONObject();
-            params.put("name","ZhongQingShiShiCai");
-            params.put("baseCode","1");
-            params.put("ctlgAnlsSysId","8c8357d847f8223");
+            params.put("name", "ZhongQingShiShiCai");
+            params.put("baseCode", "1");
+            params.put("ctlgAnlsSysId", "8c8357d847f8223");
             //区分游戏种类
             String url = "http://www.qiaoqiaoying.cn/api/lottery/forecastToAutoBet";
             HttpResult httpResult = HttpClientWrapper.sendPost(url, headers, params);
@@ -315,7 +315,6 @@ public class QiaoqiaoyingService {
                 Term update = new Term();
                 update.setId(target.getId());
                 update.setWinNumber(temp.getString("preDrawCode"));
-                System.out.println(target.getTermCode()+":"+update.getWinNumber());
                 termService.update(update);
                 return;
             }

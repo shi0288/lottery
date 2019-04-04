@@ -19,7 +19,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 
-@Service
+//@Service
 public class ExecutorService {
 
     @Autowired
@@ -81,7 +81,7 @@ public class ExecutorService {
                     logger.info("返回：" + lotteryResult.getResponse());
                     updateLottery(lotteryResult, list);
                 } else {
-                    e.printStackTrace();
+                    logger.info("更新失败");
                 }
             } catch (Exception ex) {
                 //真的失败了。。

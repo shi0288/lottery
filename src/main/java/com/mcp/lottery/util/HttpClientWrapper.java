@@ -42,7 +42,7 @@ import java.util.*;
 public class HttpClientWrapper {
 
     /* 请求超时时间 */
-    private static int Request_TimeOut = 8000;
+    private static int Request_TimeOut = 10000;
     /* 当前连接池中链接 */
     private static CloseableHttpClient httpClientCur = null;
 

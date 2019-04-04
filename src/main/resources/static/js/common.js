@@ -44,7 +44,7 @@ jQuery.extend({
             url: url,
             data: param.join("&"),
             success: function (result) {
-                // after();
+                after();
                 if (result.code == 10000) {
                     cb(result);
                 } else {
@@ -56,7 +56,7 @@ jQuery.extend({
                 }
             },
             error: function (e) {
-                // after();
+                after();
                 if (errCb) {
                     var result = {};
                     result.message = '网络错误,请重试！';
