@@ -19,6 +19,11 @@ public class UserRuleTimingService {
         return userRuleTimingMapper.getList(uid, game);
     }
 
+
+    public int updateBottomwin(Long uid, String game) {
+        return userRuleTimingMapper.updateBottomwin(uid, game);
+    }
+
     public void saveOrUpdate(UserRuleTiming userRuleTiming){
         if(userRuleTiming.getId()==null){
             userRuleTimingMapper.insertSelective(userRuleTiming);

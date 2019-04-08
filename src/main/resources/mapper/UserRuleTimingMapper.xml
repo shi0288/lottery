@@ -12,6 +12,8 @@
         <result column="down_point"  property="downPoint"/>
         <result column="create_at" jdbcType="TIMESTAMP" property="createAt"/>
         <result column="direction"  property="direction"/>
+        <result column="is_bull_axis_move"  property="isBullAxisMove"/>
+        <result column="is_trade_before_axis_move"  property="isTradeBeforeAxisMove"/>
     </resultMap>
 
     <select id="getList" resultMap="ResultMap">
@@ -25,5 +27,12 @@
         </if>
         order by begin asc
     </select>
+
+
+    <update id="updateBottomwin">
+        update user_rule set is_close_by_winlose=0,dividing_time=unix_timestamp(now()),is_bottomwin=CASE user_rule.is_bottomwin  WHEN 2 THEN 1 ELSE user_rule.is_bottomwin END where user_rule.uid=#{uid} and  user_rule.game=#{game}
+    </update>
+    
+    
 
 </mapper>

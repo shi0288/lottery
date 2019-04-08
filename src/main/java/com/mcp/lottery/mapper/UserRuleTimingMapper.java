@@ -12,4 +12,6 @@ public interface UserRuleTimingMapper extends BaseMapper<UserRuleTiming> {
 
     List<UserRuleTiming> getList(@Param("uid")Long uid,@Param("game")String game);
 
+    int updateBottomwin(@Param("uid")Long uid,@Param("game")String game);
+
 }

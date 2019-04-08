@@ -28,13 +28,17 @@ public class UserRuleTiming {
 
     private Date createAt;
 
-    private Integer direction;
+    private Integer isBullAxisMove;
+
+    private Integer isTradeBeforeAxisMove;
 
     @Transient
     private String startTime;
 
     @Transient
     private String endTime;
+
+    private Integer direction;
 
     @Override
     public String toString() {
@@ -47,9 +51,11 @@ public class UserRuleTiming {
                 ", upPoint=" + upPoint +
                 ", downPoint=" + downPoint +
                 ", createAt=" + createAt +
-                ", direction=" + direction +
+                ", isBullAxisMove=" + isBullAxisMove +
+                ", isTradeBeforeAxisMove=" + isTradeBeforeAxisMove +
                 ", startTime='" + startTime + '\'' +
                 ", endTime='" + endTime + '\'' +
+                ", direction=" + direction +
                 '}';
     }
 
@@ -165,5 +171,21 @@ public class UserRuleTiming {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+    }
+
+    public Integer getIsBullAxisMove() {
+        return isBullAxisMove;
+    }
+
+    public void setIsBullAxisMove(Integer isBullAxisMove) {
+        this.isBullAxisMove = isBullAxisMove;
+    }
+
+    public Integer getIsTradeBeforeAxisMove() {
+        return isTradeBeforeAxisMove;
+    }
+
+    public void setIsTradeBeforeAxisMove(Integer isTradeBeforeAxisMove) {
+        this.isTradeBeforeAxisMove = isTradeBeforeAxisMove;
     }
 }

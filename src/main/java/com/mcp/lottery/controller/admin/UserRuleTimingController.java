@@ -1,6 +1,7 @@
 package com.mcp.lottery.controller.admin;
 
 
+import com.mcp.lottery.model.UserRule;
 import com.mcp.lottery.model.UserRuleTiming;
 import com.mcp.lottery.service.UserRuleTimingService;
 import com.mcp.lottery.util.*;
@@ -26,7 +27,6 @@ public class UserRuleTimingController extends BaseController {
 
     @Autowired
     private TemplateUtils templateUtils;
-
 
     @RequestMapping(value = "getList", method = RequestMethod.POST)
     @ResponseBody
@@ -64,22 +64,28 @@ public class UserRuleTimingController extends BaseController {
             if (userRuleTiming.getDownPoint() == null) {
                 return result.format(ResultCode.ERROR, "下穿点数不能为空");
             }
+            if (userRuleTiming.getIsBullAxisMove() == null) {
+                userRuleTiming.setIsBullAxisMove(0);
+            }
+            if (userRuleTiming.getIsTradeBeforeAxisMove() == null) {
+                userRuleTiming.setIsTradeBeforeAxisMove(0);
+            }
         }
         list.forEach(e -> {
             e.setGame(game);
             e.setUid(uid);
             ruleTimingService.saveOrUpdate(e);
         });
+        ruleTimingService.updateBottomwin(uid, game);
         return result.format();
     }
 
     @RequestMapping(value = "delete", method = RequestMethod.POST)
     @ResponseBody
-    Result delete(@Check Long id){
+    Result delete(@Check Long id) {
         ruleTimingService.delete(id);
         return result.format();
     }
-
 
 
 }

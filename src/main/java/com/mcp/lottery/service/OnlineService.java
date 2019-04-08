@@ -73,7 +73,7 @@ public class OnlineService {
         headers.put("user-agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.119 Safari/537.36");
         headers.put("referer", "https://www.e3sh.com/article-87-1.html");
         headers.put("cookie", "CqqS_2132_saltkey=N1QHhwOh;CqqS_2132_sid=gTt0bt;CqqS_2132_lastact=1552386719%09plugin.php%09;Hm_lpvt_0860ef575b8bddda9b51699dfd59291e=1552386546;Hm_lvt_0860ef575b8bddda9b51699dfd59291e=1552384879;UM_distinctid=169715962ac216-05a6d18ff84eda-36607102-1fa400-169715962ad6ad;CNZZDATA1273613680=1848860687-1552381690-%7C1552381690");
-        Map<String, String> params = new HashMap();
+        Map<String, Object> params = new HashMap();
         HttpResult httpResult = HttpClientWrapper.sendGet("https://www.e3sh.com/api.html", headers, params);
         JSONArray array = JSON.parseArray(httpResult.getResult());
         for (int i = 0; i < array.size(); i++) {
@@ -101,7 +101,7 @@ public class OnlineService {
         headers.put("user-agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.119 Safari/537.36");
         headers.put("referer", "http://www.txzxtj.com/");
         headers.put("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-        Map<String, String> params = new HashMap();
+        Map<String, Object> params = new HashMap();
         params.put("jqueryGridPage", "1");
         params.put("jqueryGridRows", "15");
         params.put("code", "tx");

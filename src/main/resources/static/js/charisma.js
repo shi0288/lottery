@@ -1,5 +1,7 @@
 $(document).ready(function () {
-
+    var msie = navigator.userAgent.match(/msie/i);
+    $.browser = {};
+    $.browser.msie = {};
     $('.navbar-toggle').click(function (e) {
         e.preventDefault();
         $('.nav-sm').html($('.navbar-collapse').html());

@@ -53,6 +53,7 @@
                                     class="glyphicon glyphicon-plus"></i><span> 数据查看</span></a>
                             <ul class="nav nav-pills nav-stacked"  style="display: block;" >
                                 <li><a href="${base}/lqmJHTqixle2eWaB/line/penetrated"> 穿越轴</a></li>
+                                <li><a href="${base}/lqmJHTqixle2eWaB/line/bull"> BULL曲线</a></li>
                             </ul>
                         </li>
                         <li class="accordion">

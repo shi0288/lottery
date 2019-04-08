@@ -122,7 +122,7 @@ public class HttpClientWrapper {
     }
 
 
-    public static HttpResult sendGet(String url, Map<String, String> headers, Map<String, String> params) {
+    public static HttpResult sendGet(String url, Map<String, String> headers, Map<String, Object> params) {
         url = transGetUrl(url, params);
         HttpGet httpGet = new HttpGet(url);
         if (headers != null) {
@@ -133,15 +133,15 @@ public class HttpClientWrapper {
         return HttpClientWrapper.execute(httpGet);
     }
 
-    public static String transGetUrl(String url, Map<String, String> params) {
+    public static String transGetUrl(String url, Map<String, Object> params) {
         if (params != null && params.size()>0) {
             String getParam = "";
             int i = 0;
-            for (String key : params.keySet()) {
+            for (Object key : params.keySet()) {
                 if (i == 0) {
-                    getParam += (key + "=" + params.get(key));
+                    getParam += (key + "=" + params.get(key).toString());
                 } else {
-                    getParam += ("&" + key + "=" + params.get(key));
+                    getParam += ("&" + key + "=" + params.get(key).toString());
                 }
                 i++;
             }
@@ -155,7 +155,7 @@ public class HttpClientWrapper {
     }
 
 
-    public static HttpResult sendGetForBase64(String url, Map<String, String> headers, Map<String, String> params) {
+    public static HttpResult sendGetForBase64(String url, Map<String, String> headers, Map<String, Object> params) {
         url = transGetUrl(url, params);
         HttpGet httpGet = new HttpGet(url);
         if (headers != null) {

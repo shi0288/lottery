@@ -29,7 +29,7 @@ public class LineController extends BaseController {
 
     @RequestMapping(value = "penetratedData", method = RequestMethod.POST)
     @ResponseBody
-    Result save(
+    Result penetratedData(
             @Check(defaultValue = Cons.Game.TXFFC) String game,
             @Check(name = "时间") String startTime,
             @Check(name = "时间") String endTime,
@@ -44,7 +44,7 @@ public class LineController extends BaseController {
         param.put("start", startTime);
         param.put("end", endTime);
         param.put("game", game);
-        List<String> list=new ArrayList<>();
+        List<String> list = new ArrayList<>();
         for (int i = Integer.parseInt(downPoint); i <= Integer.parseInt(upPoint); i++) {
             param.put("up_point", String.valueOf(i));
             param.put("down_point", String.valueOf(i));
@@ -52,6 +52,28 @@ public class LineController extends BaseController {
             list.add(httpResult.getResult());
         }
         return result.format(list);
+    }
+
+
+    @RequestMapping("bull")
+    void bull() {
+    }
+
+
+    @RequestMapping(value = "bullData", method = RequestMethod.POST)
+    @ResponseBody
+    Result bullData(
+            @Check(defaultValue = Cons.Game.TXFFC) String game,
+            @Check(name = "系数", defaultValue = "120") Integer count,
+            @Check(name = "时间") String date
+
+    ) {
+        Map param = new HashMap();
+        param.put("count", count);
+        param.put("date", date);
+        param.put("game", game);
+        HttpResult httpResult = HttpClientWrapper.sendGet("http://47.93.121.107:4000/api/line/bull", null, param);
+        return result.format(httpResult.getResult());
     }
 
 

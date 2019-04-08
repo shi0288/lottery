@@ -31,11 +31,11 @@
     </select>
 
     <update id="openTouzhu">
-        update user_rule set is_open=1, dividing_time=unix_timestamp(now()) where id=#{id}
+        update user_rule set is_open=1, dividing_time=unix_timestamp(now()) , is_close_by_winlose=0 where id=#{id}
     </update>
 
     <update id="closeTouzhu">
-        update user_rule set is_open=0 where id=#{id}
+        update user_rule set is_open=0, is_close_by_winlose=1  where id=#{id}
     </update>
 
     <update id="updateInitMoney">
@@ -51,27 +51,27 @@
     </update>
 
     <update id="openDividing">
-        update user_rule set is_dividing=1 , dividing_time=unix_timestamp(now()) where id=#{id}
+        update user_rule set is_dividing=1 , dividing_time=unix_timestamp(now()), is_close_by_winlose=0 where id=#{id}
     </update>
 
     <update id="closeDividing">
-        update user_rule set is_dividing=0 where id=#{id}
+        update user_rule set is_dividing=0, is_close_by_winlose=0 where id=#{id}
     </update>
 
     <update id="openTraceLose">
-        update user_rule set is_trace_lose=1 where id=#{id}
+        update user_rule set is_trace_lose=1, is_close_by_winlose=0 where id=#{id}
     </update>
 
     <update id="closeTraceLose">
-        update user_rule set is_trace_lose=0 where id=#{id}
+        update user_rule set is_trace_lose=0, is_close_by_winlose=0 where id=#{id}
     </update>
 
     <update id="openBottomWin">
-        update user_rule set is_bottomwin=1, dividing_time=unix_timestamp(now()) where id=#{id}
+        update user_rule set is_bottomwin=1, dividing_time=unix_timestamp(now()), is_close_by_winlose=0 where id=#{id}
     </update>
 
     <update id="closeBottomWin">
-        update user_rule set is_bottomwin=0, dividing_time=unix_timestamp(now()) where id=#{id}
+        update user_rule set is_bottomwin=0, dividing_time=unix_timestamp(now()), is_close_by_winlose=0 where id=#{id}
     </update>
 
     <update id="updateLimitMaxWin">
@@ -83,11 +83,11 @@
     </update>
 
     <update id="openIsTiming">
-        update user_rule set is_timing=1 where id=#{id}
+        update user_rule set is_timing=1, is_close_by_winlose=0 where id=#{id}
     </update>
 
     <update id="closeIsTiming">
-        update user_rule set is_timing=0 where id=#{id}
+        update user_rule set is_timing=0, is_close_by_winlose=0 where id=#{id}
     </update>
 
 

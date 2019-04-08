@@ -46,7 +46,7 @@ public class YingkaPlugin extends Plugin {
         Map<String, String> header = new HashMap<>();
         header.put("user-agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.119 Safari/537.36");
         header.put("referer", url);
-        Map<String, String> params = new HashMap<>();
+        Map<String, Object> params = new HashMap<>();
         params.put("url", "/Account/Login/");
         HttpResult httpResult = HttpClientWrapper.sendGet(url + "/auth", header, params);
         List<String> cookies = httpResult.getCookies();

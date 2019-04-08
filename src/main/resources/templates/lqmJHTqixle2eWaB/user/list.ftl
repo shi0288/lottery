@@ -12,29 +12,29 @@
             <div class="box-content">
                 <div class="table-responsive">
                     <table class="table table-condensed">
-                        <thead>
-                        <tr>
-                            <th>用户名</th>
-                            <th>余额</th>
-                            <th>姓名</th>
-                            <th>总投注</th>
-                            <th>总赔付</th>
-                            <th>总盈收</th>
-                        <#if manage.username=='lottery'>
-                            <th>操作</th>
-                        </#if>
-                        </tr>
-                        </thead>
+                        <#--<thead>-->
+                        <#--<tr>-->
+                            <#--<th>用户名</th>-->
+                            <#--<th>姓名</th>-->
+                            <#--<th>余额</th>-->
+                            <#--<th>总投注</th>-->
+                            <#--<th>总赔付</th>-->
+                            <#--<th>总盈收</th>-->
+                        <#--<#if manage.username=='lottery'>-->
+                            <#--<th>操作</th>-->
+                        <#--</#if>-->
+                        <#--</tr>-->
+                        <#--</thead>-->
                         <tbody>
                         <#if page.list??>
                             <#list page.list as e>
                             <tr class="heng">
-                                <td><a href="./dayList/${(e.id)!''}"><strong>${(e.username)!''}</strong></a></td>
-                                <td><strong>${(e.balance?string('#.##'))!''}</strong></td>
-                                <td><strong>${(e.realname)!''}</strong></td>
-                                <td><strong>${(e.money?string('#.##'))!''}</strong></td>
-                                <td><strong>${(e.result?string('#.##'))!''}</strong></td>
-                                <td>
+                                <td>帐号:<a href="./dayList/${(e.id)!''}"><strong>${(e.username)!''}</strong></a></td>
+                                <td>名称:<strong style="color: red">${(e.realname)!''}</strong></td>
+                                <td>余额:<strong>${(e.balance?string('#.##'))!''}</strong></td>
+                                <td>总投注:<strong>${(e.money?string('#.##'))!''}</strong></td>
+                                <td>总赔付:<strong>${(e.result?string('#.##'))!''}</strong></td>
+                                <td>总盈收:
                                     <#if (e.bonus>0)>
                                         <strong><span>${(e.bonus?string('#.##'))!''}</span></strong>
                                     <#else>
@@ -708,6 +708,7 @@
                 $('#upDownHtml').empty();
                 $.localAjax('../userRuleTiming/getList', {uid: uid, game: game}, function (res) {
                     $('#upDownHtml').append(res.data);
+                    $('.iphone-toggle').iphoneStyle();
                     $('#gameCode').val(game);
                     $('#userRuleTimingUid').val(uid);
                     var deal = function () {
@@ -766,11 +767,12 @@
 
             $('body').on('click', '[role="add-userRuleTiming"]', function () {
                 var i = $('#upDownHtml').find('tr').length;
-                var a = '<tr><td><input type="hidden"  name="userRuleTimingList[0].id" value="" /><div class="form-group"><label>开始时间</label>  <input type="text" name="userRuleTimingList[0].startTime" class="form-control" onclick="WdatePicker({dateFmt:\'HH:mm\',autoPickDate:true})"                           style="cursor: default;"                           readonly>                </div>                <div class="form-group">                    <label>结束时间</label>                    <input type="text" name="userRuleTimingList[0].endTime" class="form-control" onclick="WdatePicker({dateFmt:\'HH:mm\',autoPickDate:true})"                           style="cursor: default;"                           readonly>                </div>                <div class="form-group">                    <label>上穿点数</label>                    <input type="text" name="userRuleTimingList[0].upPoint" style="width:60px;" class="form-control">                </div>                <div class="form-group">                    <label>下穿点数</label>                    <input type="text" name="userRuleTimingList[0].downPoint"  style="width:60px;" class="form-control">                </div>                <div class="form-group">                    <button type="button" class="btn btn-danger" role="del-userRuleTiming">删除</button> </div> </td></tr>';
+                var a = '<tr><td><input type="hidden"  name="userRuleTimingList[0].id" value="" /><div class="form-group"><label>开始时间</label>  <input type="text" name="userRuleTimingList[0].startTime" class="form-control" onclick="WdatePicker({dateFmt:\'HH:mm\',autoPickDate:true})" style="cursor: default;" readonly></div> <div class="form-group"><label>结束时间</label> <input type="text" name="userRuleTimingList[0].endTime" class="form-control" onclick="WdatePicker({dateFmt:\'HH:mm\',autoPickDate:true})" style="cursor: default;"  readonly></div> <div class="form-group"> <label>上穿点数</label> <input type="text" name="userRuleTimingList[0].upPoint" style="width:60px;" class="form-control"></div> <div class="form-group"> <label>下穿点数</label> <input type="text" name="userRuleTimingList[0].downPoint"  style="width:60px;" class="form-control"> </div> <div class="form-group"> <button type="button" class="btn btn-danger" role="del-userRuleTiming">删除</button> </div> <br/> <div class="checkbox"> <label><input  name="userRuleTimingList[0].isBullAxisMove"  type="checkbox" value="1">是否布林轴偏移</label></div>  <div class="checkbox"><label><input  name="userRuleTimingList[0].isTradeBeforeAxisMove" type="checkbox" value="1">布林轴偏移前是否交易</label></div> </td></tr>';
                 if (i > 0) {
                     a = a.replace(/userRuleTimingList\[\d+\]/g, "userRuleTimingList[" + i + "]");
                 }
                 $('#upDownHtml').find('table').append(a);
+                $('.iphone-toggle').iphoneStyle();
             })
 
 

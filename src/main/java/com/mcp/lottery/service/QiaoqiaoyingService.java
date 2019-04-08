@@ -75,7 +75,7 @@ public class QiaoqiaoyingService {
             Map<String, String> headers = new HashMap<>();
             headers.put("Authorization", "Bearer " + qiaoqiaoying.getToken());
             headers.put("abp.tenantid", "1");
-            Map<String, String> params = new HashMap<>();
+            Map<String, Object> params = new HashMap<>();
             //区分游戏种类
             String url = null;
             if (game.equals(Cons.Game.CQSSC)) {
@@ -100,7 +100,7 @@ public class QiaoqiaoyingService {
         List<Qiaoqiaoying> list = qiaoqiaoyingMapper.select(query);
         if (list.size() == 1) {
             Qiaoqiaoying qiaoqiaoying = list.get(0);
-            Map<String, String> params = new HashMap<>();
+            Map<String, Object> params = new HashMap<>();
             String url = null;
             if (game.equals(Cons.Game.CQSSC)) {
                 if (StringUtils.isEmpty(qiaoqiaoying.getPrizeUrl())) {
