@@ -29,7 +29,13 @@
                         <#if page.list??>
                             <#list page.list as e>
                             <tr class="heng">
-                                <td>帐号:<a href="./dayList/${(e.id)!''}"><strong>${(e.username)!''}</strong></a></td>
+                                <td>帐号:<a href="./dayList/${(e.id)!''}">
+                                    <strong>${(e.username)!''}
+                                        <#if e.parentId gt 0>
+                                            (归属于${(e.parentName)!''})
+                                        </#if>
+                                    </strong></a>
+                                </td>
                                 <td>名称:<strong style="color: red">${(e.realname)!''}</strong></td>
                                 <td>余额:<strong>${(e.balance?string('#.##'))!''}</strong></td>
                                 <td>总投注:<strong>${(e.money?string('#.##'))!''}</strong></td>

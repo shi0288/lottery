@@ -26,6 +26,19 @@
                         <input type="text"  class="form-control"  value="" name="password" placeholder="密码">
                     </div>
                     <div class="form-group">
+                        <label for="realname">父级账户</label>
+                        <select id="selectParent" data-rel="chosen" data-placeholder="请选择" name="parent">
+                            <option value="0">无</option>
+                            <#list users as user>
+                                <#if user.id==e.parentId>
+                                    <option value="${user.id}" selected>${user.username}</option>
+                                <#else>
+                                    <option value="${user.id}">${user.username}</option>
+                                </#if>
+                            </#list>
+                        </select>
+                    </div>
+                    <div class="form-group">
                         <label for="selectLeader">支持投注的游戏</label>
                         <div class="controls" style="height: 38px;">
                             <select id="selectGame" data-rel="chosen" data-placeholder="请选择" name="games" multiple>

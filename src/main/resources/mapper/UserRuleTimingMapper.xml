@@ -10,9 +10,13 @@
         <result column="end"  property="end"/>
         <result column="up_point"  property="upPoint"/>
         <result column="down_point"  property="downPoint"/>
+        <result column="origin_up_point"  property="originUpPoint"/>
+        <result column="origin_down_point"  property="originDownPoint"/>
         <result column="create_at" jdbcType="TIMESTAMP" property="createAt"/>
         <result column="direction"  property="direction"/>
+        <result column="bull_count_ratio"  property="bullCountRatio"/>
         <result column="is_bull_axis_move"  property="isBullAxisMove"/>
+        <result column="is_bull_direction_only"  property="isBullDirectionOnly"/>
         <result column="is_trade_before_axis_move"  property="isTradeBeforeAxisMove"/>
     </resultMap>
 

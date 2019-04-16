@@ -12,18 +12,23 @@
         <result column="create_at" property="createAt"/>
         <result column="status" property="status"/>
         <result column="setting" property="setting"/>
+        <result column="parent_id" jdbcType="BIGINT" property="parentId"/>
+        <result column="parent_name" property="parentName"/>
         <collection property="userRuleList" ofType="com.mcp.lottery.model.UserRule" select="getUserRuleList"
                     column="id">
         </collection>
     </resultMap>
-
 
     <update id="addBalance">
         UPDATE USER SET  balance=balance+#{balance}  where id=#{id}
     </update>
 
     <select id="getAll" resultMap="BaseResultMap">
-        select a.*,sum(b.money) as money,sum(b.result) as result,sum(b.result)-sum(b.money) as bonus  from user a left join user_order_log b on a.id=b.uid and b.settle=1  group by a.id
+        select a.*,sum(b.money) as money,sum(b.result) as result,sum(b.result)-sum(b.money) as bonus, c.username as parent_name
+        from user a
+        left join user c on c.id = a.parent_id
+        left join user_order_log b on a.id=b.uid and b.settle=1
+        group by a.id
     </select>
 
     <select id="getUserRuleList" resultType="com.mcp.lottery.model.UserRule">

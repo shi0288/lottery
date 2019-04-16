@@ -74,6 +74,8 @@ public class UserRuleTimingController extends BaseController {
         list.forEach(e -> {
             e.setGame(game);
             e.setUid(uid);
+            e.setOriginUpPoint(e.getUpPoint());
+            e.setOriginDownPoint(e.getDownPoint());
             ruleTimingService.saveOrUpdate(e);
         });
         ruleTimingService.updateBottomwin(uid, game);

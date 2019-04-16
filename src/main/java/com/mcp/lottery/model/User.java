@@ -28,6 +28,28 @@ public class User {
 
     private String realname;
 
+    private Long parentId;
+
+    public Long getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(Long parentId) {
+        this.parentId = parentId;
+    }
+
+    public String getParentName() {
+        return parentName;
+    }
+
+    public void setParentName(String parentName) {
+        this.parentName = parentName;
+    }
+
+    @Transient
+    private String parentName;
+
+
     @Transient
     private Double money;
 

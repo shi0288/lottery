@@ -56,6 +56,7 @@ public class UserController extends BaseController {
             ModelMap map,
             @Check Long id
     ) {
+        map.put("users", userService.getAll());
         map.put("e", userService.get(id));
     }
 
@@ -93,6 +94,7 @@ public class UserController extends BaseController {
             @Check Long id,
             @Check String realname,
             String password,
+            Long parent,
             String[] games
     ) {
         User user = new User();
@@ -101,6 +103,7 @@ public class UserController extends BaseController {
         if(!StringUtils.isEmpty(password)){
             user.setPassword(MD5Encoder.encode(password));
         }
+        user.setParentId(parent);
         userService.saveOrUpdate(user);
         userRuleService.saveGame(id, games);
         return result.format();

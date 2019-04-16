@@ -50,7 +50,14 @@ public class UserService {
     }
 
     public List<User> getAll() {
-        return userMapper.getAll();
+        List<User> list = userMapper.getAll();
+        /*list.forEach((user) -> {
+            if (user.getParentId()!=0) {
+                User parent = this.get(user.getParentId());
+                user.setParent(parent);
+            }
+        });*/
+        return list;
     }
 
     public User get(Long id) {

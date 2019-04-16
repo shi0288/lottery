@@ -24,13 +24,41 @@ public class UserRuleTiming {
 
     private Integer upPoint;
 
+
+
+    private Integer originUpPoint;
+
     private Integer downPoint;
 
+
+
+    private Integer originDownPoint;
+
     private Date createAt;
+
+    public Integer getBullCountRatio() {
+        return bullCountRatio;
+    }
+
+    public void setBullCountRatio(Integer bullCountRatio) {
+        this.bullCountRatio = bullCountRatio;
+    }
+
+    private Integer bullCountRatio;
 
     private Integer isBullAxisMove;
 
     private Integer isTradeBeforeAxisMove;
+
+    public Integer getIsBullDirectionOnly() {
+        return isBullDirectionOnly;
+    }
+
+    public void setIsBullDirectionOnly(Integer isBullDirectionOnly) {
+        this.isBullDirectionOnly = isBullDirectionOnly;
+    }
+
+    private Integer isBullDirectionOnly;
 
     @Transient
     private String startTime;
@@ -107,8 +135,24 @@ public class UserRuleTiming {
         this.upPoint = upPoint;
     }
 
+    public Integer getOriginUpPoint() {
+        return originUpPoint;
+    }
+
+    public void setOriginUpPoint(Integer originUpPoint) {
+        this.originUpPoint = originUpPoint;
+    }
+
     public Integer getDownPoint() {
         return downPoint;
+    }
+
+    public Integer getOriginDownPoint() {
+        return originDownPoint;
+    }
+
+    public void setOriginDownPoint(Integer originDownPoint) {
+        this.originDownPoint = originDownPoint;
     }
 
     public void setDownPoint(Integer downPoint) {

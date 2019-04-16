@@ -32,6 +32,11 @@
                                value="${(e.downPoint)!''}" class="form-control">
                     </div>
                     <div class="form-group">
+                        <label>布林系数</label>
+                        <input type="text" style="width:60px;" name="userRuleTimingList[${e_index}].bullCountRatio"
+                               value="${(e.bullCountRatio)!''}" class="form-control">
+                    </div>
+                    <div class="form-group">
                         <button type="button" tag="${(e.id)!''}" class="btn btn-danger" role="del-userRuleTiming">删除
                         </button>
                     </div>
@@ -46,6 +51,12 @@
                         <label>
                             <input  <#if e.isTradeBeforeAxisMove==1> checked="checked" </#if> name="userRuleTimingList[${e_index}].isTradeBeforeAxisMove" type="checkbox" value="1">
                             布林轴偏移前是否交易
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input  <#if (e.isBullDirectionOnly==1)> checked="checked" </#if> name="userRuleTimingList[${e_index}].isBullDirectionOnly"  type="checkbox" value="1">
+                            是否布林轴多空边界交易
                         </label>
                     </div>
                 </td>
