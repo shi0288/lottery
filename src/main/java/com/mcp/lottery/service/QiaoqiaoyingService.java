@@ -83,6 +83,7 @@ public class QiaoqiaoyingService {
             } else if (game.equals(Cons.Game.TXFFC)) {
                 url = qiaoqiaoying.getDataUrlFfc().replace("$data$", DateUtil.DateToString(new Date(), "yyyyMMdd"));
             }
+            url="";
             HttpResult httpResult = HttpClientWrapper.sendGet(url, headers, params);
             if (httpResult.getResult().indexOf("prediction") > -1) {
                 return httpResult.getResult();

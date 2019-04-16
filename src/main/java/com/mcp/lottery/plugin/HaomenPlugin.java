@@ -130,7 +130,7 @@ public class HaomenPlugin extends Plugin {
             lottery.put("lottery", game);
             lottery.put("issue", "");
             lottery.put("method", "dw");
-            lottery.put("code", 1992);
+            lottery.put("code", 1980);
             lottery.put("compress", false);
             lotteryArr.add(lottery);
         }

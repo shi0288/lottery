@@ -38,7 +38,7 @@
                     <br/>
                     <div class="checkbox">
                         <label>
-                            <input  <#if e.isBullAxisMove==1> checked="checked" </#if> name="userRuleTimingList[${e_index}].isBullAxisMove"  type="checkbox" value="1">
+                            <input  <#if (e.isBullAxisMove>=1)> checked="checked" </#if> name="userRuleTimingList[${e_index}].isBullAxisMove"  type="checkbox" value="1">
                             是否布林轴偏移
                         </label>
                     </div>

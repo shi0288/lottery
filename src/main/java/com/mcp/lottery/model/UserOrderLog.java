@@ -28,7 +28,6 @@ public class UserOrderLog {
 
     private Integer rule;
 
-    private String pid;
 
     private Date createAt;
 
@@ -100,14 +99,6 @@ public class UserOrderLog {
 
     public void setCode(String code) {
         this.code = code;
-    }
-
-    public String getPid() {
-        return pid;
-    }
-
-    public void setPid(String pid) {
-        this.pid = pid;
     }
 
     public Plat getPlat() {

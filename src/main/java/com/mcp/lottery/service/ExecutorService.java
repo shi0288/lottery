@@ -105,15 +105,23 @@ public class ExecutorService {
     public void updateLottery(LotteryResult lotteryResult, JSONArray list) {
         for (int i = 0; i < list.size(); i++) {
             JSONObject obj = list.getJSONObject(i);
-            UserOrderLog userOrderLog = new UserOrderLog();
-            userOrderLog.setId(obj.getLong("log_id"));
-            if (lotteryResult.isSuccess()) {
-                userOrderLog.setSend(1);
-            } else {
-                userOrderLog.setSend(2);
+            UserOrderLog userOrderLog = userOrderLogMapper.selectByPrimaryKey(obj.getLong("log_id"));
+            if (userOrderLog == null) {
+                return;
             }
-            userOrderLog.setResponse(lotteryResult.getResponse());
-            userOrderLogMapper.updateByPrimaryKeySelective(userOrderLog);
+            UserOrderLog update = new UserOrderLog();
+            update.setId(userOrderLog.getId());
+            if (lotteryResult.isSuccess()) {
+                update.setSend(1);
+            } else {
+                if (userOrderLog.getSend().intValue() == 0) {
+                    userOrderLog.setSend(2);
+                } else {
+                    userOrderLog.setSend(4);
+                }
+            }
+            update.setResponse(lotteryResult.getResponse());
+            userOrderLogMapper.updateByPrimaryKeySelective(update);
         }
     }
 
