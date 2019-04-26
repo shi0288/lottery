@@ -104,6 +104,12 @@
                         布林轴偏移前是否交易
                     </label>
                 </div>
+                <div class="checkbox">
+                    <label>
+                        <input  name="userRuleTimingList[0].isBullDirectionOnly"  type="checkbox" value="1">
+                        是否布林轴多空边界交易
+                    </label>
+                </div>
             </td>
         </tr>
     </#if>

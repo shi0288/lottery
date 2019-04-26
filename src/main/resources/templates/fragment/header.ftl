@@ -47,6 +47,11 @@
                             <a class="ajax-link" href="${base}/lqmJHTqixle2eWaB/user/list">
                                 <i class="glyphicon glyphicon-user"></i>&nbsp;<span>用户管理</span>
                             </a>
+                            <#if manage.username=='lottery'>
+                            <a class="ajax-link" href="${base}/lqmJHTqixle2eWaB/manage/list">
+                                <i class="glyphicon glyphicon-user"></i>&nbsp;<span>权限管理</span>
+                            </a>
+                            </#if>
                         </li>
                         <li class="accordion">
                             <a href="javascript:void(0);"><i
@@ -56,6 +61,7 @@
                                 <li><a href="${base}/lqmJHTqixle2eWaB/line/bull"> BULL曲线</a></li>
                             </ul>
                         </li>
+                        <#if manage.username=='lottery'>
                         <li class="accordion">
                             <a href="javascript:void(0);"><i
                                     class="glyphicon glyphicon-plus"></i><span> 投注管理</span></a>
@@ -63,6 +69,7 @@
                                 <li><a href="${base}/lqmJHTqixle2eWaB/order/list"> 投注列表</a></li>
                             </ul>
                         </li>
+                        </#if>
                         <li class="accordion">
                             <a href="javascript:void(0);"><i
                                     class="glyphicon glyphicon-plus"></i><span> 预测管理</span></a>
@@ -71,6 +78,7 @@
                                 <li><a href="${base}/lqmJHTqixle2eWaB/prediction/list/T01"> 腾讯分分彩</a></li>
                             </ul>
                         </li>
+                        <#if manage.username=='lottery'>
                         <li class="accordion">
                             <a href="javascript:void(0);"><i
                                     class="glyphicon glyphicon-plus"></i><span> 平台管理</span></a>
@@ -79,6 +87,7 @@
                                 <li><a href="${base}/lqmJHTqixle2eWaB/plat/listTerminal"> 交互控制</a></li>
                             </ul>
                         </li>
+                        </#if>
                     </ul>
                 </div>
             </div>

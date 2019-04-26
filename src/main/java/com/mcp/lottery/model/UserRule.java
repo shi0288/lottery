@@ -45,6 +45,8 @@ public class UserRule {
 
     private Integer isTiming;
 
+    private Integer direction;
+
     @Transient
     private String platName;
 
@@ -199,5 +201,13 @@ public class UserRule {
 
     public void setIsTiming(Integer isTiming) {
         this.isTiming = isTiming;
+    }
+
+    public Integer getDirection() {
+        return direction;
+    }
+
+    public void setDirection(Integer direction) {
+        this.direction = direction;
     }
 }

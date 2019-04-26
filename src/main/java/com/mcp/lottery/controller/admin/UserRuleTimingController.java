@@ -70,6 +70,9 @@ public class UserRuleTimingController extends BaseController {
             if (userRuleTiming.getIsTradeBeforeAxisMove() == null) {
                 userRuleTiming.setIsTradeBeforeAxisMove(0);
             }
+            if (userRuleTiming.getIsBullDirectionOnly() == null) {
+                userRuleTiming.setIsBullDirectionOnly(0);
+            }
         }
         list.forEach(e -> {
             e.setGame(game);

@@ -11,6 +11,7 @@ import com.mcp.lottery.util.Pager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -44,8 +45,9 @@ public class UserService {
         return false;
     }
 
-    public PageInfo<User> getAll(Pager pager) {
-        PageInfo pageInfo = PageHelper.startPage(pager.getPage(), pager.getLimit()).doSelectPageInfo(() -> userMapper.getAll());
+    public PageInfo<User> getAll(Pager pager, String uids) {
+        List<String> uidList = Arrays.asList(uids.split(","));
+        PageInfo pageInfo = PageHelper.startPage(pager.getPage(), pager.getLimit()).doSelectPageInfo(() -> userMapper.getAllByUids(uidList));
         return pageInfo;
     }
 

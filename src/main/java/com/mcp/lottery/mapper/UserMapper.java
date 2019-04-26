@@ -12,6 +12,8 @@ public interface UserMapper extends BaseMapper<User>{
 
     int addBalance(@Param("id")Long id,@Param("balance")Double balance);
 
+    List<User> getAllByUids(@Param("uids")List<String> uids);
+
     List<User> getAll();
 
     int openTouzhu(@Param("id")Long id);
@@ -44,5 +46,5 @@ public interface UserMapper extends BaseMapper<User>{
 
     int closeIsTiming(@Param("id")Long id);
 
-
+    List<User> getByIds(@Param("uids")List<String> uids);
 }

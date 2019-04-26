@@ -31,6 +31,27 @@
         group by a.id
     </select>
 
+    <select id="getAllByUids" resultMap="BaseResultMap">
+        select a.*,sum(b.money) as money,sum(b.result) as result,sum(b.result)-sum(b.money) as bonus, c.username as parent_name
+        from user a
+        left join user c on c.id = a.parent_id
+        left join user_order_log b on a.id=b.uid and b.settle=1
+        where a.id in
+        <foreach item="item" index="index" collection="uids"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        group by a.id
+    </select>
+
+    <select id="getByIds" resultMap="BaseResultMap">
+        select * from user where id in
+        <foreach item="item" index="index" collection="uids"
+                                                open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
     <select id="getUserRuleList" resultType="com.mcp.lottery.model.UserRule">
         select user_rule.*,is_open as isOpen,init_money as initMoney,is_dividing as isDividing,limit_lose as limitLose,limit_win as limitWin,dividing_time as dividingTime,is_trace_lose as isTraceLose,plat.name as platName,limit_max_win as limitMaxWin,limit_min_win as limitMinWin,is_bottomwin as isBottomwin,is_timing as isTiming from user_rule left join plat_game on user_rule.plat_game_id=plat_game.id and user_rule.plat_game_id>0  LEFT JOIN plat on plat_game.plat_id =plat.id  where  uid=#{id} order by game ASC
     </select>

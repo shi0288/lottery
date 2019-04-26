@@ -2,12 +2,10 @@ package com.mcp.lottery.controller.admin;
 
 
 import com.alibaba.fastjson.JSONObject;
+import com.mcp.lottery.model.Manage;
 import com.mcp.lottery.model.User;
 import com.mcp.lottery.model.UserRule;
-import com.mcp.lottery.service.PlatService;
-import com.mcp.lottery.service.UserOrderLogService;
-import com.mcp.lottery.service.UserRuleService;
-import com.mcp.lottery.service.UserService;
+import com.mcp.lottery.service.*;
 import com.mcp.lottery.util.*;
 import com.mcp.validate.annotation.Check;
 import org.apache.commons.lang.StringUtils;
@@ -40,10 +38,15 @@ public class UserController extends BaseController {
     @Autowired
     private PlatService platService;
 
+    @Autowired
+    private ManageService manageService;
+
 
     @RequestMapping("list")
     void list(ModelMap map, Pager pager) {
-        map.put("page", userService.getAll(pager));
+        Manage manage = (Manage) this.httpSession.getAttribute("manage");
+        manage = manageService.getById(manage.getId());
+        map.put("page", userService.getAll(pager, manage.getUids()));
     }
 
 

@@ -101,175 +101,121 @@
                                                 <tr>
                                                     <td>${convert('gameCode',userRule.game)!''}</td>
                                                     <td>
-                                                        <#if manage.username=='lottery'>
-                                                            <div class="input-group">
-                                                                <input type="text" class="form-control"
-                                                                       value="${(userRule.initMoney?string('#.##'))!''}"
-                                                                       placeholder="金额">
-                                                                <span class="input-group-btn">
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control"
+                                                                   value="${(userRule.initMoney?string('#.##'))!''}"
+                                                                   placeholder="金额">
+                                                            <span class="input-group-btn">
                                                                 <button role="updateInitMoney" tag="${(userRule.id)!''}"
                                                                         class="btn btn-default"
                                                                         type="button">修改</button>
                                                             </span>
-                                                            </div>
-                                                        <#else>
-                                                        ${(userRule.initMoney?string('#.##'))!''}
-                                                        </#if>
+                                                        </div>
                                                     </td>
                                                     <td>
-                                                        <#if manage.username=='lottery'>
-                                                            <div class="input-group">
-                                                                <input type="text" class="form-control"
-                                                                       value="${(userRule.limitLose?string('#.##'))!''}"
-                                                                       placeholder="金额">
-                                                                <span class="input-group-btn">
-                                                                <button role="updateLimitLose" tag="${(userRule.id)!''}"
-                                                                        class="btn btn-default"
-                                                                        type="button">修改</button>
-                                                            </span>
-                                                            </div>
-                                                        <#else>
-                                                        ${(userRule.limitLose?string('#.##'))!''}
-                                                        </#if>
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control"
+                                                                   value="${(userRule.limitLose?string('#.##'))!''}"
+                                                                   placeholder="金额">
+                                                            <span class="input-group-btn">
+                                                            <button role="updateLimitLose" tag="${(userRule.id)!''}"
+                                                                    class="btn btn-default"
+                                                                    type="button">修改</button>
+                                                        </span>
+                                                        </div>
                                                     </td>
                                                     <td>
-                                                        <#if manage.username=='lottery'>
-                                                            <div class="input-group">
-                                                                <input type="text" class="form-control"
-                                                                       value="${(userRule.limitWin?string('#.##'))!''}"
-                                                                       placeholder="金额">
-                                                                <span class="input-group-btn">
-                                                                <button role="updateLimitWin" tag="${(userRule.id)!''}"
-                                                                        class="btn btn-default"
-                                                                        type="button">修改</button>
-                                                            </span>
-                                                            </div>
-                                                        <#else>
-                                                        ${(userRule.limitWin?string('#.##'))!''}
-                                                        </#if>
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control"
+                                                                   value="${(userRule.limitWin?string('#.##'))!''}"
+                                                                   placeholder="金额">
+                                                            <span class="input-group-btn">
+                                                            <button role="updateLimitWin" tag="${(userRule.id)!''}"
+                                                                    class="btn btn-default"
+                                                                    type="button">修改</button>
+                                                        </span>
+                                                        </div>
                                                     </td>
                                                     <td>
-                                                        <#if manage.username=='lottery'>
-                                                            <div class="input-group">
-                                                                <input type="text" class="form-control"
-                                                                       value="${(userRule.limitMaxWin?string('#.##'))!''}"
-                                                                       placeholder="金额">
-                                                                <span class="input-group-btn">
-                                                                <button role="updateLimitMaxWin"
-                                                                        tag="${(userRule.id)!''}"
-                                                                        class="btn btn-default"
-                                                                        type="button">修改</button>
-                                                            </span>
-                                                            </div>
-                                                        <#else>
-                                                        ${(userRule.limitMaxWin?string('#.##'))!''}
-                                                        </#if>
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control"
+                                                                   value="${(userRule.limitMaxWin?string('#.##'))!''}"
+                                                                   placeholder="金额">
+                                                            <span class="input-group-btn">
+                                                            <button role="updateLimitMaxWin"
+                                                                    tag="${(userRule.id)!''}"
+                                                                    class="btn btn-default"
+                                                                    type="button">修改</button>
+                                                        </span>
+                                                        </div>
                                                     </td>
                                                     <td>
-                                                        <#if manage.username=='lottery'>
-                                                            <div class="input-group">
-                                                                <input type="text" class="form-control"
-                                                                       value="${(userRule.limitMinWin?string('#.##'))!''}"
-                                                                       placeholder="金额">
-                                                                <span class="input-group-btn">
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control"
+                                                                   value="${(userRule.limitMinWin?string('#.##'))!''}"
+                                                                   placeholder="金额">
+                                                            <span class="input-group-btn">
                                                                 <button role="updateLimitMinWin"
                                                                         tag="${(userRule.id)!''}"
                                                                         class="btn btn-default"
                                                                         type="button">修改</button>
                                                             </span>
-                                                            </div>
-                                                        <#else>
-                                                        ${(userRule.limitMinWin?string('#.##'))!''}
-                                                        </#if>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                                 <tr class="none-border">
-                                                    <td colspan="6">
-                                                        <#if manage.username=='lottery'>
-                                                            <#if userRule.isOpen==1>
-                                                                <button role="closeTouzhu" tag="${(userRule.id)!''}"
-                                                                        class="btn btn-danger btn-xs">
-                                                                    关闭自动投注
-                                                                </button>
-                                                            <#else>
-                                                                <button role="openTouzhu" tag="${(userRule.id)!''}"
-                                                                        class="btn btn-warning btn-xs">
-                                                                    开启自动投注
-                                                                </button>
-                                                            </#if>
+                                                    <td colspan="8">
+                                                        <#if userRule.isOpen==1>
+                                                            <button role="closeTouzhu" tag="${(userRule.id)!''}"
+                                                                    class="btn btn-danger btn-xs">
+                                                                关闭自动投注
+                                                            </button>
                                                         <#else>
-                                                            <#if userRule.isOpen==1>
-                                                                自动投注开启中
-                                                            <#else>
-                                                                自动投注关闭中
-                                                            </#if>
+                                                            <button role="openTouzhu" tag="${(userRule.id)!''}"
+                                                                    class="btn btn-warning btn-xs">
+                                                                开启自动投注
+                                                            </button>
                                                         </#if>
                                                         &nbsp; &nbsp; &nbsp;
-                                                        <#if manage.username=='lottery'>
-                                                            <#if userRule.isDividing==1>
-                                                                <button role="closeDividing" tag="${(userRule.id)!''}"
-                                                                        class="btn btn-danger btn-xs">
-                                                                    关闭止盈损
-                                                                </button>
-                                                            <#else>
-                                                                <button role="openDividing" tag="${(userRule.id)!''}"
-                                                                        class="btn btn-warning btn-xs">
-                                                                    开启止盈损
-                                                                </button>
-                                                            </#if>
+                                                        <#if userRule.isDividing==1>
+                                                            <button role="closeDividing" tag="${(userRule.id)!''}"
+                                                                    class="btn btn-danger btn-xs">
+                                                                关闭止盈损
+                                                            </button>
                                                         <#else>
-                                                            <#if userRule.isDividing==1>
-                                                                止盈损开启中
-                                                            <#else>
-                                                                止盈损关闭中
-                                                            </#if>
+                                                            <button role="openDividing" tag="${(userRule.id)!''}"
+                                                                    class="btn btn-warning btn-xs">
+                                                                开启止盈损
+                                                            </button>
                                                         </#if>
                                                         &nbsp; &nbsp; &nbsp;
-                                                        <#if manage.username=='lottery'>
-                                                            <#if userRule.isTraceLose==1>
-                                                                <button role="closeTraceLose" tag="${(userRule.id)!''}"
-                                                                        class="btn btn-danger btn-xs">
-                                                                    关闭移动止损
-                                                                </button>
-                                                            <#else>
-                                                                <button role="openTraceLose" tag="${(userRule.id)!''}"
-                                                                        class="btn btn-warning btn-xs">
-                                                                    开启移动止损
-                                                                </button>
-                                                            </#if>
+                                                        <#if userRule.isTraceLose==1>
+                                                            <button role="closeTraceLose" tag="${(userRule.id)!''}"
+                                                                    class="btn btn-danger btn-xs">
+                                                                关闭移动止损
+                                                            </button>
                                                         <#else>
-                                                            <#if userRule.isTraceLose==1>
-                                                                移动止损开启中
-                                                            <#else>
-                                                                移动止损关闭中
-                                                            </#if>
+                                                            <button role="openTraceLose" tag="${(userRule.id)!''}"
+                                                                    class="btn btn-warning btn-xs">
+                                                                开启移动止损
+                                                            </button>
                                                         </#if>
                                                         &nbsp; &nbsp; &nbsp;
-                                                        <#if manage.username=='lottery'>
-                                                            <#if userRule.isBottomwin==1>
-                                                                <button role="closeBottomWin" tag="${(userRule.id)!''}"
-                                                                        class="btn btn-danger btn-xs">
-                                                                    关闭保本止损(当前状态:开启)
-                                                                </button>
-                                                            <#elseif userRule.isBottomwin==2>
-                                                                <button role="closeBottomWin" tag="${(userRule.id)!''}"
-                                                                        class="btn btn-danger btn-xs">
-                                                                    关闭保本止损(当前状态:进行中)
-                                                                </button>
-                                                            <#else>
-                                                                <button role="openBottomWin" tag="${(userRule.id)!''}"
-                                                                        class="btn btn-warning btn-xs">
-                                                                    开启保本止损
-                                                                </button>
-                                                            </#if>
+                                                        <#if userRule.isBottomwin==1>
+                                                            <button role="closeBottomWin" tag="${(userRule.id)!''}"
+                                                                    class="btn btn-danger btn-xs">
+                                                                关闭保本止损(当前状态:开启)
+                                                            </button>
+                                                        <#elseif userRule.isBottomwin==2>
+                                                            <button role="closeBottomWin" tag="${(userRule.id)!''}"
+                                                                    class="btn btn-danger btn-xs">
+                                                                关闭保本止损(当前状态:进行中)
+                                                            </button>
                                                         <#else>
-                                                            <#if userRule.isBottomwin==1>
-                                                                保本止损开启
-                                                            <#elseif userRule.isBottomwin==2>
-                                                                保本止损进行中
-                                                            <#else>
-                                                                保本止损关闭中
-                                                            </#if>
+                                                            <button role="openBottomWin" tag="${(userRule.id)!''}"
+                                                                    class="btn btn-warning btn-xs">
+                                                                开启保本止损
+                                                            </button>
                                                         </#if>
                                                         &nbsp; &nbsp; &nbsp;
                                                         <#if manage.username=='lottery'>
@@ -280,8 +226,19 @@
                                                             </button>
                                                         </#if>
                                                         &nbsp; &nbsp; &nbsp;
-                                                        <#if manage.username=='lottery'>
-                                                        <div class="btn-group" role="group" >
+                                                        <select class="form-control" style="width:73px;height:23px;display:inline-block;">
+                                                            <option value="0" ${(userRule.direction==0)?string("selected","")}>未设置</option>
+                                                            <option value="1" ${(userRule.direction==1)?string("selected","")}>正向</option>
+                                                            <option value="-1" ${(userRule.direction==-1)?string("selected","")}>负向</option>
+                                                        </select>
+                                                        <span class="input-group-btn" style="display:inline-block;height:24px">
+                                                                <button role="updateDirection" style="height:24px;padding-top:2px;"
+                                                                        tag="${(userRule.id)!''}"
+                                                                        class="btn btn-default"
+                                                                        type="button">修改</button>
+                                                        </span>
+                                                        &nbsp; &nbsp; &nbsp;
+                                                        <div class="btn-group" role="group" style="margin-left:35px;">
                                                             <button role="topDownSetting" tag="${(userRule.uid)!''}"
                                                                     tagGame="${(userRule.game)!''}"
                                                                     class="btn btn-warning btn-xs" data-toggle="tooltip"
@@ -300,7 +257,6 @@
                                                                 </button>
                                                             </#if>
                                                         </div>
-                                                        </#if>
                                                     </td>
                                                 </tr>
                                                 </#list>
@@ -619,6 +575,19 @@
                 });
             })
 
+            $('body').on('click', '[role="updateDirection"]', function () {
+                var self = $(this);
+                var id = self.attr('tag');
+                var direction = self.parent().prev().val();
+                myConfirm("确定修改交易方向吗？(交易方向由平台设置方向、账号设置方向，定时交易自动变向组成)", function () {
+                    $.localAjax('./updateDirection', {id: id, direction: direction}, function () {
+                        alert('操作成功', function () {
+                            history.go(0);
+                        });
+                    })
+                });
+            })
+
             function transToChosenData(data) {
                 var resData = [];
                 data.forEach(function (o) {
@@ -773,7 +742,7 @@
 
             $('body').on('click', '[role="add-userRuleTiming"]', function () {
                 var i = $('#upDownHtml').find('tr').length;
-                var a = '<tr><td><input type="hidden"  name="userRuleTimingList[0].id" value="" /><div class="form-group"><label>开始时间</label>  <input type="text" name="userRuleTimingList[0].startTime" class="form-control" onclick="WdatePicker({dateFmt:\'HH:mm\',autoPickDate:true})" style="cursor: default;" readonly></div> <div class="form-group"><label>结束时间</label> <input type="text" name="userRuleTimingList[0].endTime" class="form-control" onclick="WdatePicker({dateFmt:\'HH:mm\',autoPickDate:true})" style="cursor: default;"  readonly></div> <div class="form-group"> <label>上穿点数</label> <input type="text" name="userRuleTimingList[0].upPoint" style="width:60px;" class="form-control"></div> <div class="form-group"> <label>下穿点数</label> <input type="text" name="userRuleTimingList[0].downPoint"  style="width:60px;" class="form-control"> </div> <div class="form-group"> <button type="button" class="btn btn-danger" role="del-userRuleTiming">删除</button> </div> <br/> <div class="checkbox"> <label><input  name="userRuleTimingList[0].isBullAxisMove"  type="checkbox" value="1">是否布林轴偏移</label></div>  <div class="checkbox"><label><input  name="userRuleTimingList[0].isTradeBeforeAxisMove" type="checkbox" value="1">布林轴偏移前是否交易</label></div> </td></tr>';
+                var a = '<tr><td><input type="hidden"  name="userRuleTimingList[0].id" value="" /><div class="form-group"><label>开始时间</label>  <input type="text" name="userRuleTimingList[0].startTime" class="form-control" onclick="WdatePicker({dateFmt:\'HH:mm\',autoPickDate:true})" style="cursor: default;" readonly></div> <div class="form-group"><label>结束时间</label> <input type="text" name="userRuleTimingList[0].endTime" class="form-control" onclick="WdatePicker({dateFmt:\'HH:mm\',autoPickDate:true})" style="cursor: default;"  readonly></div> <div class="form-group"> <label>上穿点数</label> <input type="text" name="userRuleTimingList[0].upPoint" style="width:60px;" class="form-control"></div> <div class="form-group"> <label>下穿点数</label> <input type="text" name="userRuleTimingList[0].downPoint"  style="width:60px;" class="form-control"> </div> <div class="form-group"> <button type="button" class="btn btn-danger" role="del-userRuleTiming">删除</button> </div> <br/> <div class="checkbox"> <label><input  name="userRuleTimingList[0].isBullAxisMove"  type="checkbox" value="1">是否布林轴偏移</label></div>  <div class="checkbox"><label><input  name="userRuleTimingList[0].isTradeBeforeAxisMove" type="checkbox" value="1">布林轴偏移前是否交易</label></div> <div class="checkbox"><label><input  name="userRuleTimingList[0].isBullDirectionOnly"  type="checkbox" value="1">是否布林轴多空边界交易</label></div> </td></tr>';
                 if (i > 0) {
                     a = a.replace(/userRuleTimingList\[\d+\]/g, "userRuleTimingList[" + i + "]");
                 }

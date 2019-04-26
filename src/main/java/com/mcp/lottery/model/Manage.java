@@ -1,11 +1,9 @@
 package com.mcp.lottery.model;
 
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Table(name = "manage")
 public class Manage {
@@ -23,6 +21,27 @@ public class Manage {
     private Date createAt;
 
     private Date updateAt;
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
+
+    @Transient
+    private List<User> users;
+
+    public String getUids() {
+        return uids;
+    }
+
+    public void setUids(String uids) {
+        this.uids = uids;
+    }
+
+    private String uids;
 
 
     public Long getId() {

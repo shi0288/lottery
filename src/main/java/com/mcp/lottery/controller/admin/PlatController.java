@@ -59,12 +59,12 @@ public class PlatController extends BaseController{
     ) {
         Plat plat=new Plat();
         plat.setCategoryId(categoryId);
-        plat.setName(name);
-        plat.setUsername(username);
-        plat.setPassword(password);
-        plat.setLoginUrl(loginUrl);
-        plat.setBalanceUrl(balanceUrl);
-        plat.setTouzhuUrl(touzhuUrl);
+        plat.setName(name.trim());
+        plat.setUsername(username.trim());
+        plat.setPassword(password.trim());
+        plat.setLoginUrl(loginUrl.trim());
+        plat.setBalanceUrl(balanceUrl.trim());
+        plat.setTouzhuUrl(touzhuUrl.trim());
         if(platService.save(plat)){
             return result.format();
         }
