@@ -20,7 +20,7 @@
     </resultMap>
 
     <update id="addBalance">
-        UPDATE USER SET  balance=balance+#{balance}  where id=#{id}
+        UPDATE user SET  balance=balance+#{balance}  where id=#{id}
     </update>
 
     <select id="getAll" resultMap="BaseResultMap">
