@@ -90,10 +90,10 @@
                                             <tr>
                                                 <th>游戏名</th>
                                                 <th>投注金额</th>
-                                                <th>止损金额</th>
-                                                <th>止盈金额</th>
-                                                <th>保本止损启动盈利金额</th>
-                                                <th>保本止损保本盈利金额</th>
+                                                <th>止损点数</th>
+                                                <th>止盈点数</th>
+                                                <th>保本止损启动盈利点数</th>
+                                                <th>保本止损保本盈利点数</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -116,7 +116,7 @@
                                                         <div class="input-group">
                                                             <input type="text" class="form-control"
                                                                    value="${(userRule.limitLose?string('#.##'))!''}"
-                                                                   placeholder="金额">
+                                                                   placeholder="点数">
                                                             <span class="input-group-btn">
                                                             <button role="updateLimitLose" tag="${(userRule.id)!''}"
                                                                     class="btn btn-default"
@@ -128,7 +128,7 @@
                                                         <div class="input-group">
                                                             <input type="text" class="form-control"
                                                                    value="${(userRule.limitWin?string('#.##'))!''}"
-                                                                   placeholder="金额">
+                                                                   placeholder="点数">
                                                             <span class="input-group-btn">
                                                             <button role="updateLimitWin" tag="${(userRule.id)!''}"
                                                                     class="btn btn-default"
@@ -140,7 +140,7 @@
                                                         <div class="input-group">
                                                             <input type="text" class="form-control"
                                                                    value="${(userRule.limitMaxWin?string('#.##'))!''}"
-                                                                   placeholder="金额">
+                                                                   placeholder="点数">
                                                             <span class="input-group-btn">
                                                             <button role="updateLimitMaxWin"
                                                                     tag="${(userRule.id)!''}"
@@ -153,7 +153,7 @@
                                                         <div class="input-group">
                                                             <input type="text" class="form-control"
                                                                    value="${(userRule.limitMinWin?string('#.##'))!''}"
-                                                                   placeholder="金额">
+                                                                   placeholder="点数">
                                                             <span class="input-group-btn">
                                                                 <button role="updateLimitMinWin"
                                                                         tag="${(userRule.id)!''}"
@@ -503,7 +503,7 @@
                 var self = $(this);
                 var id = self.attr('tag');
                 var money = self.parent().prev().val();
-                myConfirm("确定更新止损金额吗?", function () {
+                myConfirm("确定更新止损点数吗?", function () {
                     $.localAjax('./updateLimitLose', {id: id, limitLoseMoney: money}, function () {
                         alert('操作成功', function () {
                             history.go(0);
@@ -516,7 +516,7 @@
                 var self = $(this);
                 var id = self.attr('tag');
                 var money = self.parent().prev().val();
-                myConfirm("确定更新止赢金额吗?", function () {
+                myConfirm("确定更新止赢点数吗?", function () {
                     $.localAjax('./updateLimitWin', {id: id, limitWinMoney: money}, function () {
                         alert('操作成功', function () {
                             history.go(0);
@@ -629,7 +629,7 @@
                 var self = $(this);
                 var id = self.attr('tag');
                 var money = self.parent().prev().val();
-                myConfirm("确定更新保本止损启动盈利金额吗?", function () {
+                myConfirm("确定更新保本止损启动盈利点数吗?", function () {
                     $.localAjax('./updateLimitMaxWin', {id: id, money: money}, function () {
                         alert('操作成功', function () {
                             history.go(0);
@@ -642,7 +642,7 @@
                 var self = $(this);
                 var id = self.attr('tag');
                 var money = self.parent().prev().val();
-                myConfirm("确定更新保本止损保本盈利金额吗?", function () {
+                myConfirm("确定更新保本止损保本盈利点数吗?", function () {
                     $.localAjax('./updateLimitMinWin', {id: id, money: money}, function () {
                         alert('操作成功', function () {
                             history.go(0);
