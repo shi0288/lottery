@@ -44,7 +44,7 @@ public class App extends SpringBootServletInitializer {
         SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
         factory.setPrefetchCount(1);
         //开一个消费线程
-        factory.setConcurrentConsumers(1);
+        factory.setConcurrentConsumers(50);
         configurer.configure(factory, connectionFactory);
         return factory;
     }

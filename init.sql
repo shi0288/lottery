@@ -9,7 +9,9 @@ create table user(
 	unique key unique_username_password (`username`,`password`)
 )engine=innodb default charset=utf8 comment '用户表';
 
-alter table user  add  realname varchar(20) not null default '' comment '姓名';
+alter table user add realname varchar(20) not null default '' comment '姓名';
+
+alter table user add plat_money DOUBLE not null DEFAULT 0 comment '平台余额';
 
 
 

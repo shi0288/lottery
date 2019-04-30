@@ -20,6 +20,8 @@ public class User {
 
     private Double balance;
 
+    private Double platMoney;
+
     private Date createAt;
 
     private Integer status;
@@ -48,7 +50,6 @@ public class User {
 
     @Transient
     private String parentName;
-
 
     @Transient
     private Double money;
@@ -157,5 +158,13 @@ public class User {
 
     public void setSetting(Integer setting) {
         this.setting = setting;
+    }
+
+    public Double getPlatMoney() {
+        return platMoney;
+    }
+
+    public void setPlatMoney(Double platMoney) {
+        this.platMoney = platMoney;
     }
 }

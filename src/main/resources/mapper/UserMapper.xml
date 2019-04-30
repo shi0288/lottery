@@ -9,6 +9,7 @@
         <result column="password" jdbcType="VARCHAR" property="password"/>
         <result column="realname" jdbcType="VARCHAR" property="realname"/>
         <result column="balance" property="balance"/>
+        <result column="plat_money" property="platMoney"/>
         <result column="create_at" property="createAt"/>
         <result column="status" property="status"/>
         <result column="setting" property="setting"/>
@@ -24,11 +25,7 @@
     </update>
 
     <select id="getAll" resultMap="BaseResultMap">
-        select a.*,sum(b.money) as money,sum(b.result) as result,sum(b.result)-sum(b.money) as bonus, c.username as parent_name
-        from user a
-        left join user c on c.id = a.parent_id
-        left join user_order_log b on a.id=b.uid and b.settle=1
-        group by a.id
+      select a.*,b.money,b.result,b.bonus from user a left join (select  uid,sum(money) as money,sum(result) as result,sum(result)-sum(money) as bonus from user_order_log  where settle=1 group by uid order by uid asc) b on a.id=b.uid
     </select>
 
     <select id="getAllByUids" resultMap="BaseResultMap">

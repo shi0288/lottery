@@ -12,19 +12,6 @@
             <div class="box-content">
                 <div class="table-responsive">
                     <table class="table table-condensed">
-                        <#--<thead>-->
-                        <#--<tr>-->
-                            <#--<th>用户名</th>-->
-                            <#--<th>姓名</th>-->
-                            <#--<th>余额</th>-->
-                            <#--<th>总投注</th>-->
-                            <#--<th>总赔付</th>-->
-                            <#--<th>总盈收</th>-->
-                        <#--<#if manage.username=='lottery'>-->
-                            <#--<th>操作</th>-->
-                        <#--</#if>-->
-                        <#--</tr>-->
-                        <#--</thead>-->
                         <tbody>
                         <#if page.list??>
                             <#list page.list as e>
@@ -38,6 +25,7 @@
                                 </td>
                                 <td>名称:<strong style="color: red">${(e.realname)!''}</strong></td>
                                 <td>余额:<strong>${(e.balance?string('#.##'))!''}</strong></td>
+                                <td>平台余额:<strong>${(e.platMoney?string('#.##'))!''}</strong></td>
                                 <td>总投注:<strong>${(e.money?string('#.##'))!''}</strong></td>
                                 <td>总赔付:<strong>${(e.result?string('#.##'))!''}</strong></td>
                                 <td>总盈收:

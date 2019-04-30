@@ -91,8 +91,8 @@
 //
 //    @Test
 //    public void fenfencai() throws Exception {
-//        String str = "2019-04-09";
-//        String str1 = "2019-05-01"; //不包含
+//        String str = "2019-05-01";
+//        String str1 = "2019-07-01"; //不包含
 //        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 //        Calendar startDay = Calendar.getInstance();
 //        Calendar endDay = Calendar.getInstance();
@@ -156,7 +156,6 @@
 //        }
 //        Plat plat = platService.get(pid);
 //
-//
 //        JSONArray list = params.getJSONArray("list");
 //        Plugin plugin = (Plugin) SpringIocUtil.getBean(plat.getPlatCategory().getExecutor());
 //        plugin.getAuthor(plat);
@@ -188,13 +187,24 @@
 //    }
 //
 //
+////    @Test
+////    public void updateHistory(){
+////
+//////         qiaoqiaoyingService.updatePrize(Cons.Game.TXFFC, new Date());
+////
+////        qiaoqiaoyingService.historyPrediction(Cons.Game.TXFFC);
+//////        System.out.println(qiaoqiaoyingService.getResult(Cons.Game.CQSSC));
+////    }
+//
 //    @Test
-//    public void updateHistory(){
+//    public void testBalance(){
 //
-////         qiaoqiaoyingService.updatePrize(Cons.Game.TXFFC, new Date());
+//        Plat plat = platService.get(11L);
+//        Plugin plugin = (Plugin) SpringIocUtil.getBean(plat.getPlatCategory().getExecutor());
+//        System.out.println(plugin.getBalance(plat));
 //
-//        qiaoqiaoyingService.historyPrediction(Cons.Game.TXFFC);
-////        System.out.println(qiaoqiaoyingService.getResult(Cons.Game.CQSSC));
+//
+//
 //    }
 //
 //

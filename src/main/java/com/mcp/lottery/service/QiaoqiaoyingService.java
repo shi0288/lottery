@@ -83,7 +83,7 @@ public class QiaoqiaoyingService {
             } else if (game.equals(Cons.Game.TXFFC)) {
                 url = qiaoqiaoying.getDataUrlFfc().replace("$data$", DateUtil.DateToString(new Date(), "yyyyMMdd"));
             }
-            url="";
+//            url=url+"?isall=1";
             HttpResult httpResult = HttpClientWrapper.sendGet(url, headers, params);
             if (httpResult.getResult().indexOf("prediction") > -1) {
                 return httpResult.getResult();
@@ -179,7 +179,8 @@ public class QiaoqiaoyingService {
                     dataArr.add(item);
                 }
                 prediction.setData(data.toString());
-//                predictionService.saveOrUpdate(prediction);
+                System.out.println(prediction);
+                predictionService.saveOrUpdate(prediction);
             } catch (Exception e) {
             }
         }

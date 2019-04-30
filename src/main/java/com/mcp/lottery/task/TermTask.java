@@ -15,10 +15,10 @@ public class TermTask {
 
 
 
-    @Scheduled(fixedDelay = 1000)
-    public void resetShishicai() {
-        termService.resetTerm(Cons.Game.CQSSC,5000);
-    }
+//    @Scheduled(fixedDelay = 1000)
+//    public void resetShishicai() {
+//        termService.resetTerm(Cons.Game.CQSSC,5000);
+//    }
 
     @Scheduled(fixedDelay = 1000)
     public void resetFenfencai() {

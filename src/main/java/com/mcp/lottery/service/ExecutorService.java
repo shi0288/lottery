@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.mcp.lottery.mapper.UserOrderLogMapper;
 import com.mcp.lottery.model.Plat;
+import com.mcp.lottery.model.User;
 import com.mcp.lottery.model.UserOrderLog;
 import com.mcp.lottery.util.LotteryResult;
 import com.mcp.lottery.util.Plugin;
@@ -27,6 +28,9 @@ public class ExecutorService {
 
     @Autowired
     private UserOrderLogMapper userOrderLogMapper;
+
+    @Autowired
+    private UserService userService;
 
     @Log
     private Logger logger;
@@ -71,7 +75,7 @@ public class ExecutorService {
         try {
             lotteryResult = plugin.send(plat, game, term, list);
             logger.info("返回：" + lotteryResult.getResponse());
-            updateLottery(lotteryResult, list);
+            updateLottery(lotteryResult, list, plugin, plat);
         } catch (ApiException e) {
             try {
                 logger.info("更新账户信息后重试");
@@ -79,7 +83,7 @@ public class ExecutorService {
                 if (platService.update(plat)) {
                     lotteryResult = plugin.send(plat, game, term, list);
                     logger.info("返回：" + lotteryResult.getResponse());
-                    updateLottery(lotteryResult, list);
+                    updateLottery(lotteryResult, list, plugin, plat);
                 } else {
                     logger.info("更新失败");
                 }
@@ -89,7 +93,7 @@ public class ExecutorService {
                 lotteryResult = new LotteryResult();
                 lotteryResult.setSuccess(false);
                 lotteryResult.setResponse("更新账号后依旧失败");
-                updateLottery(lotteryResult, list);
+                updateLottery(lotteryResult, list, plugin, plat);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -97,12 +101,12 @@ public class ExecutorService {
             lotteryResult = new LotteryResult();
             lotteryResult.setSuccess(false);
             lotteryResult.setResponse("请求出错失败");
-            updateLottery(lotteryResult, list);
+            updateLottery(lotteryResult, list, plugin, plat);
         }
     }
 
     @Async
-    public void updateLottery(LotteryResult lotteryResult, JSONArray list) {
+    public void updateLottery(LotteryResult lotteryResult, JSONArray list, Plugin plugin, Plat plat) {
         for (int i = 0; i < list.size(); i++) {
             JSONObject obj = list.getJSONObject(i);
             UserOrderLog userOrderLog = userOrderLogMapper.selectByPrimaryKey(obj.getLong("log_id"));
@@ -122,6 +126,14 @@ public class ExecutorService {
             }
             update.setResponse(lotteryResult.getResponse());
             userOrderLogMapper.updateByPrimaryKeySelective(update);
+            Double platBalance = plugin.getBalance(plat);
+            if (platBalance == null) {
+                platBalance = 0D;
+            }
+            User user = new User();
+            user.setId(userOrderLog.getUid());
+            user.setPlatMoney(platBalance);
+            userService.saveOrUpdate(user);
         }
     }
 
