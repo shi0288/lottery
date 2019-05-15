@@ -158,6 +158,13 @@ public class UserService {
         return false;
     }
 
+    public boolean updateDirection(Long id, int direction) {
+        if (userMapper.updateDirection(id, direction) == 1) {
+            return true;
+        }
+        return false;
+    }
+
 
     public boolean openBottomWin(Long id) {
         if (userMapper.openBottomWin(id) == 1) {
@@ -187,6 +194,5 @@ public class UserService {
         }
         return false;
     }
-
 
 }

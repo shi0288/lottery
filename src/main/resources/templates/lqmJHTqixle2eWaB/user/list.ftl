@@ -25,7 +25,7 @@
                                 </td>
                                 <td>名称:<strong style="color: red">${(e.realname)!''}</strong></td>
                                 <td>余额:<strong>${(e.balance?string('#.##'))!''}</strong></td>
-                                <td>平台余额:<strong>${(e.platMoney?string('#.##'))!''}</strong></td>
+                                <!--<td>平台余额:<strong>${(e.platMoney?string('#.##'))!''}</strong></td>-->
                                 <td>总投注:<strong>${(e.money?string('#.##'))!''}</strong></td>
                                 <td>总赔付:<strong>${(e.result?string('#.##'))!''}</strong></td>
                                 <td>总盈收:

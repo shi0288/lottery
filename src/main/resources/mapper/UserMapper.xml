@@ -73,6 +73,10 @@
         UPDATE user_rule SET  limit_win=#{limitWinMoney}  where id=#{id}
     </update>
 
+    <update id="updateDirection">
+        UPDATE user_rule SET  direction=#{direction}  where id=#{id}
+    </update>
+
     <update id="openDividing">
         update user_rule set is_dividing=1 , dividing_time=unix_timestamp(now()), is_close_by_winlose=0 where id=#{id}
     </update>

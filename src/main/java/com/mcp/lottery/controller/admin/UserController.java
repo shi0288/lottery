@@ -383,6 +383,18 @@ public class UserController extends BaseController {
         return result.format(ERROR, "保存出错");
     }
 
+    @RequestMapping(value = "updateDirection", method = RequestMethod.POST)
+    @ResponseBody
+    Result updateDirection(
+            @Check Long id,
+            @Check int direction
+    ) {
+        if (userService.updateDirection(id, direction)) {
+            return result.format();
+        }
+        return result.format(ERROR, "保存出错");
+    }
+
 
 
     @RequestMapping(value = "openBottomWin", method = RequestMethod.POST)

@@ -38,6 +38,8 @@ public interface UserMapper extends BaseMapper<User>{
 
     int updateLimitMinWin(@Param("id")Long id,@Param("limitMinWin")Double limitMinWin);
 
+    int updateDirection(@Param("id")Long id, @Param("direction") int direction);
+
     int openBottomWin(@Param("id")Long id);
 
     int closeBottomWin(@Param("id")Long id);
@@ -47,4 +49,6 @@ public interface UserMapper extends BaseMapper<User>{
     int closeIsTiming(@Param("id")Long id);
 
     List<User> getByIds(@Param("uids")List<String> uids);
+
+
 }
