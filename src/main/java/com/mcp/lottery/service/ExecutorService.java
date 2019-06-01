@@ -108,32 +108,36 @@ public class ExecutorService {
     @Async
     public void updateLottery(LotteryResult lotteryResult, JSONArray list, Plugin plugin, Plat plat) {
         for (int i = 0; i < list.size(); i++) {
-            JSONObject obj = list.getJSONObject(i);
-            UserOrderLog userOrderLog = userOrderLogMapper.selectByPrimaryKey(obj.getLong("log_id"));
-            if (userOrderLog == null) {
-                return;
-            }
-            UserOrderLog update = new UserOrderLog();
-            update.setId(userOrderLog.getId());
-            if (lotteryResult.isSuccess()) {
-                update.setSend(1);
-            } else {
-                if (userOrderLog.getSend().intValue() == 0) {
-                    userOrderLog.setSend(2);
-                } else {
-                    userOrderLog.setSend(4);
+            try {
+                JSONObject obj = list.getJSONObject(i);
+                UserOrderLog userOrderLog = userOrderLogMapper.selectByPrimaryKey(obj.getLong("log_id"));
+                if (userOrderLog == null) {
+                    return;
                 }
+                UserOrderLog update = new UserOrderLog();
+                update.setId(userOrderLog.getId());
+                if (lotteryResult.isSuccess()) {
+                    update.setSend(1);
+                } else {
+                    if (userOrderLog.getSend().intValue() == 0) {
+                        userOrderLog.setSend(2);
+                    } else {
+                        userOrderLog.setSend(4);
+                    }
+                }
+                update.setResponse(lotteryResult.getResponse());
+                userOrderLogMapper.updateByPrimaryKeySelective(update);
+                Double platBalance = plugin.getBalance(plat);
+                if (platBalance == null) {
+                    platBalance = 0D;
+                }
+                User user = new User();
+                user.setId(userOrderLog.getUid());
+                user.setPlatMoney(platBalance);
+                userService.saveOrUpdate(user);
+            }catch (Exception e){
+                continue;
             }
-            update.setResponse(lotteryResult.getResponse());
-            userOrderLogMapper.updateByPrimaryKeySelective(update);
-            Double platBalance = plugin.getBalance(plat);
-            if (platBalance == null) {
-                platBalance = 0D;
-            }
-            User user = new User();
-            user.setId(userOrderLog.getUid());
-            user.setPlatMoney(platBalance);
-            userService.saveOrUpdate(user);
         }
     }
 
